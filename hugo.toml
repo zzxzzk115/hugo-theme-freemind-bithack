@@ -45,10 +45,11 @@
   slogan = "TALK IS CHEAP, SHOW ME THE CODE."
   showSlogan = true
   showHeart = true
-  # Image shown (blinking) before the slogan instead of the heart, e.g. "favicon.png".
+  # Image shown (blinking) before the slogan instead of the heart, e.g. "images/my-logo.png".
   sloganIcon = ""
+  # The bundled favicon.png is a generic pixel terminal icon; point these at your own images.
   favicon = "favicon.png"
-  # Image left of the home page title (the original theme used favicon.png).
+  # Image left of the home page title.
   logo = "favicon.png"
   dateFormat = "2006-01-02"
 
