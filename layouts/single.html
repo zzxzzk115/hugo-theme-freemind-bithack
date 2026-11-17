@@ -12,6 +12,10 @@
   <div class="col-md-12">
   {{- end }}
     <article class="mypage">
+      {{- if .Params.aiTranslated }}
+      {{- $orig := "" }}{{ range .Translations }}{{ if not .Params.aiTranslated }}{{ $orig = . }}{{ end }}{{ end }}
+      <p class="translation-note"><i class="fa fa-language"></i> {{ T "ai_translated" }}{{ with $orig }} <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ T "read_original" }}</a>{{ end }}</p>
+      {{- end }}
       {{- with .Description }}
       <div class="alert alert-success description"><i class="fa fa-info-circle"></i> {{ . | markdownify }}</div>
       {{- end }}
@@ -30,7 +34,8 @@
     {{ partial "post/related.html" . }}
     {{- end }}
 
-    {{- if and (ne .Params.comments false) (or $isPost .Params.comments) }}
+    {{- /* Comments on every page (articles, About, Friends, ...) unless `comments: false`. */}}
+    {{- if and (ne .Params.comments false) (or $isPost (ne site.Params.comments.onPages false)) }}
     {{ partial "comments.html" . }}
     {{- end }}
   </div>

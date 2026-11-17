@@ -1,10 +1,10 @@
 # freemind.bithack for Hugo
 
-A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack). Same look, no Node and no jQuery: just the Hugo binary (≥ 0.146, standard edition is enough) and one 9 KB script.
+A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack). Same look, no Node and no jQuery: just the Hugo binary (≥ 0.146, standard edition is enough) and one small script.
 
 ![screenshot](images/screenshot.jpg)
 
-**Features**: multilingual with language switcher · instant search (`/` or Ctrl+K) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks with copy button, language label and folding · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
+**Features**: multilingual with language switcher · instant search (`/` or Ctrl+K) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
 
 Dark only, on purpose — it is the theme's identity.
 
@@ -43,7 +43,8 @@ hugo server -s exampleSite --themesDir ../..
 | | 栏目页、面包屑 | 目录的 `_index.md`；`breadcrumbs` |
 | 阅读 | 目录（默认开启，滚动高亮，桌面端吸附） | `tocDefault`；单篇 `toc: false` |
 | | 标题锚点 | `headingAnchors` |
-| | 代码块：复制、语言标签、长代码折叠；单行不显示行号 | `codeMaxLines`；单块 ```` ```go {collapse=false title="main.go"} ```` |
+| | 代码块：[Prism.js](https://prismjs.com) 官方插件（行号、语言标签、复制、行高亮）；单行不显示行号；只在有代码的页面加载 | `prismCDN`；单块 ```` ```go {linenos=false hl_lines="2-3"} ```` |
+| | 纯享阅读：单栏、易读字体、柔和配色（按 R 切换，Esc 退出，记住选择） | 文章页右下角按钮 |
 | | 字数、阅读时间、更新日期、原创标记、阅读进度条 | `lastmod`、`original: true` |
 | | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false` |
 | | 上一篇 / 下一篇（显示标题，全站按时间） | |
@@ -56,13 +57,15 @@ hugo server -s exampleSite --themesDir ../..
 | 导航 | 即时搜索（`/` 或 Ctrl+K，方向键选择，关键词高亮） | 输出 `search.json` |
 | | 下拉菜单、多语言切换 | 菜单项 `parent`；有译文跳译文 |
 | | 作者卡片（头像、简介、统计、社交图标，微信号点击复制） | `authorCard`、`[[social]]`（`copy = "…"`） |
-| 互动 | giscus / Valine 评论 | `[comments]` |
+| 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭） | `[comments]`、`onPages` |
 | | 阅读量（不蒜子 / Vercount） | `[pageviews] provider` |
 | | 分享（X、LinkedIn、Reddit、Telegram、微博、邮件、复制链接） | `share` |
 | | 统计（GA、Umami、Plausible、GoatCounter、Cloudflare、百度） | `[analytics]`，仅生产构建 |
 | SEO / 订阅 | canonical、hreflang、Open Graph、Twitter Card、JSON-LD、sitemap、robots | 自动 |
 | | RSS、Atom、JSON Feed（默认全文） | `[feed] fullText`、`limit` |
-| 其他 | 打印样式、web manifest、移动端适配 | 自动 |
+| | AI 翻译提示（链接到原文） | `aiTranslated: true` |
+| 其他 | 打印样式、web manifest、移动端适配、长链接自动换行 | 自动 |
+| 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL，按 unicode-range 只在有中文时加载） | |
 
 ### 短代码
 
@@ -93,4 +96,5 @@ hugo server -s exampleSite --themesDir ../..
 | Font Awesome | 4.7.0 | 只保留 woff2 / woff |
 | Bootstrap CSS | 3.x（原主题定制版） | 只用样式；Bootstrap JS 已移除 |
 | jQuery、fancyBox、imagesLoaded | 已移除 | 由 `theme.js` 替代 |
-| Mermaid / Chart.js / KaTeX CSS | 11.4.1 / 4.4.1 / 0.16.22 | CDN，仅在用到的页面加载 |
+| Prism.js / Mermaid / Chart.js / KaTeX CSS | 1.30.0 / 11.4.1 / 4.4.1 / 0.16.22 | CDN，仅在用到的页面加载 |
+| Fusion Pixel Font | 2026.11.10（12px proportional zh_hans） | 随主题分发，SIL OFL 1.1 |

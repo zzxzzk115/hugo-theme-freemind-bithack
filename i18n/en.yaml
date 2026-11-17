@@ -21,8 +21,6 @@ timeline: Timeline
 copy: Copy
 copied: Copied
 copy_failed: Copy failed
-expand: Expand
-collapse: Collapse
 no_results: No results
 toc: Contents
 updated: Updated
@@ -41,3 +39,7 @@ views: Views
 copied_value: "{{ .name }} copied: {{ .value }}"
 license_notice: "This post is licensed under <a href=\"{{ .url }}\" target=\"_blank\" rel=\"noopener\">{{ .license }}</a>."
 repost_notice: "Please credit <a href=\"{{ .url }}\">{{ .title }}</a> when reposting."
+ai_translated: "This post was translated from the original with AI assistance."
+read_original: "Read the original"
+reader_mode: Reader
+reader_exit: Exit reader

@@ -1,0 +1,47 @@
+/* ======================================================================
+   Reader mode (html.reader, toggled on article pages): one centred column, readable type,
+   softer dark palette. The pixel look stays everywhere else.
+   ====================================================================== */
+html.reader body.is-article { background: #141416; }
+html.reader body.is-article #main-nav,
+html.reader body.is-article #side_meta,
+html.reader body.is-article #top_meta,
+html.reader body.is-article .breadcrumbs,
+html.reader body.is-article .post-footer,
+html.reader body.is-article .related-posts,
+html.reader body.is-article .container-narrow,
+html.reader body.is-article .translation-note { display: none !important; }
+html.reader body.is-article { padding-top: 32px; }
+
+html.reader body.is-article .row.post > .col-md-9 { float: none; width: 100%; max-width: 760px; margin: 0 auto; }
+html.reader body.is-article .page-header { max-width: 760px; margin: 0 auto 1.2em; padding: 0 15px; border-bottom-color: #2a2a2e; }
+
+html.reader body.is-article .page-header h1,
+html.reader body.is-article .mypage,
+html.reader body.is-article .mypage :not(pre):not(code):not(kbd):not(samp):not(i):not(.token):not(math):not(math *) {
+  font-family: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", "Noto Sans", sans-serif !important;
+  letter-spacing: normal;
+}
+html.reader body.is-article .page-header h1 { font-size: 2.1em; line-height: 1.3; font-weight: 700; color: #f0f0f0; }
+html.reader body.is-article .mypage { font-size: 18px; line-height: 1.85; color: #d6d6d6; }
+html.reader body.is-article .mypage p,
+html.reader body.is-article .mypage li { color: #d6d6d6; font-size: 1em; line-height: 1.85; }
+html.reader body.is-article .mypage p { margin: 0 0 1.1em; }
+html.reader body.is-article .mypage h1, html.reader body.is-article .mypage h2,
+html.reader body.is-article .mypage h3, html.reader body.is-article .mypage h4 { color: #f0f0f0; font-weight: 700; line-height: 1.4; margin: 1.6em 0 .6em; }
+html.reader body.is-article .mypage h1 { font-size: 1.6em; }
+html.reader body.is-article .mypage h2 { font-size: 1.4em; }
+html.reader body.is-article .mypage h3 { font-size: 1.2em; }
+html.reader body.is-article .mypage strong { color: #ff8f8f; }
+html.reader body.is-article .mypage a { color: #6fd6ad; }
+html.reader body.is-article .mypage blockquote { background: #1d1d21; border-left-color: #3a3a40; color: #c8c8c8; }
+html.reader body.is-article .mypage :not(pre) > code { background: #26262b; color: #f2a5b8; border-color: #333; font-size: .88em; }
+html.reader body.is-article .mypage img { border-radius: 2px; }
+html.reader body.is-article .article-footer-copyright { background: #1d1d21; }
+
+/* floating toggle */
+#reader-toggle { position: fixed; right: 50px; bottom: 86px; width: 90px; box-sizing: border-box; text-align: center; white-space: nowrap; z-index: 1050; display: none; padding: 6px 0; border: 1px solid #333; background: #000; color: #aaa; font-size: 13px; cursor: pointer; }
+body.is-article #reader-toggle { display: block; }
+#reader-toggle:hover { color: #fff; border-color: #2bbc8a; }
+html.reader #reader-toggle { color: #6fd6ad; border-color: #6fd6ad; background: #141416; }
+@media print { #reader-toggle { display: none !important; } }

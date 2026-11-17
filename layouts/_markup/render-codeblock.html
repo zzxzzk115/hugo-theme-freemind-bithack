@@ -1,25 +1,13 @@
 {{- /*
-  Code block with a toolbar: language label + copy button; long blocks start collapsed.
-  Per-block options (Hugo attributes): ```go {collapse=false title="main.go" linenos=false}
+  Code blocks are highlighted in the browser by Prism.js (https://prismjs.com) with its official
+  plugins: line-numbers, toolbar, show-language, copy-to-clipboard, line-highlight.
+  One-line blocks get no line numbers. Per block: ```go {linenos=false title="main.go" hl_lines="2-3"}
 */ -}}
+{{- $lang := .Type | default "plaintext" }}
+{{- $lang = index (dict "text" "plaintext" "txt" "plaintext" "plain" "plaintext" "console" "shell-session" "sh" "bash" "zsh" "bash" "shell" "bash" "ps1" "powershell" "cs" "csharp" "c#" "csharp" "c++" "cpp" "js" "javascript" "ts" "typescript" "py" "python" "yml" "yaml" "md" "markdown" "html" "markup" "xml" "markup" "vue" "markup") (lower $lang) | default (lower $lang) }}
 {{- $lines := len (split (strings.TrimRight "\n" .Inner) "\n") }}
-{{- $max := site.Params.codeMaxLines | default 30 }}
-{{- $collapse := and (gt $max 0) (gt $lines $max) (ne (string .Attributes.collapse) "false") }}
-{{- $lang := .Type | default "text" }}
-{{- $label := .Attributes.title | default (index (dict "cs" "C#" "csharp" "C#" "cpp" "C++" "js" "JavaScript" "ts" "TypeScript" "py" "Python" "sh" "Shell" "bash" "Bash" "ps1" "PowerShell" "powershell" "PowerShell" "md" "Markdown") (lower $lang)) | default $lang }}
-<div class="code-block{{ if $collapse }} collapsed{{ end }}" data-lang="{{ $lang }}">
-  <div class="code-toolbar">
-    <span class="code-lang">{{ $label }}</span>
-    <button type="button" class="code-copy" aria-label="{{ T "copy" }}"><i class="fa fa-clone"></i> {{ T "copy" }}</button>
-  </div>
-  {{- $opts := dict }}
-  {{- with .Attributes.linenos }}{{ $opts = merge $opts (dict "lineNos" .) }}{{ end }}
-  {{- /* Line numbers are noise on one-liners (shell commands etc.) unless asked for. */}}
-  {{- if and (le $lines 1) (not .Attributes.linenos) }}{{ $opts = merge $opts (dict "lineNos" false) }}{{ end }}
-  {{- with .Attributes.hl_lines }}{{ $opts = merge $opts (dict "hl_lines" .) }}{{ end }}
-  {{- with .Attributes.linenostart }}{{ $opts = merge $opts (dict "lineNoStart" .) }}{{ end }}
-  {{ transform.Highlight .Inner $lang $opts }}
-  {{- if $collapse }}
-  <button type="button" class="code-expand"><i class="fa fa-angle-down"></i> {{ T "expand" }}</button>
-  {{- end }}
-</div>
+{{- $ln := and (gt $lines 1) (ne (string .Attributes.linenos) "false") }}
+<pre class="{{ if $ln }}line-numbers {{ end }}language-{{ $lang }}"
+  {{- with .Attributes.title }} data-label="{{ . }}"{{ end }}
+  {{- with .Attributes.hl_lines }} data-line="{{ . }}"{{ end }}><code class="language-{{ $lang }}">{{ .Inner }}</code></pre>
+{{- .Page.Store.Set "hasCode" true }}

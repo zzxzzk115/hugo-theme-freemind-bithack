@@ -21,8 +21,6 @@ timeline: 时间线
 copy: 复制
 copied: 已复制
 copy_failed: 复制失败
-expand: 展开
-collapse: 收起
 no_results: 没有找到结果
 toc: 目录
 updated: 更新于
@@ -41,3 +39,7 @@ views: 阅读
 copied_value: "已复制{{ .name }}：{{ .value }}"
 license_notice: "本文采用 <a href=\"{{ .url }}\" target=\"_blank\" rel=\"noopener\">{{ .license }}</a> 许可协议发布。"
 repost_notice: "转载请注明转自 <a href=\"{{ .url }}\">{{ .title }}</a>"
+ai_translated: "本文由 AI 辅助翻译自原文。"
+read_original: "阅读原文"
+reader_mode: 纯享阅读
+reader_exit: 退出阅读

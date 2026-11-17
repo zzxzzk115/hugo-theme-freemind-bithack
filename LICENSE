@@ -25,5 +25,6 @@ SOFTWARE.
 ---
 
 Bundled third-party assets keep their own licenses:
-- Bootstrap 3 (MIT), jQuery (MIT), fancyBox 2 (CC BY-NC 3.0 for non-commercial use),
-- Font Awesome 4 (font: SIL OFL 1.1, CSS: MIT), IcoMoon icons, Fixedsys Excelsior font (public domain).
+- Bootstrap 3 CSS (MIT),
+- Font Awesome 4.7 (font: SIL OFL 1.1, CSS: MIT), IcoMoon icons, Fixedsys Excelsior font (public domain),
+- Fusion Pixel Font (SIL OFL 1.1, see static/css/fonts/fusion-pixel/OFL.txt).

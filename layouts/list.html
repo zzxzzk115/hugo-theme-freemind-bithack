@@ -36,6 +36,9 @@
       </ul>
       {{- end }}
     </div>
+    {{- if and (ne .Params.comments false) (ne site.Params.comments.onPages false) }}
+    {{ partial "comments.html" . }}
+    {{- end }}
   </div>
   {{ if site.Params.widgets }}{{ partial "sidebar.html" . }}{{ end }}
 </div>

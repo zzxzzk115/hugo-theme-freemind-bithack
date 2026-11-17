@@ -25,22 +25,7 @@
 .mypage .headerlink { margin-left: .35em; color: #2bbc8a; opacity: 0; text-decoration: none; font-size: .8em; transition: opacity .15s; }
 .mypage h1:hover .headerlink, .mypage h2:hover .headerlink, .mypage h3:hover .headerlink,
 .mypage h4:hover .headerlink, .mypage h5:hover .headerlink, .mypage h6:hover .headerlink, .mypage .headerlink:focus { opacity: 1; }
-.mypage h1, .mypage h2, .mypage h3, .mypage h4 { scroll-margin-top: 60px; }
-
-/* code blocks */
-.code-block { position: relative; margin: 1em 0; background: #252525; }
-.code-block .highlight { margin: 0 !important; }
-.code-toolbar { display: flex; align-items: center; justify-content: space-between; padding: 2px 8px 2px 12px; background: #1a1a1a; border-bottom: 1px solid #333; font-size: 12px; line-height: 24px; }
-.code-lang { color: #888; text-transform: uppercase; letter-spacing: .05em; }
-.code-copy, .code-expand { background: transparent; border: 0; color: #aaa; cursor: pointer; font: inherit; font-size: 12px; padding: 0 4px; }
-.code-copy:hover, .code-expand:hover, .code-copy.done { color: #2bbc8a; }
-.code-block.collapsed .highlight { max-height: 420px; overflow: hidden; }
-.code-block.collapsed:after { content: ""; position: absolute; left: 0; right: 0; bottom: 30px; height: 80px; background: linear-gradient(transparent, #252525); pointer-events: none; }
-.code-expand { display: block; width: 100%; padding: 4px; border-top: 1px solid #333; background: #1a1a1a; }
-.highlight .lntd:last-child { width: 100%; }
-.code-block .highlight { overflow-x: auto; overflow-y: hidden; }
-.code-block .highlight pre, .code-block .lntd pre { overflow: visible !important; margin: 0; }
-.code-block .highlight > .chroma, .code-block .highlight > pre { padding: 10px 12px; }
+.mypage h1, .mypage h2, .mypage h3, .mypage h4 { scroll-margin-top: 64px; }
 
 /* figures, video, pdf, chart, badge, marks */
 .md-figure { margin: 1em 0; text-align: center; }
@@ -87,7 +72,7 @@ body.lb-open { overflow: hidden; }
 .post-info i { width: 16px; text-align: center; }
 .original-label { font-size: 70%; border-radius: 0; vertical-align: middle; }
 @media (min-width: 980px) {
-  #side_meta #post_meta { position: sticky; top: 60px; max-height: calc(100vh - 70px); overflow-y: auto; }
+  #side_meta #post_meta { position: sticky; top: 64px; max-height: calc(100vh - 74px); overflow-y: auto; }
 }
 #TableOfContents a.active { color: #2bbc8a; }
 #TableOfContents a.active:before { content: "\203A  "; }
@@ -157,10 +142,64 @@ a.post-nav-item:hover { border-color: #2bbc8a; }
   #main-nav .navbar-nav > li > a i { width: 20px; }
   .container { padding-left: 16px; padding-right: 16px; }
   .page-header h1 { font-size: 1.6em; word-break: break-word; }
-  .code-block { margin-left: -16px; margin-right: -16px; }
   .post-footer { flex-direction: column; align-items: flex-start; }
   .post-nav { flex-direction: column; }
   .post-nav-item.next { text-align: left; }
   .navbar .dropdown-menu { position: static; float: none; box-shadow: none; }
   .mypage table { display: block; overflow-x: auto; }
 }
+
+/* ---- Hover readability -------------------------------------------------
+   The original theme inverts links on hover (a:hover { color: #000; background: #999 }).
+   Keep that terminal look for inline links in text, but make their contents readable, and use a
+   plain colour change for links that are UI components. */
+.mypage a:hover, .mypage a:hover * { color: #000 !important; }
+.navbar a:hover, .dropdown-menu a:hover, .breadcrumbs a:hover, .post-nav-item:hover, .share-links a:hover,
+.edit-link:hover, .related-posts a:hover, .listing-item a:hover, .title a:hover, .entry .more:hover,
+.author-card a:hover, .timeline a:hover, #TableOfContents a:hover, .series a:hover, .search-result-list a:hover,
+.friend-card:hover, .meta-widget a:hover, .widget a:hover, .blogroll a:hover, .pagination a:hover,
+.article-footer-copyright a:hover, footer a:hover, .mypage .headerlink:hover, .md-pdf-link:hover,
+#local-search-result a:hover, .toc-article a:hover { background: transparent !important; }
+.navbar .nav > li > a:hover, .dropdown-menu > li > a:hover { color: #fff !important; }
+.breadcrumbs a:hover, .edit-link:hover, .related-posts a:hover, .listing-item a:hover, .title a:hover,
+.author-card a:hover, .author-card a:hover *, .timeline a:hover, #TableOfContents a:hover, .series a:hover,
+.meta-widget a:hover, .blogroll a:hover, .article-footer-copyright a:hover, footer a:hover,
+.toc-article a:hover, .md-pdf-link:hover { color: #fff !important; text-decoration: underline; }
+.post-nav-item:hover .post-nav-title, .search-result-list a:hover .search-result-title,
+.friend-card:hover .friend-name { color: #fff !important; }
+.tag_box a:hover, .tag_box a:hover span { background-color: #2bbc8a !important; color: #000 !important; }
+.entry .more:hover { color: #000 !important; background: #2bbc8a !important; }
+.mypage .headerlink:hover { color: #fff !important; }
+
+/* ---- Navbar spacing (the original bar was 21px tall with no padding) ---- */
+#main-nav .navbar-brand, #main-nav .nav > li > a { padding-top: 12px; padding-bottom: 12px; line-height: 20px; height: auto; }
+#main-nav { min-height: 44px; }
+body { padding-top: 64px; }
+#main-nav .dropdown-menu { margin-top: 0; }
+
+/* AI translation notice */
+.translation-note { color: #888; font-size: 85%; border-left: 3px solid #555; padding: 4px 10px; margin-bottom: 1.2em; }
+
+/* ---- CJK pixel font ------------------------------------------------------
+   Fusion Pixel Font 12px (SIL OFL 1.1, https://github.com/TakWolf/fusion-pixel-font), registered under the
+   theme's existing families for CJK code points only: Latin keeps Fixedsys / Fira Code, Chinese gets
+   pixels too, and the file is only downloaded on pages that contain CJK text. */
+@font-face {
+  font-family: "DOS";
+  src: url("fonts/fusion-pixel/fusion-pixel-12px-proportional-zh_hans.otf.woff2") format("woff2");
+  unicode-range: U+2E80-2FFF, U+3000-303F, U+3040-30FF, U+3100-312F, U+3190-31FF, U+3200-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fira Code";
+  src: url("fonts/fusion-pixel/fusion-pixel-12px-proportional-zh_hans.otf.woff2") format("woff2");
+  unicode-range: U+2E80-2FFF, U+3000-303F, U+3040-30FF, U+3100-312F, U+3190-31FF, U+3200-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
+  font-display: swap;
+}
+
+/* ---- Overflow: long URLs / identifiers wrap instead of running out of their box ---- */
+.mypage p, .mypage li, .mypage blockquote, .mypage td, .mypage th, .mypage h1, .mypage h2, .mypage h3,
+.mypage h4, .md-alert, .article-footer-copyright, .post-nav-title, .search-result, .author-bio { overflow-wrap: anywhere; }
+.mypage :not(pre) > code { overflow-wrap: anywhere; word-break: break-word; white-space: normal; }
+.mypage img, .mypage video, .mypage iframe, .mypage object { max-width: 100%; }
+.mypage table { max-width: 100%; }

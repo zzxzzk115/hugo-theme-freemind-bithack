@@ -1,8 +1,12 @@
 <a id="gotop" href="#" aria-label="Back to top"><span>⬆︎TOP</span></a>
+{{- if partial "func/is-article.html" . }}
+<button type="button" id="reader-toggle" title="{{ T "reader_mode" }} (R)" aria-pressed="false"><i class="fa fa-book"></i> <span>{{ T "reader_mode" }}</span></button>
+{{- end }}
 
 {{- $cfg := dict
-  "i18n" (dict "copy" (T "copy") "copied" (T "copied") "copyFailed" (T "copy_failed") "expand" (T "expand") "collapse" (T "collapse") "noResults" (T "no_results"))
+  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results"))
 }}
+{{- $cfg = merge $cfg (dict "prism" (site.Params.prismCDN | default "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/")) }}
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
 <script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>
 {{- $js := resources.Get "js/theme.js" }}

@@ -6,25 +6,6 @@
 .toc-article #TableOfContents ul ul { list-style: square; padding: 5px 10px; }
 .toc-article #TableOfContents ul ul ul { list-style: circle; }
 
-/* Chroma syntax highlighting, colours taken from the theme's highlight.css */
-.highlight .chroma { background: transparent; color: #ccc; }
-.highlight .lntable { margin: 0; width: auto; border: 0; }
-.highlight .lntd { border: 0; padding: 0; vertical-align: top; }
-.highlight .lntd:first-child { padding-right: 20px; user-select: none; }
-.highlight .lnt, .highlight .ln { color: #666; }
-.chroma .hl { display: block; background: #444; }
-.chroma .c, .chroma .c1, .chroma .cm, .chroma .cs, .chroma .cp, .chroma .cpf, .chroma .ch { color: #999; font-style: italic; }
-.chroma .k, .chroma .kd, .chroma .kn, .chroma .kp, .chroma .kr, .chroma .kc { color: #c9c; }
-.chroma .kt, .chroma .nc, .chroma .nn { color: #9c9; }
-.chroma .s, .chroma .s1, .chroma .s2, .chroma .sb, .chroma .sc, .chroma .sd, .chroma .se, .chroma .sh, .chroma .si, .chroma .sx, .chroma .sr, .chroma .ss { color: #9c9; }
-.chroma .m, .chroma .mi, .chroma .mf, .chroma .mh, .chroma .mo, .chroma .il, .chroma .no, .chroma .bp, .chroma .nb { color: #f99157; }
-.chroma .nf, .chroma .fm, .chroma .nd { color: #69c; }
-.chroma .nt { color: #f2777a; }
-.chroma .na { color: #fc6; }
-.chroma .o, .chroma .ow, .chroma .p { color: #ccc; }
-.chroma .gd { color: #f2777a; }
-.chroma .gi { color: #9c9; }
-
 /* Math rendered by KaTeX at build time */
 .math-block { overflow-x: auto; overflow-y: hidden; padding: 4px 0; margin: 1em 0; text-align: center; }
 math[display="block"] { font-size: 1.15em; }
@@ -89,3 +70,18 @@ img { max-width: 100%; }
 
 /* params.sloganIcon: small image in place of the blinking heart */
 .slogan .slogan-icon { display: inline-block; height: 1.4em; width: auto; margin: 0 .3em 0 0; vertical-align: -0.3em; }
+
+/* ---- Prism.js glue (theme: prism-tomorrow; the original theme used the same Tomorrow palette) ---- */
+div.code-toolbar { position: relative; margin: 1em 0; }
+pre[class*="language-"] { margin: 0 !important; padding: 2.4em 1em 1em !important; border-radius: 0 !important; background: #252525 !important; font-size: 14px !important; line-height: 1.6 !important; text-shadow: none !important; }
+pre[class*="language-"].line-numbers { padding-left: 3.8em !important; }
+pre[class*="language-"] > code { font-family: "Fira Code", Monaco, Menlo, Consolas, "Courier New", monospace !important; font-size: inherit !important; line-height: inherit !important; white-space: pre; }
+.line-numbers .line-numbers-rows { top: 2.4em; border-right-color: #3a3a3a; }
+.line-numbers-rows > span:before { color: #666; }
+div.code-toolbar > .toolbar { opacity: 1 !important; top: 0; right: 0; left: 0; display: flex; justify-content: space-between; padding: 2px 8px; background: #1a1a1a; border-bottom: 1px solid #333; }
+div.code-toolbar > .toolbar > .toolbar-item > span,
+div.code-toolbar > .toolbar > .toolbar-item > button { background: transparent; box-shadow: none; color: #888; font-size: 12px; padding: 0 4px; border-radius: 0; text-transform: uppercase; letter-spacing: .05em; }
+div.code-toolbar > .toolbar > .toolbar-item > button { color: #aaa; text-transform: none; letter-spacing: 0; cursor: pointer; }
+div.code-toolbar > .toolbar > .toolbar-item > button:hover,
+div.code-toolbar > .toolbar > .toolbar-item > button:focus { color: #fff; background: #2bbc8a; }
+.line-highlight { background: rgba(43, 188, 138, .12); }

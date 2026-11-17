@@ -143,24 +143,36 @@
     heads.forEach(function (h) { io.observe(h); });
   }
 
-  /* ------------------------------------------------------------ code blocks: copy, expand */
-  $$(".code-block").forEach(function (block) {
-    var btn = $(".code-copy", block);
-    if (btn) btn.addEventListener("click", function () {
-      var code = $(".lntd:last-child code", block) || $("code", block);
-      var text = code ? code.innerText.replace(/\n$/, "") : "";
-      copyText(text).then(function () {
-        btn.classList.add("done");
-        btn.innerHTML = '<i class="fa fa-check"></i> ' + t("copied", "Copied");
-        setTimeout(function () { btn.classList.remove("done"); btn.innerHTML = '<i class="fa fa-clone"></i> ' + t("copy", "Copy"); }, 1500);
-      }, function () { toast(t("copyFailed", "Copy failed")); });
-    });
-    var more = $(".code-expand", block);
-    if (more) more.addEventListener("click", function () {
-      var collapsed = block.classList.toggle("collapsed");
-      more.innerHTML = collapsed ? '<i class="fa fa-angle-down"></i> ' + t("expand", "Expand") : '<i class="fa fa-angle-up"></i> ' + t("collapse", "Collapse");
-    });
-  });
+  /* ------------------------------------------------------------ code blocks: Prism.js (loaded only when needed) */
+  var codeBlocks = $$('pre[class*="language-"]');
+  if (codeBlocks.length && cfg.prism) {
+    var base = cfg.prism.replace(/\/?$/, "/");
+    var css = function (href) {
+      var l = document.createElement("link"); l.rel = "stylesheet"; l.href = href; document.head.appendChild(l);
+    };
+    var script = function (src, manual) {
+      return new Promise(function (ok, fail) {
+        var s = document.createElement("script");
+        s.src = src;
+        if (manual) s.setAttribute("data-manual", "");
+        s.onload = ok; s.onerror = fail;
+        document.head.appendChild(s);
+      });
+    };
+    ["themes/prism-tomorrow.min.css", "plugins/line-numbers/prism-line-numbers.min.css",
+     "plugins/toolbar/prism-toolbar.min.css", "plugins/line-highlight/prism-line-highlight.min.css"]
+      .forEach(function (f) { css(base + f); });
+    var plugins = ["plugins/autoloader/prism-autoloader.min.js", "plugins/line-numbers/prism-line-numbers.min.js",
+      "plugins/line-highlight/prism-line-highlight.min.js", "plugins/toolbar/prism-toolbar.min.js",
+      "plugins/show-language/prism-show-language.min.js", "plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"];
+    plugins.reduce(function (p, f) { return p.then(function () { return script(base + f); }); },
+      script(base + "components/prism-core.min.js", true))
+      .then(function () {
+        if (window.Prism.plugins.autoloader) window.Prism.plugins.autoloader.languages_path = base + "components/";
+        window.Prism.highlightAll();
+      })
+      .catch(function () { /* offline: the plain <pre> is still readable */ });
+  }
 
   /* ------------------------------------------------------------ copy-on-click links (e.g. WeChat ID) and share "copy link" */
   document.addEventListener("click", function (e) {
@@ -305,6 +317,32 @@
         input.focus();
       }
     });
+  }
+
+  /* ------------------------------------------------------------ reader mode (articles only) */
+  var readerBtn = $("#reader-toggle");
+  if (readerBtn) {
+    var root = document.documentElement;
+    var sync = function () {
+      var on = root.classList.contains("reader");
+      readerBtn.setAttribute("aria-pressed", on);
+      $("span", readerBtn).textContent = on ? t("readerExit", "Exit reader") : t("reader", "Reader");
+    };
+    var toggleReader = function (force) {
+      var on = typeof force === "boolean" ? force : !root.classList.contains("reader");
+      root.classList.toggle("reader", on);
+      try { localStorage.setItem("reader", on ? "1" : "0"); } catch (err) { /* private mode */ }
+      sync();
+      placeBlocks();
+    };
+    readerBtn.addEventListener("click", function () { toggleReader(); });
+    document.addEventListener("keydown", function (e) {
+      var tag = (e.target.tagName || "").toLowerCase();
+      if (tag === "input" || tag === "textarea" || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === "r" || e.key === "R") toggleReader();
+      else if (e.key === "Escape" && root.classList.contains("reader")) toggleReader(false);
+    });
+    sync();
   }
 
   /* ------------------------------------------------------------ external hook */
