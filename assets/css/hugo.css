@@ -1,10 +1,18 @@
 /* ---- Hugo port additions (keeps the original freemind.bithack look) ---- */
 
 /* TOC: Hugo emits <nav id="TableOfContents"><ul>, hexo emitted <ol class="toc-article"> */
-.toc-article #TableOfContents > ul { list-style: circle; margin: 0; padding: 0 0 0 12px; line-height: 1em; }
-.toc-article #TableOfContents li { margin-left: 5px !important; padding: 0 !important; line-height: 1.6em; }
-.toc-article #TableOfContents ul ul { list-style: square; padding: 5px 10px; }
-.toc-article #TableOfContents ul ul ul { list-style: circle; }
+/* Levels: indentation with a guide line, and each level dimmer and smaller than its parent. */
+.toc-article #TableOfContents ul { list-style: none; margin: 0; padding: 0; }
+.toc-article #TableOfContents li { margin: 0 !important; padding: 0 !important; line-height: 1.5em; }
+.toc-article #TableOfContents li > a { display: block; padding: 2px 0; }
+.toc-article #TableOfContents ul ul { margin: 2px 0 4px 3px; padding-left: 11px; border-left: 1px solid #484848; }
+/* No h1 in the post: Hugo wraps everything in an empty first level; flatten it. */
+.toc-article #TableOfContents li:not(:has(> a)) > ul { margin: 0; padding-left: 0; border-left: 0; }
+.toc-article #TableOfContents a { color: #808080; font-size: 12px; }
+.toc-article #TableOfContents > ul > li > a,
+.toc-article #TableOfContents > ul > li:not(:has(> a)) > ul > li > a { color: #e0e0e0; font-size: 14px; }
+.toc-article #TableOfContents > ul > li:has(> a) > ul > li > a,
+.toc-article #TableOfContents > ul > li:not(:has(> a)) > ul > li > ul > li > a { color: #a8a8a8; font-size: 13px; }
 
 /* Math rendered by KaTeX at build time */
 .math-block { overflow-x: auto; overflow-y: hidden; padding: 4px 0; margin: 1em 0; text-align: center; }

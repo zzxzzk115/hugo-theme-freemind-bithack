@@ -29,6 +29,23 @@
 .mypage h1:hover .headerlink, .mypage h2:hover .headerlink, .mypage h3:hover .headerlink,
 .mypage h4:hover .headerlink, .mypage h5:hover .headerlink, .mypage h6:hover .headerlink, .mypage .headerlink:focus { opacity: 1; }
 .mypage h1, .mypage h2, .mypage h3, .mypage h4 { scroll-margin-top: 64px; }
+/* Heading levels: the Markdown marker as a dim prefix, plus clearly stepped size and brightness. */
+.mypage h1, .mypage h2, .mypage h3, .mypage h4, .mypage h5, .mypage h6 { line-height: 1.35; }
+.mypage h1 { font-size: 2em; color: #fff; padding-bottom: .25em; border-bottom: 2px solid #333; margin-top: 1.4em; }
+.mypage h2 { font-size: 1.65em; color: #fff; padding-bottom: .2em; border-bottom: 1px dashed #333; margin-top: 1.3em; }
+.mypage h3 { font-size: 1.35em; color: #e6e6e6; margin-top: 1.2em; }
+.mypage h4 { font-size: 1.15em; color: #c8c8c8; }
+.mypage h5, .mypage h6 { font-size: 1em; color: #aaa; }
+.mypage h1::before, .mypage h2::before, .mypage h3::before, .mypage h4::before, .mypage h5::before, .mypage h6::before {
+  color: #2bbc8a; opacity: .55; margin-right: .4em; font-weight: normal; }
+.mypage h1::before { content: "#"; }
+.mypage h2::before { content: "##"; }
+.mypage h3::before { content: "###"; }
+.mypage h4::before { content: "####"; }
+.mypage h5::before { content: "#####"; }
+.mypage h6::before { content: "######"; }
+html.reader .mypage h1::before, html.reader .mypage h2::before, html.reader .mypage h3::before,
+html.reader .mypage h4::before, html.reader .mypage h5::before, html.reader .mypage h6::before { content: none; }
 
 /* figures, video, pdf, chart, badge, marks */
 .md-figure { margin: 1em 0; text-align: center; }
