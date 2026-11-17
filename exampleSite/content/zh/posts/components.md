@@ -16,3 +16,10 @@ math: true
 $$
 E = mc^2
 $$
+
+{{< details "点击展开" >}}
+折叠区块里可以写任意 Markdown，也可以放其他短代码。
+{{< /details >}}
+
+{{< friend name="Hugo" url="https://gohugo.io/" desc="静态网站生成器" tags="Go, SSG" >}}
+{{< friend name="Prism" url="https://prismjs.com/" desc="代码高亮" tags="JavaScript" >}}

@@ -128,4 +128,26 @@ A standalone image becomes a figure; the caption comes from its title or alt tex
 
 ## Friend links
 
-{{< friend name="Hugo" url="https://gohugo.io/" desc="The world's fastest framework for building websites" >}}
+{{< friend name="Hugo" url="https://gohugo.io/" desc="The world's fastest framework for building websites" tags="Go, SSG" >}}
+{{< friend name="Prism" url="https://prismjs.com/" desc="Lightweight syntax highlighting" tags="JavaScript" >}}
+
+Consecutive cards form an equal-size, two-column grid; `tags` is a comma-separated list.
+
+## Collapsible block
+
+{{< details "Click to expand" >}}
+The inside is regular Markdown: **bold**, `code`, lists and other shortcodes all work.
+
+- one
+- two
+{{< /details >}}
+
+## Music player
+
+Embed a NetEase Cloud Music song, album or playlist (artist pages can't be embedded):
+
+```text
+{{< netease 1234567890 >}}
+{{< netease id="1234567" type="album" >}}
+```
+
