@@ -1,0 +1,17 @@
+{{- /*
+  NetEase Cloud Music player (the official "outchain" widget).
+  {{< netease 1847289377 >}}                      one song
+  {{< netease id="88219590" type="album" >}}      album; type: song (default) | album | playlist
+  Options: auto="true" to autoplay (browsers usually block it), height (song 66, list 430 by default).
+  NetEase can't embed an artist page; songs with copyright restrictions won't play in the widget.
+*/ -}}
+{{- $id := .Get "id" | default (.Get 0) }}
+{{- $type := .Get "type" | default "song" }}
+{{- $code := index (dict "song" 2 "album" 1 "playlist" 0) $type | default 2 }}
+{{- $h := .Get "height" | default (cond (eq $type "song") 66 430) }}
+{{- $auto := cond (eq (.Get "auto") "true") 1 0 }}
+<div class="md-netease">
+  <iframe src="https://music.163.com/outchain/player?type={{ $code }}&amp;id={{ $id }}&amp;auto={{ $auto }}&amp;height={{ $h }}"
+    width="100%" height="{{ add (int $h) 20 }}" frameborder="0" loading="lazy" title="NetEase Cloud Music"
+    allow="autoplay; encrypted-media"></iframe>
+</div>

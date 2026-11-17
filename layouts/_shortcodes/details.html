@@ -1,0 +1,10 @@
+{{- /*
+  Collapsible block; the inside is Markdown (shortcodes work too).
+  {{< details "My music" >}} ... {{< /details >}}
+  {{< details summary="Spoiler" open="true" >}} ... {{< /details >}}
+*/ -}}
+{{- $summary := .Get "summary" | default (.Get 0) | default "Details" }}
+<details class="md-details"{{ if eq (.Get "open") "true" }} open{{ end }}>
+  <summary>{{ $summary | markdownify }}</summary>
+  <div class="md-details-body">{{ .Inner | .Page.RenderString (dict "display" "block") }}</div>
+</details>

@@ -53,6 +53,19 @@ html.reader .md-content h4::before, html.reader .md-content h5::before, html.rea
 .md-figure img { margin: 0 auto; }
 .md-figure figcaption, .md-video figcaption { color: #888; font-size: 85%; margin-top: 6px; text-align: center; }
 .md-video { margin: 1em 0; }
+/* {{< netease >}}: the widget is white, so frame it to sit on the black page. */
+.md-netease { margin: 8px 0; max-width: 520px; border: 1px solid #333; line-height: 0; }
+.md-netease iframe { display: block; width: 100%; border: 0; }
+/* {{< details >}}: terminal-style collapsible block */
+.md-details { margin: 1em 0; border: 1px solid #333; background: #0b0b0b; }
+.md-details > summary { list-style: none; cursor: pointer; padding: 8px 12px; color: #2bbc8a; user-select: none; }
+.md-details > summary::-webkit-details-marker { display: none; }
+.md-details > summary::before { content: "▸ "; display: inline-block; width: 1.2em; }
+.md-details[open] > summary::before { content: "▾ "; }
+.md-details > summary:hover { background: #141414; color: #6fd6ad; }
+.md-details[open] > summary { border-bottom: 1px solid #333; }
+.md-details-body { padding: 4px 12px 10px; }
+.md-details-body > :last-child { margin-bottom: 0; }
 /* Size to the video's own aspect ratio (portrait clips don't become a huge letterboxed box). */
 .md-video video { display: block; width: auto; max-width: 100%; max-height: 70vh; margin: 0 auto; background: #000; }
 .md-pdf object { border: 1px solid #333; background: #fff; }

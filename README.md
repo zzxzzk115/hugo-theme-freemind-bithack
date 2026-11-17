@@ -6,7 +6,7 @@ A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithac
 
 ![screenshot](images/screenshot.png)
 
-**Features**: multilingual with language switcher and a browser-language prompt · instant search (`/` or Ctrl+K) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
+**Features**: multilingual with language switcher and a browser-language prompt · instant search (`/` or Ctrl+K) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / netease / details / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
 
 Dark only, on purpose — it is the theme's identity.
 
@@ -108,6 +108,8 @@ title = { en = "Growing Up", zh = "日渐成熟" }
 - `{{< badge "New" "tip" >}}`：徽章
 - `{{< icon folder >}}`：行内 Font Awesome 4 图标
 - `{{< video src="/a.mp4" poster="/a.jpg" >}}`、`{{< pdf "/paper.pdf" >}}`、`{{< bilibili BV1554y1D7a1 >}}`、Hugo 自带的 `{{< youtube id >}}`
+- `{{< netease 1847289377 >}}`：网易云音乐外链播放器（`type="album"` / `"playlist"` 播放专辑、歌单；歌手页不能外链，有版权限制的歌曲在外链里放不了）
+- `{{< details "标题" >}} …Markdown… {{< /details >}}`：可折叠区块（`open="true"` 默认展开）
 - `{{< embed src="/GameSrc/CatMarioGB/" ratio="4:3" >}}`：iframe，可嵌网页游戏
 - `{{< gallery >}}` 每行一个图片路径 `{{< /gallery >}}`：轮播图
 - `{{< friend name="…" url="…" desc="…" avatar="…" tags="标签1, 标签2" >}}`：友链卡片（连续的卡片排成等大的两列网格，`tags` 为逗号分隔的标签）
