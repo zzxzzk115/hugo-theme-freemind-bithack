@@ -1,6 +1,10 @@
 <div class="slogan">
   {{- if site.Params.showSlogan }}
+  {{- with site.Params.sloganIcon }}
+  <img class="slogan-icon blink-slow nofancybox" src="{{ . | relURL }}" alt="">
+  {{- else }}
   {{- if site.Params.showHeart }}<i class="fa fa-heart blink-slow"></i>{{ end }}
+  {{- end }}
   {{ site.Params.slogan }}
   {{- end }}
 </div>

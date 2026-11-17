@@ -44,6 +44,7 @@ hugo server -s exampleSite --themesDir ../..
 | RSS | `rss.xml` + `atom.xml`（每种语言各一份） |
 | 时间线 | 侧边栏 `timeline` 挂件，按年份统计并跳到归档对应年份 |
 | 头像 | `params.logo`（首页标题左侧图片）、`params.favicon` |
+| 标语图标 | `params.sloganIcon`：标语前闪烁的小图，替代默认的爱心 |
 | 代码高亮 | Hugo 内置 Chroma，配色沿用原主题 |
 | 数学公式 | `$…$` / `$$…$$`，构建时 KaTeX 渲染（默认 MathML，无需 JS/CSS） |
 | Mermaid | ` ```mermaid ` 代码块，仅在用到的页面加载 mermaid |

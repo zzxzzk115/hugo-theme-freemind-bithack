@@ -29,6 +29,8 @@
   slogan = "TALK IS CHEAP, SHOW ME THE CODE."
   showSlogan = true
   showHeart = true
+  # Image shown (blinking) before the slogan instead of the heart, e.g. "favicon.png".
+  sloganIcon = ""
   dateFormat = "2006-01-02"
   favicon = "favicon.png"
   # Image left of the home page title (the original theme used favicon.png).
