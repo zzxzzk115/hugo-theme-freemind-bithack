@@ -51,6 +51,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 代码块：[Prism.js](https://prismjs.com) 官方插件（行号、语言标签、复制、行高亮）；单行不显示行号；只在有代码的页面加载 | `prismCDN`；单块 ```` ```go {linenos=false hl_lines="2-3"} ```` |
 | | 纯享阅读：单栏、易读字体、柔和配色（按 R 切换，Esc 退出，记住选择） | 文章页右下角按钮 |
 | | 字数、阅读时间、更新日期、原创标记、阅读进度条 | `lastmod`、`original: true` |
+| | 摘要说明：`description` 用于 meta 标签和链接提示，默认不在正文显示（文章开头通常就是同一句话） | 单篇 `showDescription: true` 在正文顶部显示为提示框 |
 | | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false` |
 | | 上一篇 / 下一篇（显示标题，全站按时间） | |
 | | 相关文章（各语言结果一致：按标签/分类的统一键计分） | `relatedPosts`；跨语言的标签对应写在站点 `data/terms.toml` |
