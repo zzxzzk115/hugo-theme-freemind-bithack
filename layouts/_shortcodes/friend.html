@@ -1,6 +1,7 @@
 {{- /*
-  Friend link card.
-  {{< friend name="Ringotc" url="https://ringotc.github.io/" desc="数据科学方向" avatar="" >}}
+  Friend link card. Consecutive cards form a grid of equal-size cards.
+  {{< friend name="Ringotc" url="https://ringotc.github.io/" desc="Data science" avatar="" tags="Tencent, WeChat" >}}
+  tags: comma-separated labels shown as chips.
   Without an avatar (or if it fails to load) a pixel default avatar of the same size is shown.
 */ -}}
 <a class="friend-card" href="{{ .Get "url" }}" target="_blank" rel="noopener">
@@ -13,6 +14,13 @@
     <img src="{{ . }}" alt="" class="nofancybox" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
     {{- end }}
   </span>
-  <span class="friend-name">{{ .Get "name" }}</span>
-  {{- with .Get "desc" }}<span class="friend-desc">{{ . }}</span>{{ end }}
+  <span class="friend-info">
+    <span class="friend-name">{{ .Get "name" }}</span>
+    {{- with .Get "desc" }}<span class="friend-desc" title="{{ . }}">{{ . }}</span>{{ end }}
+    {{- with .Get "tags" }}
+    <span class="friend-tags">
+      {{- range split . "," }}{{ with strings.TrimSpace . }}<span class="friend-tag">{{ . }}</span>{{ end }}{{ end -}}
+    </span>
+    {{- end }}
+  </span>
 </a>

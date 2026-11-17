@@ -109,7 +109,7 @@ title = { en = "Growing Up", zh = "日渐成熟" }
 - `{{< video src="/a.mp4" poster="/a.jpg" >}}`、`{{< pdf "/paper.pdf" >}}`、`{{< bilibili BV1554y1D7a1 >}}`、Hugo 自带的 `{{< youtube id >}}`
 - `{{< embed src="/GameSrc/CatMarioGB/" ratio="4:3" >}}`：iframe，可嵌网页游戏
 - `{{< gallery >}}` 每行一个图片路径 `{{< /gallery >}}`：轮播图
-- `{{< friend name="…" url="…" desc="…" avatar="…" >}}`：友链卡片
+- `{{< friend name="…" url="…" desc="…" avatar="…" tags="标签1, 标签2" >}}`：友链卡片（连续的卡片排成等大的两列网格，`tags` 为逗号分隔的标签）
 
 ### 扩展
 

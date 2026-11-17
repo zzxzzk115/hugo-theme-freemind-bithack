@@ -25,8 +25,9 @@
           {{- with $m.Params.icon }}<i class="{{ . }}"></i>{{ end }}{{ $m.Name }} <b class="caret"></b>
         </a>
         <ul class="dropdown-menu" role="menu">
-          <li><a href="{{ partial "func/url.html" $m.URL }}">{{ $m.Name }}</a></li>
-          <li class="divider"></li>
+          {{- /* The parent's own page, for touch screens where tapping the parent only opens the menu. */}}
+          <li class="dropdown-self"><a href="{{ partial "func/url.html" $m.URL }}">{{ $m.Name }}</a></li>
+          <li class="divider dropdown-self"></li>
           {{- range $m.Children }}
           <li>{{ partial "inline/nav-link.html" . }}</li>
           {{- end }}

@@ -6,6 +6,8 @@
 
 /* Bootstrap JS replacements: dropdown opens on hover (desktop) or .open (touch) */
 @media (min-width: 768px) { .navbar .dropdown:hover > .dropdown-menu { display: block; } }
+/* With a mouse the parent link itself is clickable, so its repeat at the top of the menu is redundant. */
+@media (min-width: 768px) and (hover: hover) { .navbar .dropdown-menu > .dropdown-self { display: none; } }
 .navbar { transition: opacity .4s; }
 .navbar.faded { opacity: .2; }
 
@@ -148,7 +150,7 @@ a.post-nav-item:hover { border-color: #2bbc8a; }
 .navbar a:hover, .dropdown-menu a:hover, .breadcrumbs a:hover, .post-nav-item:hover, .share-links a:hover,
 .edit-link:hover, .related-posts a:hover, .listing-item a:hover, .title a:hover, .entry .more:hover,
 .author-card a:hover, .timeline a:hover, #TableOfContents a:hover, .series a:hover, .search-result-list a:hover,
-.friend-card:hover, .meta-widget a:hover, .widget a:hover, .blogroll a:hover, .pagination a:hover,
+.meta-widget a:hover, .widget a:hover, .blogroll a:hover, .pagination a:hover,
 .article-footer-copyright a:hover, footer a:hover, .mypage .headerlink:hover, .md-pdf-link:hover,
 #local-search-result a:hover, .toc-article a:hover { background: transparent !important; }
 .navbar .nav > li > a:hover, .dropdown-menu > li > a:hover { color: #fff !important; }
@@ -156,8 +158,8 @@ a.post-nav-item:hover { border-color: #2bbc8a; }
 .author-card a:hover, .author-card a:hover *, .timeline a:hover, #TableOfContents a:hover, .series a:hover,
 .meta-widget a:hover, .widget a:hover, .widget a:hover i, .blogroll a:hover, .article-footer-copyright a:hover, footer a:hover,
 .toc-article a:hover, .md-pdf-link:hover { color: #fff !important; text-decoration: underline; }
-.post-nav-item:hover .post-nav-title, .search-result-list a:hover .search-result-title,
-.friend-card:hover .friend-name { color: #fff !important; }
+.post-nav-item:hover .post-nav-title, .search-result-list a:hover .search-result-title { color: #fff !important; }
+
 /* Count superscript: raise it visually without growing the line box, so chips with and
    without a count line up. */
 .tag_box a span { vertical-align: baseline; position: relative; top: -.45em; line-height: 0; margin-left: 2px; }

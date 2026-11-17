@@ -20,13 +20,29 @@ math[display="block"] { font-size: 1.15em; }
 .embed-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
 /* {{< friend >}} */
-.friend-card { display: inline-flex; align-items: center; gap: 8px; margin: 6px 8px 6px 0; padding: 8px 14px; border: 1px solid #333; border-radius: 4px; background: #111; }
-.friend-card:hover { border-color: #0f0; text-decoration: none; }
-.friend-avatar { position: relative; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 50%; overflow: hidden; }
-.friend-avatar svg, .friend-avatar img { position: absolute; top: 0; left: 0; width: 32px !important; height: 32px; margin: 0 !important; display: block; }
+/* Cards in one paragraph form a two-column grid; every card has the same size. */
+p:has(> .friend-card) { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 12px 0; }
+@media (max-width: 767px) { p:has(> .friend-card) { grid-template-columns: minmax(0, 1fr); } }
+.friend-card { display: flex; align-items: center; gap: 14px; box-sizing: border-box; height: 112px; margin: 0; padding: 12px 16px; overflow: hidden;
+  border: 1px solid #333; border-radius: 4px; background: #111; }
+p:not(:has(> .friend-card)) > .friend-card, :not(p) > .friend-card { display: inline-flex; width: 340px; max-width: 100%; margin: 6px 8px 6px 0; vertical-align: top; }
+/* Hover: accent border and a slightly lighter card; text keeps its own colours (overrides the
+   theme's inverted link hover, which would turn the card's text black). */
+a.friend-card { transition: border-color .15s, background-color .15s; }
+a.friend-card:hover, .mypage a.friend-card:hover { border-color: #2bbc8a; background: #161616 !important; text-decoration: none; }
+.mypage a.friend-card:hover .friend-name, a.friend-card:hover .friend-name { color: #2bbc8a !important; }
+.mypage a.friend-card:hover .friend-desc, a.friend-card:hover .friend-desc { color: #aaa !important; }
+.mypage a.friend-card:hover .friend-tag, a.friend-card:hover .friend-tag { color: #2bbc8a !important; }
+.friend-avatar { position: relative; flex: 0 0 64px; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; }
+.friend-avatar svg, .friend-avatar img { position: absolute; top: 0; left: 0; width: 64px !important; height: 64px; margin: 0 !important; display: block; }
 .friend-avatar img { object-fit: cover; background: #1d1d1d; }
 .friend-avatar-default { image-rendering: pixelated; }
+.friend-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.friend-name, .friend-desc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.friend-name { font-weight: bold; color: #ddd; }
 .friend-desc { color: #888; font-size: 90%; }
+.friend-tags { display: flex; flex-wrap: wrap; gap: 4px; max-height: 42px; overflow: hidden; }
+.friend-tag { font-size: 80%; line-height: 18px; padding: 0 6px; border: 1px solid #2bbc8a; border-radius: 3px; color: #2bbc8a; white-space: nowrap; }
 
 .mermaid { background: transparent; border: 0; }
 img { max-width: 100%; }
