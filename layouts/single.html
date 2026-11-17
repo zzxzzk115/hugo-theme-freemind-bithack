@@ -1,5 +1,7 @@
 {{ define "main" }}
 {{- $isPost := partial "func/is-article.html" . }}
+{{- if $isPost }}<div id="reading-progress" aria-hidden="true"></div>{{ end }}
+{{ partial "breadcrumbs.html" . }}
 {{ partial "post/title.html" (dict "item" . "index" false) }}
 
 <div class="row {{ if $isPost }}post{{ else }}page{{ end }}">
@@ -9,16 +11,23 @@
   {{- else }}
   <div class="col-md-12">
   {{- end }}
-    <div class="mypage">
+    <article class="mypage">
       {{- with .Description }}
       <div class="alert alert-success description"><i class="fa fa-info-circle"></i> {{ . | markdownify }}</div>
       {{- end }}
       {{ .Content }}
       {{- if and $isPost site.Params.copyright.enable }}{{ partial "post/copyright.html" . }}{{ end }}
-    </div>
+    </article>
 
     {{- if $isPost }}
-    <div class="text-center">{{ partial "post/pagination.html" . }}</div>
+    <div class="post-footer">
+      {{ partial "post/share.html" . }}
+      {{- with partial "func/edit-url.html" . }}
+      <a class="edit-link" href="{{ . }}" target="_blank" rel="noopener"><i class="fa fa-github"></i> {{ T "edit_page" }}</a>
+      {{- end }}
+    </div>
+    {{ partial "post/pagination.html" . }}
+    {{ partial "post/related.html" . }}
     {{- end }}
 
     {{- if and (ne .Params.comments false) (or $isPost .Params.comments) }}

@@ -1,0 +1,8 @@
+{{- /* Search index for theme.js: every page of this language except `search: false`. */ -}}
+{{- $items := slice }}
+{{- range where site.RegularPages "Params.search" "!=" false }}
+  {{- $tags := slice }}{{ range .GetTerms "tags" }}{{ $tags = $tags | append .LinkTitle }}{{ end }}
+  {{- range .GetTerms "categories" }}{{ $tags = $tags | append .LinkTitle }}{{ end }}
+  {{- $items = $items | append (dict "title" .Title "url" .RelPermalink "date" (.Date.Format "2006-01-02") "tags" $tags "content" (.Plain | replaceRE `\s+` " " | strings.TrimSpace)) }}
+{{- end }}
+{{- $items | jsonify }}

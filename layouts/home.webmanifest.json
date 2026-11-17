@@ -1,0 +1,13 @@
+{{- $icon := site.Params.favicon | default site.Params.logo | default "favicon.png" }}
+{{- dict
+  "name" site.Title
+  "short_name" (site.Params.shortName | default site.Title)
+  "description" (site.Params.description | default "")
+  "lang" (site.Language.Locale | default site.Language.Lang)
+  "start_url" .RelPermalink
+  "scope" .RelPermalink
+  "display" "standalone"
+  "background_color" "#000000"
+  "theme_color" "#000000"
+  "icons" (slice (dict "src" ($icon | relURL) "sizes" "any" "purpose" "any"))
+| jsonify (dict "indent" "  ") }}

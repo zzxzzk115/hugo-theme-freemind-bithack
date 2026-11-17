@@ -1,0 +1,17 @@
+{{- $n := site.Params.relatedPosts | default 5 }}
+{{- if gt $n 0 }}
+  {{- $related := slice }}
+  {{- range site.RegularPages.Related . }}
+    {{- if and (partial "func/is-article.html" .) (lt (len $related) $n) }}{{ $related = $related | append . }}{{ end }}
+  {{- end }}
+  {{- with $related }}
+  <section class="related-posts">
+    <h4><i class="fa fa-link"></i> {{ T "related" }}</h4>
+    <ul class="list-unstyled">
+      {{- range . }}
+      <li><span class="date_class">{{ .Date.Format "2006-01-02" }}</span> &raquo; <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      {{- end }}
+    </ul>
+  </section>
+  {{- end }}
+{{- end }}

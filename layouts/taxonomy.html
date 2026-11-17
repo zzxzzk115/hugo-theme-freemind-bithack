@@ -1,4 +1,5 @@
 {{ define "main" }}
+{{ partial "breadcrumbs.html" . }}
 {{- $icon := cond (eq .Data.Plural "tags") "fa fa-tags" "fa fa-folder" }}
 <div class="page-header">
   <h1><i class="{{ $icon }}"></i> {{ T .Data.Plural | default .Title }}</h1>

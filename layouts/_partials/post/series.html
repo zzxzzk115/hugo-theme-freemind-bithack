@@ -1,0 +1,22 @@
+{{- /*
+  Series navigation: articles that share the current page's sub-section
+  (e.g. game-dev/retro/gameboy/gbdk/*), oldest first. Top-level sections are not a series.
+  Turn off per page with `series: false`, or site-wide with params.seriesNav = false.
+*/ -}}
+{{- $sec := .CurrentSection }}
+{{- if and (ne .Params.series false) (ne site.Params.seriesNav false) $sec (not $sec.IsHome) (ne $sec.Parent.Kind "home") }}
+  {{- $pages := where (where $sec.RegularPages "Params.article" "!=" false) "Draft" false }}
+  {{- if gt (len $pages) 1 }}
+  <div class="meta-widget series">
+    <a data-toggle="collapse" data-target="#series" title="{{ T "series" }}"><i class="fa fa-list-ol"></i></a>
+    <div id="series" class="collapse in">
+      <a class="series-title" href="{{ $sec.RelPermalink }}">{{ $sec.Title }}</a>
+      <ol>
+        {{- range $pages.ByDate }}
+        <li{{ if eq .RelPermalink $.RelPermalink }} class="current"{{ end }}><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{- end }}
+      </ol>
+    </div>
+  </div>
+  {{- end }}
+{{- end }}

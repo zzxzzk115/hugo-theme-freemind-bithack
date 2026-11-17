@@ -1,0 +1,9 @@
+{{- /*
+  ```chart
+  { "type": "bar", "data": { "labels": ["A","B"], "datasets": [{ "label": "n", "data": [1,2] }] } }
+  ```
+  The JSON is a Chart.js config (https://www.chartjs.org/docs/latest/). Chart.js loads only on pages that use it.
+*/ -}}
+{{- $cfg := transform.Unmarshal (dict "format" "json") .Inner -}}
+<div class="md-chart"><canvas data-chart="{{ $cfg | jsonify }}" role="img" aria-label="{{ .Attributes.title | default "chart" }}"></canvas></div>
+{{- .Page.Store.Set "hasChart" true }}

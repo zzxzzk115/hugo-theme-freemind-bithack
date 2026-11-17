@@ -1,0 +1,13 @@
+{{- /*
+  "Edit this page" URL, or "" when params.editURL is not set.
+  params.editURL is the URL of the repository's content root's parent, e.g.
+  "https://github.com/me/blog/edit/main/" — the page's path from "content/" is appended.
+*/ -}}
+{{- $url := "" }}
+{{- with site.Params.editURL }}
+  {{- with $.File }}
+    {{- $rel := replaceRE `^.*?[\\/](content[\\/].*)$` "$1" .Filename }}
+    {{- $url = printf "%s/%s" (strings.TrimSuffix "/" site.Params.editURL) (replace $rel "\\" "/") }}
+  {{- end }}
+{{- end }}
+{{- return $url }}

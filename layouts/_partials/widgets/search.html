@@ -1,6 +1,7 @@
 <div id="site_search">
-  <div class="form-group">
-    <input type="text" id="local-search-input" name="q" placeholder="{{ T "search" }}" class="st-search-input st-default-search-input form-control">
+  <div class="form-group search-box">
+    <i class="fa fa-search"></i>
+    <input type="search" id="local-search-input" name="q" autocomplete="off" placeholder="{{ T "search" }}  ( / )" aria-label="{{ T "search" }}" class="st-search-input form-control">
   </div>
-  <div id="local-search-result"></div>
+  <div id="local-search-result" class="search-results"></div>
 </div>

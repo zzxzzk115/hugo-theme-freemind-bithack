@@ -1,0 +1,35 @@
+{{- /*
+  Author card.
+  [params.authorCard]
+    avatar = "avatar.png"          # defaults to params.logo
+    name = "Lazy_V"                # defaults to params.author
+    bio = "…"                      # per language: [languages.xx.params.authorCard] bio = "…"
+  [[params.social]]                # icon links; `copy` copies text instead of opening a link
+    name = "WeChat"  icon = "fa fa-weixin"  copy = "my-wechat-id"
+    name = "GitHub"  icon = "fa fa-github"  url = "https://github.com/me"
+*/ -}}
+{{- $c := site.Params.authorCard | default dict }}
+{{- $articles := partial "func/articles.html" . }}
+<div class="widget author-card">
+  {{- with $c.avatar | default site.Params.logo }}
+  <img class="author-avatar nofancybox" src="{{ . | relURL }}" alt="{{ $c.name | default site.Params.author }}" width="96" height="96">
+  {{- end }}
+  <div class="author-name">{{ $c.name | default site.Params.author }}</div>
+  {{- with $c.bio }}<p class="author-bio">{{ . | markdownify }}</p>{{ end }}
+  <ul class="author-stats list-unstyled">
+    <li><a href="{{ with site.GetPage "/archives" }}{{ .RelPermalink }}{{ end }}"><b>{{ len $articles }}</b><span>{{ T "posts" }}</span></a></li>
+    <li><a href="{{ with site.GetPage "/categories" }}{{ .RelPermalink }}{{ end }}"><b>{{ len site.Taxonomies.categories }}</b><span>{{ T "categories" }}</span></a></li>
+    <li><a href="{{ with site.GetPage "/tags" }}{{ .RelPermalink }}{{ end }}"><b>{{ len site.Taxonomies.tags }}</b><span>{{ T "tags" }}</span></a></li>
+  </ul>
+  {{- with site.Params.social }}
+  <div class="author-social">
+    {{- range . }}
+      {{- if .copy }}
+    <a href="#" data-copy="{{ .copy }}" data-copied="{{ T "copied_value" (dict "name" .name "value" .copy) }}" title="{{ .name }}: {{ .copy }}"><i class="{{ .icon }}"></i></a>
+      {{- else }}
+    <a href="{{ .url | safeURL }}" title="{{ .name }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener me"{{ end }}><i class="{{ .icon }}"></i></a>
+      {{- end }}
+    {{- end }}
+  </div>
+  {{- end }}
+</div>

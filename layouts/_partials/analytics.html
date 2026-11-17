@@ -1,11 +1,33 @@
+{{- /*
+  Analytics, production builds only. Any combination of:
+  [params.analytics]
+    googleId = "G-XXXX"
+    umami = { src = "https://cloud.umami.is/script.js", id = "…" }
+    plausible = { domain = "example.com", src = "https://plausible.io/js/script.js" }
+    goatcounter = "mysite"            # mysite.goatcounter.com
+    cloudflare = "token"
+    baidu = "hm id"
+*/ -}}
 {{- if hugo.IsProduction }}
-{{- with site.Params.analytics.googleId }}
+{{- with site.Params.analytics }}
+  {{- with .googleId }}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', '{{ . }}');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date());gtag("config",{{ . }});</script>
+  {{- end }}
+  {{- with .umami }}
+<script defer src="{{ .src | default "https://cloud.umami.is/script.js" }}" data-website-id="{{ .id }}"></script>
+  {{- end }}
+  {{- with .plausible }}
+<script defer data-domain="{{ .domain }}" src="{{ .src | default "https://plausible.io/js/script.js" }}"></script>
+  {{- end }}
+  {{- with .goatcounter }}
+<script data-goatcounter="https://{{ . }}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  {{- end }}
+  {{- with .cloudflare }}
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ . }}"}'></script>
+  {{- end }}
+  {{- with .baidu }}
+<script>var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?{{ . }}";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s)})();</script>
+  {{- end }}
 {{- end }}
 {{- end }}

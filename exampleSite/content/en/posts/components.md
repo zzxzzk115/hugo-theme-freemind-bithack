@@ -69,6 +69,57 @@ graph LR
 public static T Add<T>(T a, T b) where T : INumber<T> => a + b;
 ```
 
+## Inline extras
+
+==Marked==, ++inserted++, H~2~O, x^2^, a badge {{< badge "New" "tip" >}}, an emoji :rocket:, and a footnote.[^1]
+
+[^1]: Footnotes work out of the box.
+
+## Chart
+
+```chart
+{ "type": "bar",
+  "data": { "labels": ["2020", "2021", "2022"],
+            "datasets": [{ "label": "Posts", "data": [21, 16, 17], "backgroundColor": "#2bbc8a" }] } }
+```
+
+## Long code (collapsed)
+
+```text
+line 1
+line 2
+line 3
+line 4
+line 5
+line 6
+line 7
+line 8
+line 9
+line 10
+line 11
+line 12
+line 13
+line 14
+line 15
+line 16
+line 17
+line 18
+line 19
+line 20
+line 21
+line 22
+line 23
+line 24
+line 25
+line 26
+line 27
+line 28
+line 29
+line 30
+line 31
+line 32
+```
+
 ## Friend links
 
 {{< friend name="Hugo" url="https://gohugo.io/" desc="The world's fastest framework for building websites" >}}

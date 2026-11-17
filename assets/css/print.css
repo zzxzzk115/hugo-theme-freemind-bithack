@@ -1,0 +1,17 @@
+/* Print: content only, black on white, long code blocks expanded, link targets shown. */
+@media print {
+  #main-nav, #sidebar, #side_meta, #top_meta, #gotop, #reading-progress, .breadcrumbs, .post-footer,
+  .post-nav, .related-posts, .comments, .code-toolbar, .code-expand, .headerlink, footer, .slogan,
+  .entry .more, .pagination, .lightbox, #theme-toast { display: none !important; }
+  html, body { background: #fff !important; color: #000 !important; }
+  .container, .col-md-9 { width: 100% !important; max-width: none !important; padding: 0 !important; }
+  .mypage, .mypage p, .mypage li, .mypage h1, .mypage h2, .mypage h3, .mypage h4, .page-header h1, .mypage strong { color: #000 !important; }
+  .mypage a { color: #000 !important; text-decoration: underline; }
+  .mypage a[href^="http"]:after { content: " (" attr(href) ")"; font-size: 80%; word-break: break-all; }
+  .code-block.collapsed .highlight { max-height: none !important; }
+  .code-block.collapsed:after { display: none; }
+  pre, .highlight, .code-block { background: #f5f5f5 !important; color: #000 !important; border: 1px solid #ccc !important; white-space: pre-wrap; page-break-inside: avoid; }
+  .chroma span { color: #000 !important; }
+  img, figure { max-width: 100% !important; page-break-inside: avoid; }
+  h1, h2, h3 { page-break-after: avoid; }
+}

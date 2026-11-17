@@ -1,12 +1,20 @@
+{{- $fmt := site.Params.dateFormat | default "2006-01-02" }}
 <div class="col-md-3" id="post_meta">
-  <div class="meta-widget">
-    <i class="fa fa-clock-o"></i>
-    {{ .Date.Format (site.Params.dateFormat | default "2006-01-02") }}
+  <div class="meta-widget post-info">
+    {{- with .Params.author | default site.Params.author }}
+    <div><i class="fa fa-user"></i> {{ . }}{{ if $.Params.original }} <span class="label label-success original-label">{{ T "original" }}</span>{{ end }}</div>
+    {{- end }}
+    <div><i class="fa fa-calendar"></i> <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format $fmt }}</time></div>
+    {{- if gt (.Lastmod.Sub .Date).Hours 24 }}
+    <div title="{{ T "updated" }}"><i class="fa fa-pencil"></i> {{ T "updated" }} <time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Lastmod.Format $fmt }}</time></div>
+    {{- end }}
+    <div><i class="fa fa-clock-o"></i> {{ T "reading_time" .ReadingTime }} · {{ T "word_count" .WordCount }}</div>
+    {{- with partial "pageviews.html" (dict "page" . "kind" "page") }}<div>{{ . }}</div>{{ end }}
   </div>
 
   {{- with .GetTerms "categories" }}
   <div class="meta-widget">
-    <a data-toggle="collapse" data-target="#categorys"><i class="fa fa-folder"></i></a>
+    <a data-toggle="collapse" data-target="#categorys" title="{{ T "categories" }}"><i class="fa fa-folder"></i></a>
     <ul id="categorys" class="tag_box list-unstyled collapse in">
       <li>{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}<span>{{ len .Pages }}</span></a> {{ end }}</li>
     </ul>
@@ -15,18 +23,21 @@
 
   {{- with .GetTerms "tags" }}
   <div class="meta-widget">
-    <a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>
+    <a data-toggle="collapse" data-target="#tags" title="{{ T "tags" }}"><i class="fa fa-tags"></i></a>
     <ul id="tags" class="tag_box list-unstyled collapse in">
       {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}<span>{{ len .Pages }}</span></a></li> {{ end }}
     </ul>
   </div>
   {{- end }}
 
-  {{- if and (ne .Params.toc false) (gt (len .Fragments.Headings) 0) (or .Params.toc site.Params.tocDefault) }}
-  <div class="meta-widget">
-    <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+  {{ partial "post/series.html" . }}
+
+  {{- $tocOn := .Params.toc | default (site.Params.tocDefault | default true) }}
+  {{- if and $tocOn (ge (len .Fragments.Headings) 1) (ne .TableOfContents "") }}
+  <div class="meta-widget toc-widget">
+    <a data-toggle="collapse" data-target="#toc" title="{{ T "toc" }}"><i class="fa fa-bars"></i></a>
     <div id="toc" class="toc collapse in">
-      <span class="toc-title">Contents</span>
+      <span class="toc-title">{{ T "toc" }}</span>
       <div class="toc-article">{{ .TableOfContents }}</div>
     </div>
   </div>

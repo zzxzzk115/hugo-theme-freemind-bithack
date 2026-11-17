@@ -6,6 +6,7 @@ defaultContentLanguage = "en"
 hasCJKLanguage = true
 summaryLength = 150
 disablePathToLower = true
+enableEmoji = true
 
 [languages.en]
   contentDir = "content/en"
@@ -23,17 +24,42 @@ disablePathToLower = true
 
 # --- Hugo does not merge these from a theme; copy them into your site. ---
 [outputs]
-  home = ["html", "rss", "atom", "searchxml"]
+  home = ["html", "rss", "atom", "jsonfeed", "searchindex", "webmanifest"]
 [pagination]
   pagerSize = 10
+[related]
+  includeNewer = true
+  threshold = 60
+  toLower = true
+  [[related.indices]]
+    name = "tags"
+    weight = 100
+  [[related.indices]]
+    name = "categories"
+    weight = 60
 [markup.highlight]
   noClasses = false
   lineNos = true
   lineNumbersInTable = true
 [markup.goldmark.renderer]
   unsafe = true
-[markup.goldmark.parser.attribute]
-  block = true
+[markup.goldmark.parser]
+  wrapStandAloneImageWithinParagraph = false
+  [markup.goldmark.parser.attribute]
+    block = true
+[markup.goldmark.extensions]
+  strikethrough = false
+[markup.goldmark.extensions.extras]
+  [markup.goldmark.extensions.extras.delete]
+    enable = true
+  [markup.goldmark.extensions.extras.insert]
+    enable = true
+  [markup.goldmark.extensions.extras.mark]
+    enable = true
+  [markup.goldmark.extensions.extras.subscript]
+    enable = true
+  [markup.goldmark.extensions.extras.superscript]
+    enable = true
 [markup.goldmark.extensions.passthrough]
   enable = true
   [markup.goldmark.extensions.passthrough.delimiters]
@@ -75,6 +101,17 @@ disablePathToLower = true
 [params]
   author = "Your Name"
   mainSections = ["posts"]
+  # editURL = "https://github.com/you/blog/edit/main/"
+  [params.authorCard]
+    bio = "A short bio shown in the sidebar."
+  [[params.social]]
+    name = "GitHub"
+    icon = "fa fa-github"
+    url = "https://github.com/"
+  [[params.social]]
+    name = "WeChat"
+    icon = "fa fa-weixin"
+    copy = "my-wechat-id"
   [[params.links]]
     title = "GitHub"
     url = "https://github.com/"

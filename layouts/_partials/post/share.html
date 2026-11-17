@@ -1,0 +1,24 @@
+{{- /* Share links. params.share = ["x", "facebook", "linkedin", "reddit", "telegram", "weibo", "email", "copy"] */ -}}
+{{- $list := site.Params.share | default (slice "x" "linkedin" "reddit" "telegram" "weibo" "email" "copy") }}
+{{- if $list }}
+{{- $u := .Permalink | urlquery }}{{ $t := .Title | urlquery }}
+{{- $defs := dict
+  "x"        (dict "icon" "fa fa-twitter" "name" "X" "href" (printf "https://twitter.com/intent/tweet?url=%s&text=%s" $u $t))
+  "facebook" (dict "icon" "fa fa-facebook" "name" "Facebook" "href" (printf "https://www.facebook.com/sharer/sharer.php?u=%s" $u))
+  "linkedin" (dict "icon" "fa fa-linkedin" "name" "LinkedIn" "href" (printf "https://www.linkedin.com/sharing/share-offsite/?url=%s" $u))
+  "reddit"   (dict "icon" "fa fa-reddit-alien" "name" "Reddit" "href" (printf "https://www.reddit.com/submit?url=%s&title=%s" $u $t))
+  "telegram" (dict "icon" "fa fa-telegram" "name" "Telegram" "href" (printf "https://t.me/share/url?url=%s&text=%s" $u $t))
+  "weibo"    (dict "icon" "fa fa-weibo" "name" "Weibo" "href" (printf "https://service.weibo.com/share/share.php?url=%s&title=%s" $u $t))
+  "email"    (dict "icon" "fa fa-envelope" "name" "Email" "href" (printf "mailto:?subject=%s&body=%s" $t $u))
+}}
+<div class="share-links">
+  <span class="share-label"><i class="fa fa-share-alt"></i> {{ T "share" }}</span>
+  {{- range $list }}
+    {{- if eq . "copy" }}
+    <a href="{{ $.Permalink }}" data-copy="{{ $.Permalink }}" data-copied="{{ T "link_copied" }}" title="{{ T "copy_link" }}"><i class="fa fa-link"></i></a>
+    {{- else }}{{ with index $defs . }}
+    <a href="{{ .href | safeURL }}" target="_blank" rel="noopener" title="{{ .name }}"><i class="{{ .icon }}"></i></a>
+    {{- end }}{{ end }}
+  {{- end }}
+</div>
+{{- end }}

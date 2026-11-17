@@ -18,3 +18,26 @@ alert_caution: Caution
 sticky: Pinned
 subsections: Sections
 timeline: Timeline
+copy: Copy
+copied: Copied
+copy_failed: Copy failed
+expand: Expand
+collapse: Collapse
+no_results: No results
+toc: Contents
+updated: Updated
+reading_time: "{{ . }} min read"
+word_count: "{{ . }} words"
+original: Original
+series: Series
+related: Related posts
+share: Share
+copy_link: Copy link
+link_copied: Link copied
+edit_page: Edit this page on GitHub
+home: Home
+posts: Posts
+views: Views
+copied_value: "{{ .name }} copied: {{ .value }}"
+license_notice: "This post is licensed under <a href=\"{{ .url }}\" target=\"_blank\" rel=\"noopener\">{{ .license }}</a>."
+repost_notice: "Please credit <a href=\"{{ .url }}\">{{ .title }}</a> when reposting."

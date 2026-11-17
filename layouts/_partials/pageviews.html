@@ -1,0 +1,20 @@
+{{- /*
+  Page view counters. params.pageviews.provider = "busuanzi" | "vercount" | "" (off).
+  Called with (dict "page" . "kind" "page"|"site"); returns markup or "".
+*/ -}}
+{{- $p := site.Params.pageviews.provider | default "" }}
+{{- if and $p hugo.IsProduction }}
+  {{- if eq .kind "site" }}
+<span class="pv-site"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv">–</span></span>
+  {{- else }}
+<span class="pv-page"><i class="fa fa-eye"></i> {{ T "views" }} <span id="busuanzi_value_page_pv">–</span></span>
+  {{- end }}
+  {{- if not (.page.Store.Get "pvScript") }}
+    {{- .page.Store.Set "pvScript" true }}
+    {{- if eq $p "vercount" }}
+<script defer src="https://events.vercount.one/js"></script>
+    {{- else }}
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    {{- end }}
+  {{- end }}
+{{- end }}

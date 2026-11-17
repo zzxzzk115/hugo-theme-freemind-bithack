@@ -1,16 +1,26 @@
-{{- /* Prev = older post, Next = newer post (same as hexo). */ -}}
-{{- $prev := .PrevInSection }}
-{{- $next := .NextInSection }}
-<div class="pagination">
+{{- /* Site-wide prev (older) / next (newer) among all articles of this language, titles visible. */ -}}
+{{- $all := partial "func/articles.html" . }}
+{{- $prev := "" }}{{ $next := "" }}{{ $found := false }}
+{{- range $i, $p := $all }}
+  {{- if eq $p.RelPermalink $.RelPermalink }}
+    {{- $found = true }}
+    {{- if gt $i 0 }}{{ $next = index $all (sub $i 1) }}{{ end }}
+    {{- if lt (add $i 1) (len $all) }}{{ $prev = index $all (add $i 1) }}{{ end }}
+  {{- end }}
+{{- end }}
+{{- if $found }}
+<nav class="post-nav" aria-label="{{ T "prev" }} / {{ T "next" }}">
   {{- with $prev }}
-  <a href="{{ .RelPermalink }}" class="btn btn-default" title="{{ .Title }}"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev" }}</a>
-  {{- else }}
-  <a class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev" }}</a>
-  {{- end }}
-  <a href="{{ "/" | relURL }}" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+  <a class="post-nav-item prev" href="{{ .RelPermalink }}">
+    <span class="post-nav-label"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev" }}</span>
+    <span class="post-nav-title">{{ .Title }}</span>
+  </a>
+  {{- else }}<span class="post-nav-item prev disabled"></span>{{ end }}
   {{- with $next }}
-  <a href="{{ .RelPermalink }}" class="btn btn-default" title="{{ .Title }}">{{ T "next" }} <i class="fa fa-arrow-circle-o-right"></i></a>
-  {{- else }}
-  <a class="btn btn-default disabled">{{ T "next" }} <i class="fa fa-arrow-circle-o-right"></i></a>
-  {{- end }}
-</div>
+  <a class="post-nav-item next" href="{{ .RelPermalink }}">
+    <span class="post-nav-label">{{ T "next" }} <i class="fa fa-arrow-circle-o-right"></i></span>
+    <span class="post-nav-title">{{ .Title }}</span>
+  </a>
+  {{- else }}<span class="post-nav-item next disabled"></span>{{ end }}
+</nav>
+{{- end }}

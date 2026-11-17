@@ -14,47 +14,98 @@
   isPlainText = false
   rel = "alternate"
 
-# search.xml: same format hexo-generator-search produced, consumed by js/search.js
-[outputFormats.searchxml]
-  mediaType = "application/xml"
+# Search index for theme.js (home page only, one per language)
+[outputFormats.searchindex]
+  mediaType = "application/json"
   baseName = "search"
   isPlainText = true
   notAlternative = true
 
+# JSON Feed 1.1
+[mediaTypes."application/feed+json"]
+  suffixes = ["json"]
+[outputFormats.jsonfeed]
+  mediaType = "application/feed+json"
+  baseName = "feed"
+  isPlainText = true
+  rel = "alternate"
 
-# NOTE: Hugo does not merge [outputs], [pagination] or [markup] from a theme.
-# Copy them from exampleSite/hugo.toml (or the README) into your site config.
+# Web app manifest
+[outputFormats.webmanifest]
+  mediaType = "application/json"
+  baseName = "manifest"
+  isPlainText = true
+  notAlternative = true
+
+# NOTE: Hugo does not merge [outputs], [pagination], [markup] or [related] from a theme.
+# Copy them from exampleSite/hugo.toml into your site config.
 
 [params]
+  # ---- look -------------------------------------------------------------
   slogan = "TALK IS CHEAP, SHOW ME THE CODE."
   showSlogan = true
   showHeart = true
   # Image shown (blinking) before the slogan instead of the heart, e.g. "favicon.png".
   sloganIcon = ""
-  dateFormat = "2006-01-02"
   favicon = "favicon.png"
   # Image left of the home page title (the original theme used favicon.png).
   logo = "favicon.png"
-  fancybox = true
-  # Sidebar widgets, rendered in order from _partials/widgets/<name>.html.
-  # Add your own widget by creating layouts/_partials/widgets/<name>.html in the site.
-  widgets = ["search", "category", "tagcloud", "timeline", "recent_posts", "links"]
+  dateFormat = "2006-01-02"
+
+  # ---- sidebar ----------------------------------------------------------
+  # Rendered in order from _partials/widgets/<name>.html. Built in:
+  # author, search, category, tagcloud, timeline, recent_posts, links.
+  # Add your own by creating layouts/_partials/widgets/<name>.html in the site.
+  widgets = ["author", "search", "category", "tagcloud", "timeline", "recent_posts", "links"]
   tagcloudLimit = 20
   recentPostsLimit = 5
+
+  # ---- posts ------------------------------------------------------------
+  # Posts without <!--more--> show an automatic summary on the home page.
+  autoExcerpt = true
+  # Table of contents unless a post sets `toc: false`.
+  tocDefault = true
+  headingAnchors = true
+  # Code blocks longer than this start collapsed (0 = never). Per block: ```go {collapse=false}
+  codeMaxLines = 30
+  # Standalone images get a <figure> caption from their title or alt text.
+  imageCaptions = true
+  # "Series" box for posts in a sub-section (e.g. posts/tutorial/*). Per post: series: false
+  seriesNav = true
+  relatedPosts = 5
+  breadcrumbs = true
+  externalLinksNewTab = true
+  # "Edit this page" link: repository URL up to (not including) "content/", e.g.
+  # "https://github.com/me/blog/edit/main/"
+  editURL = ""
+  # Share buttons: x, facebook, linkedin, reddit, telegram, weibo, email, copy. [] hides them.
+  share = ["x", "linkedin", "reddit", "telegram", "weibo", "email", "copy"]
+
   # Math: "auto" renders only on pages with `math: true`; "always" everywhere; "never" off.
   math = "auto"
   # KaTeX output: "mathml" needs no CSS/fonts; "htmlAndMathml" loads katex.css from CDN.
   mathOutput = "mathml"
-  externalLinksNewTab = true
-  # Posts without <!--more--> show an automatic summary on the home page (like hexo-excerpt).
-  # Set to false to show the full post instead.
-  autoExcerpt = true
+
+  [params.feed]
+    limit = 20
+    # Full post content in RSS / Atom / JSON Feed (false = summaries only).
+    fullText = true
 
   [params.copyright]
     enable = true
     license = "CC BY-NC-SA 4.0"
-    licenseURL = "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"
+    licenseURL = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
 
   [params.comments]
     # "", "giscus" or "valine"
     provider = ""
+    # [params.comments.giscus]  repo, repoId, category, categoryId, mapping = "pathname",
+    #                           theme = "transparent_dark", lang (auto)
+
+  [params.pageviews]
+    # "", "busuanzi" or "vercount"
+    provider = ""
+
+  # [params.analytics]  googleId, umami = {src, id}, plausible = {domain, src}, goatcounter, cloudflare, baidu
+  # [params.authorCard] avatar, name, bio
+  # [[params.social]]   name, icon, url  — or `copy` to copy a value (e.g. a WeChat ID) instead of linking

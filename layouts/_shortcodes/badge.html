@@ -1,0 +1,10 @@
+{{- /*
+  Inline badge.
+  {{< badge "New" >}}  {{< badge text="Recommended" type="tip" >}}
+  type: tip | info | warning | danger | default
+*/ -}}
+{{- $text := .Get "text" | default (.Get 0) }}
+{{- $type := .Get "type" | default (.Get 1) | default "info" }}
+{{- $map := dict "tip" "success" "success" "success" "info" "info" "note" "info" "warning" "warning" "danger" "danger" "caution" "danger" "default" "default" }}
+<span class="label label-{{ index $map $type | default "info" }} md-badge">{{ $text }}</span>
+{{- /* chomp */ -}}

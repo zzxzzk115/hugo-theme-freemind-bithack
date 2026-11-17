@@ -1,0 +1,11 @@
+{{- /*
+  Embedded PDF with a download link.
+  {{< pdf src="/files/paper.pdf" height="800" >}}
+*/ -}}
+{{- $src := .Get "src" | default (.Get 0) | relURL }}
+<div class="md-pdf">
+  <object data="{{ $src }}" type="application/pdf" width="100%" height="{{ .Get "height" | default "720" }}">
+    <a href="{{ $src }}">{{ $src }}</a>
+  </object>
+  <a class="md-pdf-link" href="{{ $src }}" target="_blank" rel="noopener"><i class="fa fa-file-pdf-o"></i> PDF</a>
+</div>

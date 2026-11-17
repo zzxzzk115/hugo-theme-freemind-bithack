@@ -1,7 +1,21 @@
+{{- /*
+  Images: lazy loading, page-bundle / assets resolution, and a caption for standalone images.
+  A standalone image (alone in its paragraph) becomes <figure>; the caption is the title, else the alt text.
+  Needs markup.goldmark.parser.wrapStandAloneImageWithinParagraph = false.
+*/ -}}
 {{- $src := .Destination -}}
 {{- $u := urls.Parse $src -}}
+{{- $w := .Attributes.width }}{{ $h := .Attributes.height -}}
 {{- if not $u.IsAbs -}}
-  {{- with or (.PageInner.Resources.Get $u.Path) (resources.Get $u.Path) }}{{ $src = .RelPermalink }}{{ end -}}
+  {{- with or (.PageInner.Resources.Get $u.Path) (resources.Get $u.Path) }}
+    {{- $src = .RelPermalink }}
+    {{- if and (not $w) (in (slice "image/png" "image/jpeg" "image/gif" "image/webp") .MediaType.Type) }}{{ $w = .Width }}{{ $h = .Height }}{{ end }}
+  {{- end -}}
 {{- end -}}
-<img src="{{ $src }}" alt="{{ .PlainText }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy"{{ with .Attributes.class }} class="{{ . }}"{{ end }}{{ with .Attributes.width }} width="{{ . }}"{{ end }}>
-{{- /* chomp */ -}}
+{{- $img := printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async"%s%s%s>` $src (.PlainText | htmlEscape) (cond (ne .Title "") (printf ` title="%s"` (.Title | htmlEscape)) "") (cond (ne (string $w) "") (printf ` width="%v"` $w) "") (cond (ne (string $h) "") (printf ` height="%v"` $h) "") (cond (ne (string .Attributes.class) "") (printf ` class="%s"` .Attributes.class) "") -}}
+{{- $caption := .Title | default .PlainText -}}
+{{- if and .IsBlock (site.Params.imageCaptions | default true) $caption -}}
+<figure class="md-figure">{{ $img | safeHTML }}<figcaption>{{ $caption }}</figcaption></figure>
+{{- else -}}
+{{ $img | safeHTML }}
+{{- end -}}

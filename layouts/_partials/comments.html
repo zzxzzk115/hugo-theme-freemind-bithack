@@ -1,23 +1,42 @@
+{{- /*
+  Comments. params.comments.provider = "giscus" | "valine" | "" (off).
+  giscus uses a dark theme (params.comments.giscus.theme) and follows the page language.
+*/ -}}
 {{- $c := site.Params.comments }}
 {{- if eq $c.provider "giscus" }}
+{{- with $c.giscus }}
+{{- $lang := .lang | default (cond (hasPrefix site.Language.Lang "zh") "zh-CN" "en") }}
 <section id="comments" class="comments">
-  {{- with $c.giscus }}
-  <script src="https://giscus.app/client.js"
-    data-repo="{{ .repo }}" data-repo-id="{{ .repoId }}"
-    data-category="{{ .category }}" data-category-id="{{ .categoryId }}"
-    data-mapping="{{ .mapping | default "pathname" }}" data-strict="0"
-    data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top"
-    data-theme="{{ .theme | default "dark" }}" data-lang="{{ .lang | default "zh-CN" }}"
-    data-loading="lazy" crossorigin="anonymous" async></script>
-  {{- end }}
+  <h4><i class="fa fa-comments"></i> {{ T "comment" }}</h4>
+  <div class="giscus"></div>
+  <script>
+    (function () {
+      var s = document.createElement("script");
+      s.src = "https://giscus.app/client.js";
+      s.async = true;
+      s.crossOrigin = "anonymous";
+      var attrs = {
+        "data-repo": {{ .repo }}, "data-repo-id": {{ .repoId }},
+        "data-category": {{ .category }}, "data-category-id": {{ .categoryId }},
+        "data-mapping": {{ .mapping | default "pathname" }}, "data-strict": {{ .strict | default "0" }},
+        "data-reactions-enabled": {{ .reactions | default "1" }}, "data-emit-metadata": "0",
+        "data-input-position": {{ .inputPosition | default "top" }}, "data-theme": {{ .theme | default "transparent_dark" }},
+        "data-lang": {{ $lang }}, "data-loading": "lazy"
+      };
+      Object.keys(attrs).forEach(function (k) { s.setAttribute(k, attrs[k]); });
+      document.currentScript.parentNode.appendChild(s);
+    })();
+  </script>
 </section>
+{{- end }}
 {{- else if eq $c.provider "valine" }}
 <section id="comments" class="comments">
+  <h4><i class="fa fa-comments"></i> {{ T "comment" }}</h4>
   <div id="vcomment" class="comment"></div>
   <script src="https://unpkg.com/valine@1.5.3/dist/Valine.min.js"></script>
   <script>
     var valineConfig = {{ $c.valine }};
-    valineConfig.el = '#vcomment';
+    valineConfig.el = "#vcomment";
     valineConfig.path = {{ .RelPermalink }};
     new Valine(valineConfig);
   </script>

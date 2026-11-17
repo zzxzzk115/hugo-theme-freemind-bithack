@@ -1,0 +1,17 @@
+{{- if and (not .IsHome) (ne site.Params.breadcrumbs false) }}
+<ol class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+  {{- $crumbs := slice }}
+  {{- range .Ancestors.Reverse }}{{ $crumbs = $crumbs | append . }}{{ end }}
+  {{- $crumbs = $crumbs | append . }}
+  {{- range $i, $p := $crumbs }}
+  <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+    {{- if eq $p.RelPermalink $.RelPermalink }}
+    <span itemprop="name">{{ $p.LinkTitle }}</span>
+    {{- else }}
+    <a itemprop="item" href="{{ $p.RelPermalink }}"><span itemprop="name">{{ if $p.IsHome }}<i class="fa fa-home"></i> {{ T "home" }}{{ else }}{{ $p.LinkTitle }}{{ end }}</span></a>
+    {{- end }}
+    <meta itemprop="position" content="{{ add $i 1 }}">
+  </li>
+  {{- end }}
+</ol>
+{{- end }}

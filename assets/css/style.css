@@ -625,18 +625,6 @@ code {
     font-family: Fira Code,Monaco, Menlo, Consolas,DOS,  "Courier New", monospace !important
 }
 
-.fancybox-close:hover {
-    background: url("../fancybox/fancybox_sprite.png")
-}
-
-.fancybox-close:focus {
-    background: url("../fancybox/fancybox_sprite.png")
-}
-
-.fancybox-close:active {
-    background: url("../fancybox/fancybox_sprite.png")
-}
-
  .article-footer-copyright {
     margin: 1.5em 0 0;
     padding: 0em 1em;

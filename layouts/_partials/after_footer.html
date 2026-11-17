@@ -1,27 +1,34 @@
-<a id="gotop" href="#"><span>⬆︎TOP</span></a>
+<a id="gotop" href="#" aria-label="Back to top"><span>⬆︎TOP</span></a>
 
-<script src="{{ "js/jquery.imagesloaded.min.js" | relURL }}"></script>
-{{- if site.Params.fancybox }}
-<script src="{{ "js/gallery.js" | relURL }}"></script>
-{{- end }}
-<script src="{{ "js/bootstrap.min.js" | relURL }}"></script>
-<script src="{{ "js/main.js" | relURL }}"></script>
-<script src="{{ "js/search.js" | relURL }}"></script>
-
-{{- if site.Params.fancybox }}
-<link rel="stylesheet" href="{{ "fancybox/jquery.fancybox.css" | relURL }}" media="screen">
-<script src="{{ "fancybox/jquery.fancybox.pack.js" | relURL }}"></script>
-<script>(function ($) { $('.fancybox').fancybox(); })(jQuery);</script>
-{{- end }}
-
-{{- with site.Home.OutputFormats.Get "searchxml" }}
-<script>searchFunc({{ .RelPermalink }}, 'local-search-input', 'local-search-result');</script>
-{{- end }}
+{{- $cfg := dict
+  "i18n" (dict "copy" (T "copy") "copied" (T "copied") "copyFailed" (T "copy_failed") "expand" (T "expand") "collapse" (T "collapse") "noResults" (T "no_results"))
+}}
+{{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
+<script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>
+{{- $js := resources.Get "js/theme.js" }}
+{{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end }}
+<script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
 
 {{- if .Store.Get "hasMermaid" }}
 <script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
-  mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: false, theme: "dark" });
+  await mermaid.run({ querySelector: "pre.mermaid" });
+</script>
+{{- end }}
+
+{{- if .Store.Get "hasChart" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+<script>
+  window.addEventListener("load", function () {
+    if (!window.Chart) return;
+    Chart.defaults.color = "#ccc";
+    Chart.defaults.borderColor = "#333";
+    document.querySelectorAll("canvas[data-chart]").forEach(function (c) {
+      try { new Chart(c, JSON.parse(c.getAttribute("data-chart"))); }
+      catch (e) { c.outerHTML = '<pre class="chart-error">Chart: ' + e.message + "</pre>"; }
+    });
+  });
 </script>
 {{- end }}
 
