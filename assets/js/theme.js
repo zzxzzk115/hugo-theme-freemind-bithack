@@ -392,6 +392,67 @@
     sync();
   }
 
+  /* ------------------------------------------------------------ language prompt
+     If the visitor's browser prefers another of the site's languages, offer it (never redirect).
+     The choice is remembered: "lang-pref" holds the language the visitor picked, either here or
+     with the navbar language switch. */
+  (function () {
+    var texts = cfg.langPrompt;
+    if (!texts) return;
+    var PREF = "lang-pref";
+    var store = {
+      get: function () { try { return localStorage.getItem(PREF); } catch (e) { return null; } },
+      set: function (v) { try { localStorage.setItem(PREF, v); } catch (e) { /* private mode */ } }
+    };
+    var base = function (l) { return (l || "").toLowerCase().split("-")[0]; };
+    var pageLang = document.documentElement.lang;
+    var links = $$(".lang-switch a[hreflang]");
+
+    // Remember explicit choices made with the navbar switch.
+    links.forEach(function (a) { a.addEventListener("click", function () { store.set(a.getAttribute("hreflang")); }); });
+
+    var pref = store.get();
+    var wanted = pref ? [pref] : (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language]);
+    var target = null;
+    for (var i = 0; i < wanted.length && !target; i++) {
+      var w = base(wanted[i]);
+      if (!w) continue;
+      if (w === base(pageLang)) return; // already in a language the visitor reads first
+      links.forEach(function (a) { if (!target && base(a.getAttribute("hreflang")) === w) target = a; });
+    }
+    if (!target) return;
+
+    var lang = target.getAttribute("hreflang");
+    var tx = texts[lang] || texts[base(lang)];
+    if (!tx) return;
+    var translated = target.getAttribute("data-translated") === "true";
+
+    var box = document.createElement("div");
+    box.className = "lang-prompt";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("lang", lang);
+    box.innerHTML =
+      '<p class="lang-prompt-text"></p>' +
+      '<div class="lang-prompt-actions">' +
+      '<a class="lang-prompt-switch" href=""></a>' +
+      '<button type="button" class="lang-prompt-stay"></button>' +
+      "</div>";
+    $(".lang-prompt-text", box).textContent = translated ? tx.page : tx.site;
+    var sw = $(".lang-prompt-switch", box);
+    sw.textContent = "[ " + tx["switch"] + " ]";
+    sw.href = target.getAttribute("href");
+    sw.setAttribute("hreflang", lang);
+    $(".lang-prompt-stay", box).textContent = "[ " + tx.stay + " ]";
+
+    var close = function () { box.classList.remove("in"); setTimeout(function () { box.remove(); }, 200); };
+    sw.addEventListener("click", function () { store.set(lang); });
+    $(".lang-prompt-stay", box).addEventListener("click", function () { store.set(pageLang); close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && box.isConnected) { store.set(pageLang); close(); } });
+
+    document.body.appendChild(box);
+    requestAnimationFrame(function () { box.classList.add("in"); });
+  })();
+
   /* ------------------------------------------------------------ external hook */
   document.dispatchEvent(new CustomEvent("theme:ready"));
 })();

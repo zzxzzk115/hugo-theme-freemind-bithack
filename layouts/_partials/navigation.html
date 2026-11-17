@@ -50,7 +50,7 @@
             {{- $want := lower (partial "func/term-name.html" (dict "tax" $.Data.Plural "name" $.LinkTitle "from" site.Language.Lang "to" $lang)) }}
             {{- range index .Taxonomies $.Data.Plural }}{{ if eq (lower .Page.LinkTitle) $want }}{{ $target = .Page.RelPermalink }}{{ end }}{{ end }}
           {{- end }}
-      <li class="lang-switch" data-priority="0"><a href="{{ $target }}" hreflang="{{ $lang }}" title="{{ .Language.Label }}"><i class="fa fa-language"></i>{{ .Language.Label }}</a></li>
+      <li class="lang-switch" data-priority="0"><a href="{{ $target }}" hreflang="{{ $lang }}" data-translated="{{ $found }}" title="{{ .Language.Label }}"><i class="fa fa-language"></i>{{ .Language.Label }}</a></li>
         {{- end }}
       {{- end }}
       {{- end }}

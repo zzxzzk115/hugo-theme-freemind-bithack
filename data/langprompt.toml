@@ -1,0 +1,22 @@
+# Text of the "switch language?" prompt, keyed by the language code of the version being offered.
+# It is shown to visitors whose browser prefers that language, so each entry is written in that
+# language. Override or add languages in your site's data/langprompt.toml.
+#   page: the page has a translation   site: no translation, offer that language's home page
+
+[en]
+page = "This page is also available in English."
+site = "This site is also available in English."
+switch = "Switch"
+stay = "Stay here"
+
+[zh]
+page = "这个页面有中文版本。"
+site = "本站有中文版本。"
+switch = "切换"
+stay = "留在这里"
+
+[zh-cn]
+page = "这个页面有中文版本。"
+site = "本站有中文版本。"
+switch = "切换"
+stay = "留在这里"

@@ -7,6 +7,8 @@
   "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results"))
 }}
 {{- $cfg = merge $cfg (dict "prism" (site.Params.prismCDN | default "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/")) }}
+{{- /* Offer the visitor's browser language when this page is in another one (params.langPrompt = false to turn off). */}}
+{{- if and hugo.IsMultilingual (ne site.Params.langPrompt false) }}{{ $cfg = merge $cfg (dict "langPrompt" (hugo.Data.langprompt | default dict)) }}{{ end }}
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
 <script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>
 {{- $js := resources.Get "js/theme.js" }}

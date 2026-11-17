@@ -248,3 +248,19 @@ body { padding-top: 64px; }
 .era-range { margin-left: 10px; font-size: 65%; color: #888; font-weight: normal; }
 .era-note { color: #888; font-size: 90%; margin: 0 0 10px; }
 .era h4.archive-ul { margin-top: 12px; }
+
+/* ---- Language prompt (theme.js): pixel-style box, bottom-left ---- */
+.lang-prompt { position: fixed; left: 24px; bottom: 24px; z-index: 1060; max-width: 340px; padding: 14px 16px 12px;
+  background: #000; color: #ddd; border: 2px solid #2bbc8a; box-shadow: 4px 4px 0 #1a6e51; font-family: "DOS", "Fira Code", monospace;
+  font-size: 14px; line-height: 1.6; opacity: 0; transform: translateY(8px); transition: opacity .2s steps(4), transform .2s steps(4); }
+.lang-prompt.in { opacity: 1; transform: none; }
+.lang-prompt-text { margin: 0 0 10px; }
+.lang-prompt-text::before { content: "> "; color: #2bbc8a; }
+.lang-prompt-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.lang-prompt-actions a, .lang-prompt-actions button { padding: 2px 4px; border: 0; background: transparent; font: inherit; cursor: pointer; text-decoration: none; }
+.lang-prompt-switch { color: #000 !important; background: #2bbc8a !important; }
+.lang-prompt-switch:hover, .lang-prompt-switch:focus { color: #000 !important; background: #6fd6ad !important; }
+.lang-prompt-stay { color: #888; }
+.lang-prompt-stay:hover, .lang-prompt-stay:focus { color: #fff; }
+@media (max-width: 767px) { .lang-prompt { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
+@media print { .lang-prompt { display: none !important; } }
