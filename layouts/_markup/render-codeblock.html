@@ -4,7 +4,7 @@
   One-line blocks get no line numbers. Per block: ```go {linenos=false title="main.go" hl_lines="2-3"}
 */ -}}
 {{- $lang := .Type | default "plaintext" }}
-{{- $lang = index (dict "text" "plaintext" "txt" "plaintext" "plain" "plaintext" "console" "shell-session" "sh" "bash" "zsh" "bash" "shell" "bash" "ps1" "powershell" "cs" "csharp" "c#" "csharp" "c++" "cpp" "js" "javascript" "ts" "typescript" "py" "python" "yml" "yaml" "md" "markdown" "html" "markup" "xml" "markup" "vue" "markup") (lower $lang) | default (lower $lang) }}
+{{- $lang = index (dict "text" "plaintext" "txt" "plaintext" "plain" "plaintext" "console" "shell-session" "sh" "bash" "zsh" "bash" "shell" "bash" "ps1" "powershell" "cs" "csharp" "c#" "csharp" "c++" "cpp" "js" "javascript" "ts" "typescript" "py" "python" "yml" "yaml" "md" "markdown" "html" "markup" "xml" "markup" "vue" "markup" "assembly" "nasm" "asm" "nasm" "x86" "nasm" "il" "cil" "msil" "cil" "cmd" "batch" "bat" "batch") (lower $lang) | default (lower $lang) }}
 {{- $lines := len (split (strings.TrimRight "\n" .Inner) "\n") }}
 {{- $ln := and (gt $lines 1) (ne (string .Attributes.linenos) "false") }}
 <pre class="{{ if $ln }}line-numbers {{ end }}language-{{ $lang }}"
