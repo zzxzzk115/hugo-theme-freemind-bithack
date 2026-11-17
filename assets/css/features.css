@@ -157,6 +157,9 @@ a.post-nav-item:hover { border-color: #2bbc8a; }
 .toc-article a:hover, .md-pdf-link:hover { color: #fff !important; text-decoration: underline; }
 .post-nav-item:hover .post-nav-title, .search-result-list a:hover .search-result-title,
 .friend-card:hover .friend-name { color: #fff !important; }
+/* Count superscript: raise it visually without growing the line box, so chips with and
+   without a count line up. */
+.tag_box a span { vertical-align: baseline; position: relative; top: -.45em; line-height: 0; margin-left: 2px; }
 .tag_box a:hover, .tag_box a:hover span { background-color: #2bbc8a !important; color: #000 !important; }
 .entry .more:hover { color: #000 !important; background: #2bbc8a !important; }
 .mypage .headerlink:hover { color: #fff !important; }
