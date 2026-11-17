@@ -11,7 +11,7 @@
   {{- else }}
   <div class="col-md-12">
   {{- end }}
-    <article class="mypage">
+    <article class="mypage md-content">
       {{- if .Params.aiTranslated }}
       {{- $orig := "" }}{{ range .Translations }}{{ if not .Params.aiTranslated }}{{ $orig = . }}{{ end }}{{ end }}
       <p class="translation-note"><i class="fa fa-language"></i> {{ T "ai_translated" }}{{ with $orig }} <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ T "read_original" }}</a>{{ end }}</p>
