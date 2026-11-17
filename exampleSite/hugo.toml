@@ -1,0 +1,81 @@
+# Run from the theme repo root:
+#   hugo server -s exampleSite --themesDir ../..
+baseURL = "http://localhost:1313/"
+theme = "hugo-theme-freemind-bithack"
+defaultContentLanguage = "en"
+hasCJKLanguage = true
+summaryLength = 150
+disablePathToLower = true
+
+[languages.en]
+  contentDir = "content/en"
+  weight = 1
+  label = "English"
+  title = "freemind.bithack"
+[languages.zh]
+  contentDir = "content/zh"
+  weight = 2
+  label = "中文"
+  title = "freemind.bithack 示例"
+
+[permalinks.page]
+  posts = "/:year/:month/:day/:contentbasename/"
+
+# --- Hugo does not merge these from a theme; copy them into your site. ---
+[outputs]
+  home = ["html", "rss", "atom", "searchxml"]
+[pagination]
+  pagerSize = 10
+[markup.highlight]
+  noClasses = false
+  lineNos = true
+  lineNumbersInTable = true
+[markup.goldmark.renderer]
+  unsafe = true
+[markup.goldmark.parser.attribute]
+  block = true
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [["$$", "$$"], ["\\[", "\\]"]]
+    inline = [["$", "$"], ["\\(", "\\)"]]
+
+[[languages.en.menus.main]]
+  name = "Archives"
+  pageRef = "/archives"
+  weight = 10
+  params.icon = "fa fa-archive"
+[[languages.en.menus.main]]
+  name = "Categories"
+  pageRef = "/categories"
+  weight = 20
+  params.icon = "fa fa-folder"
+[[languages.en.menus.main]]
+  name = "Tags"
+  pageRef = "/tags"
+  weight = 30
+  params.icon = "fa fa-tags"
+[[languages.en.menus.main]]
+  name = "RSS"
+  url = "/rss.xml"
+  weight = 90
+  params.icon = "fa fa-rss"
+
+[[languages.zh.menus.main]]
+  name = "归档"
+  pageRef = "/archives"
+  weight = 10
+  params.icon = "fa fa-archive"
+[[languages.zh.menus.main]]
+  name = "标签"
+  pageRef = "/tags"
+  weight = 30
+  params.icon = "fa fa-tags"
+
+[params]
+  author = "Your Name"
+  mainSections = ["posts"]
+  [[params.links]]
+    title = "GitHub"
+    url = "https://github.com/"
+    icon = "fa fa-github"

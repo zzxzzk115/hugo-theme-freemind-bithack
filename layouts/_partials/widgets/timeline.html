@@ -1,0 +1,13 @@
+{{- /* Year timeline: one entry per year with the number of articles, linking to the archive. */ -}}
+{{- $pages := partial "func/articles.html" . }}
+{{- with $pages }}
+{{- $archive := site.GetPage "/archives" }}
+<div class="widget">
+  <h4>{{ T "timeline" }}</h4>
+  <ul class="timeline list-unstyled">
+    {{- range .GroupByDate "2006" }}
+    <li><a href="{{ with $archive }}{{ .RelPermalink }}{{ end }}#y{{ .Key }}"><i class="fa fa-calendar-o"></i>{{ .Key }}<span>{{ len .Pages }}</span></a></li>
+    {{- end }}
+  </ul>
+</div>
+{{- end }}

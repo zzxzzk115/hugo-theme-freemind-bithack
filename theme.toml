@@ -1,0 +1,17 @@
+name = "freemind.bithack"
+license = "MIT"
+licenselink = "https://github.com/zzxzzk115/hugo-theme-freemind-bithack/blob/main/LICENSE"
+description = "Dark, terminal-style blog theme. Hugo port of hexo-theme-freemind.bithack, no Node needed."
+homepage = "https://github.com/zzxzzk115/hugo-theme-freemind-bithack"
+tags = ["blog", "dark", "bootstrap", "multilingual", "search", "katex", "mermaid"]
+features = ["multilingual", "search", "math", "mermaid", "tabs", "shortcodes", "rss", "atom"]
+min_version = "0.146.0"
+
+[author]
+  name = "Lazy_V"
+  homepage = "https://github.com/zzxzzk115"
+
+[original]
+  name = "blackshow"
+  homepage = "https://github.com/Ares-X/hexo-theme-freemind.bithack"
+  repo = "https://github.com/Ares-X/hexo-theme-freemind.bithack"
