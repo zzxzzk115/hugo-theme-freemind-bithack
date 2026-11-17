@@ -1,17 +1,34 @@
+{{- /*
+  Related posts, the same in every language: tags and categories are compared by their
+  language-independent keys (data/terms.toml links e.g. 算法 <-> Algorithms).
+  Score = 100 x shared tags + 60 x shared categories; ties go to the post closest in date, then by path.
+*/ -}}
 {{- $n := site.Params.relatedPosts | default 5 }}
 {{- if gt $n 0 }}
-  {{- $related := slice }}
-  {{- range site.RegularPages.Related . }}
-    {{- if and (partial "func/is-article.html" .) (lt (len $related) $n) }}{{ $related = $related | append . }}{{ end }}
-  {{- end }}
-  {{- with $related }}
+  {{- $me := partialCached "func/term-keys.html" . .RelPermalink }}
+  {{- if or $me.tags $me.categories }}
+    {{- $scored := slice }}
+    {{- range partial "func/articles.html" . }}
+      {{- if ne .RelPermalink $.RelPermalink }}
+        {{- $k := partialCached "func/term-keys.html" . .RelPermalink }}
+        {{- $score := add (mul 100 (len (intersect $me.tags $k.tags))) (mul 60 (len (intersect $me.categories $k.categories))) }}
+        {{- if gt $score 0 }}
+          {{- $dist := math.Abs (sub .Date.Unix $.Date.Unix) }}
+          {{- $scored = $scored | append (dict "score" $score "dist" $dist "key" .Path "page" .) }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- /* stable sorts: by path (same in every language, settles ties), date distance, then score */}}
+    {{- $scored = sort (sort (sort $scored "key" "asc") "dist" "asc") "score" "desc" }}
+    {{- with first $n $scored }}
   <section class="related-posts">
     <h4><i class="fa fa-link"></i> {{ T "related" }}</h4>
     <ul class="list-unstyled">
-      {{- range . }}
+      {{- range . }}{{ with .page }}
       <li><span class="date_class">{{ .Date.Format "2006-01-02" }}</span> &raquo; <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-      {{- end }}
+      {{- end }}{{ end }}
     </ul>
   </section>
+    {{- end }}
   {{- end }}
 {{- end }}

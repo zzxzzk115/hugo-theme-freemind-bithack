@@ -1,0 +1,12 @@
+{{- /*
+  The name of a tag/category in another language, via data/terms.toml.
+  Input: (dict "tax" "tags" "name" "算法" "from" "zh" "to" "en")  ->  "Algorithms"
+  Unmapped names are returned unchanged.
+*/ -}}
+{{- $rev := partialCached "func/term-reverse.html" .from .from }}
+{{- $canon := index (index $rev .tax | default dict) (lower .name) | default .name }}
+{{- $out := $canon }}
+{{- range $c, $names := index (hugo.Data.terms | default dict) .tax | default dict }}
+  {{- if eq (lower $c) (lower $canon) }}{{ $out = index $names $.to | default $c }}{{ end }}
+{{- end }}
+{{- return $out }}

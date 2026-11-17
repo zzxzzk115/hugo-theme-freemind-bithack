@@ -42,7 +42,13 @@
         {{- if ne .Language.Lang site.Language.Lang }}
           {{- $lang := .Language.Lang }}
           {{- $target := .Home.RelPermalink }}
-          {{- range $.Translations }}{{ if eq .Language.Lang $lang }}{{ $target = .RelPermalink }}{{ end }}{{ end }}
+          {{- $found := false }}
+          {{- range $.Translations }}{{ if eq .Language.Lang $lang }}{{ $target = .RelPermalink }}{{ $found = true }}{{ end }}{{ end }}
+          {{- /* Tag/category pages: the matching term in that language (data/terms.toml). */}}
+          {{- if and (not $found) (eq $.Kind "term") }}
+            {{- $want := lower (partial "func/term-name.html" (dict "tax" $.Data.Plural "name" $.LinkTitle "from" site.Language.Lang "to" $lang)) }}
+            {{- range index .Taxonomies $.Data.Plural }}{{ if eq (lower .Page.LinkTitle) $want }}{{ $target = .Page.RelPermalink }}{{ end }}{{ end }}
+          {{- end }}
       <li class="lang-switch" data-priority="0"><a href="{{ $target }}" hreflang="{{ $lang }}" title="{{ .Language.Label }}"><i class="fa fa-language"></i>{{ .Language.Label }}</a></li>
         {{- end }}
       {{- end }}

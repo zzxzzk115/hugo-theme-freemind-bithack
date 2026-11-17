@@ -1,0 +1,19 @@
+{{- /*
+  Language-independent keys of a page's tags and categories: localised names are mapped to their
+  canonical (English) name via data/terms.toml, then lower-cased.
+  Returns (dict "tags" (slice ...) "categories" (slice ...)).
+  Call with partialCached "func/term-keys.html" $page $page.RelPermalink
+*/ -}}
+{{- $rev := partialCached "func/term-reverse.html" site.Language.Lang site.Language.Lang }}
+{{- $out := dict }}
+{{- range slice "tags" "categories" }}
+  {{- $tax := . }}
+  {{- $m := index $rev $tax | default dict }}
+  {{- $keys := slice }}
+  {{- range $.GetTerms $tax }}
+    {{- $name := lower .LinkTitle }}
+    {{- $keys = $keys | append (index $m $name | default $name) }}
+  {{- end }}
+  {{- $out = merge $out (dict $tax $keys) }}
+{{- end }}
+{{- return $out }}

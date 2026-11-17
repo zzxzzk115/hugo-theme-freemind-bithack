@@ -52,7 +52,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 字数、阅读时间、更新日期、原创标记、阅读进度条 | `lastmod`、`original: true` |
 | | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false` |
 | | 上一篇 / 下一篇（显示标题，全站按时间） | |
-| | 相关文章 | `relatedPosts` + 站点 `[related]` |
+| | 相关文章（各语言结果一致：按标签/分类的统一键计分） | `relatedPosts`；跨语言的标签对应写在站点 `data/terms.toml` |
 | | 图片注释（单独成段的图片用 title / alt 作 figcaption）、灯箱 | `imageCaptions` |
 | | 在 GitHub 上编辑 | `editURL` |
 | Markdown | 数学公式（构建时 KaTeX → MathML） | `math: true` 或 `math = "always"` |
@@ -70,6 +70,19 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | AI 翻译提示（链接到原文） | `aiTranslated: true` |
 | 其他 | 打印样式、web manifest、移动端适配、长链接自动换行；子目录部署时 `/img/a.png` 这类根路径自动补上 baseURL 路径 | 自动 |
 | 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL，按 unicode-range 只在有中文时加载） | |
+
+### 跨语言的标签 / 分类
+
+同一个标签在不同语言里写法不同时（`Algorithms` / `算法`），在站点 `data/terms.toml` 里登记对应关系，文章本身不用改：
+
+```toml
+[tags."Algorithms"]
+zh = "算法"
+[categories."Programming Languages"]
+zh = "编程语言"
+```
+
+相关文章会把它们视为同一个标签，标签/分类页的语言切换也会跳到对应的页面。
 
 ### 短代码
 

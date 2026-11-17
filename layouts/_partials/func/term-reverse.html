@@ -1,0 +1,15 @@
+{{- /*
+  For the current language: { taxonomy: { lower(localised name): lower(canonical name) } }
+  built from site data `terms` (data/terms.toml):  [tags."Algorithms"] zh = "算法"
+  Call with partialCached "func/term-reverse.html" site.Language.Lang site.Language.Lang
+*/ -}}
+{{- $lang := . }}
+{{- $out := dict }}
+{{- range $tax, $entries := hugo.Data.terms | default dict }}
+  {{- $m := dict }}
+  {{- range $canon, $names := $entries }}
+    {{- with index $names $lang }}{{ $m = merge $m (dict (lower .) (lower $canon)) }}{{ end }}
+  {{- end }}
+  {{- $out = merge $out (dict $tax $m) }}
+{{- end }}
+{{- return $out }}
