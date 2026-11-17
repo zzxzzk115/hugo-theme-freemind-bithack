@@ -1,51 +1,60 @@
+{{- /*
+  Priority+ navigation: items that don't fit move into the "more" menu (pixel ☰), least important first.
+  Importance: menu item `params.priority` (lower = kept longer); default is the menu order.
+  The language switch has priority 0 and is the last to go.
+*/ -}}
 {{- define "_partials/inline/nav-link.html" }}
   {{- $external := strings.HasPrefix .URL "http" }}
   <a href="{{ .URL }}" title="{{ .Title | default .Name }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>
     {{- with .Params.icon }}<i class="{{ . }}"></i>{{ end }}{{ .Name -}}
   </a>
 {{- end }}
+{{- $frame := `<rect x="1" y="0" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="0" y="1" width="1" height="12"/><rect x="15" y="1" width="1" height="12"/>` }}
+{{- $bars := `<rect x="4" y="3" width="8" height="2"/><rect x="4" y="6" width="8" height="2"/><rect x="4" y="9" width="8" height="2"/>` }}
+{{- $cross := "" }}{{ range seq 0 7 }}{{ $cross = printf `%s<rect x="%d" y="%d" width="2" height="1"/><rect x="%d" y="%d" width="2" height="1"/>` $cross (add 4 .) (add 3 .) (sub 10 .) (add 3 .) }}{{ end }}
 <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
-    <button id="toggleButton" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Menu">
-      <span class="sr-only">Toggle navigation</span>
-      <svg class="icon-menu" viewBox="0 0 16 14" width="32" height="28" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="0" y="1" width="1" height="12"/><rect x="15" y="1" width="1" height="12"/><rect x="4" y="3" width="8" height="2"/><rect x="4" y="6" width="8" height="2"/><rect x="4" y="9" width="8" height="2"/></svg>
-      <svg class="icon-close" viewBox="0 0 16 14" width="32" height="28" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="0" y="1" width="1" height="12"/><rect x="15" y="1" width="1" height="12"/><rect x="4" y="3" width="2" height="1"/><rect x="10" y="3" width="2" height="1"/><rect x="5" y="4" width="2" height="1"/><rect x="9" y="4" width="2" height="1"/><rect x="6" y="5" width="2" height="1"/><rect x="8" y="5" width="2" height="1"/><rect x="7" y="6" width="2" height="1"/><rect x="7" y="6" width="2" height="1"/><rect x="8" y="7" width="2" height="1"/><rect x="6" y="7" width="2" height="1"/><rect x="9" y="8" width="2" height="1"/><rect x="5" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="4" y="9" width="2" height="1"/><rect x="11" y="10" width="2" height="1"/><rect x="3" y="10" width="2" height="1"/></svg>
-    </button>
     <a class="navbar-brand" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
-    <div class="collapse navbar-collapse nav-menu">
-      <ul class="nav navbar-nav">
-        {{- range site.Menus.main }}
-        {{- $active := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
-        {{- if .HasChildren }}
-        <li class="dropdown{{ if $active }} active{{ end }}">
-          <a href="{{ .URL }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-            {{- with .Params.icon }}<i class="{{ . }}"></i>{{ end }}{{ .Name }} <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-            <li class="divider"></li>
-            {{- range .Children }}
-            <li>{{ partial "inline/nav-link.html" . }}</li>
-            {{- end }}
-          </ul>
-        </li>
-        {{- else }}
-        <li{{ if $active }} class="active"{{ end }}>{{ partial "inline/nav-link.html" . }}</li>
-        {{- end }}
-        {{- end }}
-        {{- /* Language switcher: link to the translation if there is one, else to that language's home. */}}
-        {{- if hugo.IsMultilingual }}
-        {{- range hugo.Sites }}
-          {{- if ne .Language.Lang site.Language.Lang }}
-            {{- $lang := .Language.Lang }}
-            {{- $target := .Home.RelPermalink }}
-            {{- range $.Translations }}{{ if eq .Language.Lang $lang }}{{ $target = .RelPermalink }}{{ end }}{{ end }}
-        <li class="lang-switch"><a href="{{ $target }}" hreflang="{{ $lang }}" title="{{ .Language.Label }}"><i class="fa fa-language"></i>{{ .Language.Label }}</a></li>
+    <ul class="nav navbar-nav" id="nav-items">
+      {{- range $i, $m := site.Menus.main }}
+      {{- $active := or ($.IsMenuCurrent "main" $m) ($.HasMenuCurrent "main" $m) }}
+      {{- $prio := $m.Params.priority | default (add 10 $i) }}
+      {{- if $m.HasChildren }}
+      <li class="dropdown{{ if $active }} active{{ end }}" data-priority="{{ $prio }}">
+        <a href="{{ $m.URL }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+          {{- with $m.Params.icon }}<i class="{{ . }}"></i>{{ end }}{{ $m.Name }} <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+          <li><a href="{{ $m.URL }}">{{ $m.Name }}</a></li>
+          <li class="divider"></li>
+          {{- range $m.Children }}
+          <li>{{ partial "inline/nav-link.html" . }}</li>
           {{- end }}
+        </ul>
+      </li>
+      {{- else }}
+      <li{{ if $active }} class="active"{{ end }} data-priority="{{ $prio }}">{{ partial "inline/nav-link.html" $m }}</li>
+      {{- end }}
+      {{- end }}
+      {{- /* Language switch: the translation if there is one, else that language's home. */}}
+      {{- if hugo.IsMultilingual }}
+      {{- range hugo.Sites }}
+        {{- if ne .Language.Lang site.Language.Lang }}
+          {{- $lang := .Language.Lang }}
+          {{- $target := .Home.RelPermalink }}
+          {{- range $.Translations }}{{ if eq .Language.Lang $lang }}{{ $target = .RelPermalink }}{{ end }}{{ end }}
+      <li class="lang-switch" data-priority="0"><a href="{{ $target }}" hreflang="{{ $lang }}" title="{{ .Language.Label }}"><i class="fa fa-language"></i>{{ .Language.Label }}</a></li>
         {{- end }}
-        {{- end }}
-      </ul>
-    </div>
+      {{- end }}
+      {{- end }}
+      <li class="dropdown nav-more" hidden>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-label="{{ T "more" }}" aria-expanded="false">
+          <svg class="icon-menu" viewBox="0 0 16 14" width="32" height="28" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true">{{ $frame | safeHTML }}{{ $bars | safeHTML }}</svg>
+          <svg class="icon-close" viewBox="0 0 16 14" width="32" height="28" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true">{{ $frame | safeHTML }}{{ $cross | safeHTML }}</svg>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu"></ul>
+      </li>
+    </ul>
   </div>
 </nav>
 <div class="clearfix"></div>

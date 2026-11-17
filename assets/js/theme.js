@@ -56,7 +56,8 @@
       trg.classList.toggle("collapsed");
     } else if (kind === "dropdown") {
       // Desktop: hover opens it (CSS); a click on the parent follows the link.
-      if (window.matchMedia("(min-width: 768px)").matches && trg.getAttribute("href")) return;
+      if (trg.closest(".nav-more .dropdown-menu")) return;
+      if (window.matchMedia("(min-width: 768px)").matches && trg.getAttribute("href") && trg.getAttribute("href") !== "#") return;
       e.preventDefault();
       var li = trg.parentNode;
       openDropdowns.forEach(function (d) { if (d !== li) d.classList.remove("open"); });
@@ -76,6 +77,44 @@
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") $$(".dropdown.open").forEach(function (d) { d.classList.remove("open"); });
   });
+
+  /* ------------------------------------------------------------ priority+ navbar */
+  var navUl = $("#nav-items");
+  var more = navUl && $(".nav-more", navUl);
+  if (navUl && more) {
+    var moreList = $(".dropdown-menu", more);
+    var items = $$("#nav-items > li:not(.nav-more)");
+    items.forEach(function (li, i) { li.setAttribute("data-index", i); });
+    var container = navUl.parentNode;
+    var brand = $(".navbar-brand", container);
+    var fits = function () {
+      var cs = getComputedStyle(container);
+      var room = container.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      var used = brand.offsetWidth;
+      $$(":scope > li", navUl).forEach(function (li) { if (!li.hidden) used += li.offsetWidth; });
+      return used <= room - 2;
+    };
+    var fitNav = function () {
+      // everything back in order, then fold the least important until it fits
+      items.forEach(function (li) { navUl.insertBefore(li, more); });
+      more.hidden = true;
+      more.classList.remove("open");
+      if (fits()) return;
+      more.hidden = false;
+      var order = items.slice().sort(function (a, b) {
+        return (+b.getAttribute("data-priority")) - (+a.getAttribute("data-priority")) ||
+          (+b.getAttribute("data-index")) - (+a.getAttribute("data-index"));
+      });
+      for (var i = 0; i < order.length && !fits(); i++) moreList.appendChild(order[i]);
+      $$(":scope > li", moreList)
+        .sort(function (a, b) { return a.getAttribute("data-index") - b.getAttribute("data-index"); })
+        .forEach(function (li) { moreList.appendChild(li); });
+    };
+    var navTimer;
+    fitNav();
+    window.addEventListener("resize", function () { clearTimeout(navTimer); navTimer = setTimeout(fitNav, 60); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNav);
+  }
 
   /* ------------------------------------------------------------ scroll: back to top, navbar fade, progress */
   var gotop = $("#gotop");
