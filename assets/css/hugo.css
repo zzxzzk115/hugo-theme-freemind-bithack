@@ -50,11 +50,13 @@ img { max-width: 100%; }
 /* {{< tabs >}} */
 .md-tabs { margin: 1em 0; }
 .md-tabs .nav-tabs { border-bottom: 1px solid #333; }
-.md-tabs .nav-tabs > li > a { border-radius: 0; color: #aaa; background: transparent; border-color: transparent; }
-.md-tabs .nav-tabs > li > a:hover { background: #111; border-color: #333; }
+/* Tab labels are links, so override the theme's inverted link hover (black text) explicitly. */
+.md-tabs .nav-tabs > li > a { margin-right: 4px; padding: 6px 14px; border-radius: 0; border: 1px solid transparent; border-top-width: 2px;
+  color: #888 !important; background: transparent !important; text-decoration: none; transition: color .15s, border-color .15s; }
+.md-tabs .nav-tabs > li > a:hover, .md-tabs .nav-tabs > li > a:focus { color: #ddd !important; background: #111 !important; border-color: #333 #333 transparent; border-top-color: #555; }
 .md-tabs .nav-tabs > li.active > a,
 .md-tabs .nav-tabs > li.active > a:hover,
-.md-tabs .nav-tabs > li.active > a:focus { color: #0f0; background: #000; border: 1px solid #333; border-bottom-color: #000; }
+.md-tabs .nav-tabs > li.active > a:focus { color: #2bbc8a !important; background: #000 !important; border: 1px solid #333; border-top: 2px solid #2bbc8a; border-bottom-color: #000; cursor: default; }
 .md-tabs .tab-content { border: 1px solid #333; border-top: 0; padding: 12px 15px; }
 .md-tabs .tab-content > .tab-pane > :last-child { margin-bottom: 0; }
 
