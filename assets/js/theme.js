@@ -183,6 +183,14 @@
   }
 
   /* ------------------------------------------------------------ code blocks: Prism.js (loaded only when needed) */
+  // <pre><code> without a language (raw HTML, indented Markdown code) still gets the toolbar: plain text.
+  $$(".mypage pre > code").forEach(function (code) {
+    var pre = code.parentNode;
+    if (/\blanguage-/.test(pre.className + " " + code.className)) return;
+    pre.classList.add("language-plaintext");
+    code.classList.add("language-plaintext");
+    if (code.textContent.replace(/\n+$/, "").indexOf("\n") >= 0) pre.classList.add("line-numbers");
+  });
   var codeBlocks = $$('pre[class*="language-"]');
   if (codeBlocks.length && cfg.prism) {
     var base = cfg.prism.replace(/\/?$/, "/");
