@@ -2,8 +2,16 @@
   Inline Font Awesome 4 icon.
   {{< icon folder >}}  ->  <i class="fa fa-folder"></i>
   {{< icon "fa fa-github" >}} uses the classes as given.
+  A few names from other themes (e.g. vuepress-theme-hope) are mapped to their FA 4.7 equivalents.
 */ -}}
 {{- $name := .Get 0 | default (.Get "icon") }}
-{{- $class := cond (strings.Contains $name " ") $name (printf "fa fa-%s" $name) -}}
+{{- $alias := dict
+  "pdf" "file-pdf-o" "changelog" "history" "readme" "file-text-o" "file" "file-o" "note" "sticky-note-o"
+  "article" "file-text-o" "book" "book" "code" "code" "link" "link" "people" "users" "info" "info-circle"
+  "warning" "exclamation-triangle" "download" "download" "image" "picture-o" "images" "picture-o"
+  "video" "video-camera" "music" "music" "gamepad" "gamepad" "home" "home" "rss" "rss" "edit" "pencil"
+}}
+{{- $class := $name }}
+{{- if not (strings.Contains $name " ") }}{{ $class = printf "fa fa-%s" (index $alias $name | default $name) }}{{ end -}}
 <i class="{{ $class }}" aria-hidden="true"></i>
 {{- /* chomp */ -}}
