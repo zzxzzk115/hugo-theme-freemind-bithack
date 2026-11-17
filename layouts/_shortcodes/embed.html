@@ -5,5 +5,5 @@
 {{- $ratio := split (.Get "ratio" | default "16:9") ":" }}
 {{- $pad := mul (div (float (index $ratio 1)) (float (index $ratio 0))) 100 }}
 <div class="embed-video" style="padding-bottom: {{ $pad }}%">
-  <iframe src="{{ .Get "src" | relURL }}" frameborder="0" allowfullscreen loading="lazy"></iframe>
+  <iframe src="{{ partial "func/url.html" (.Get "src") }}" frameborder="0" allowfullscreen loading="lazy"></iframe>
 </div>

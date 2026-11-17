@@ -120,6 +120,12 @@ line 31
 line 32
 ```
 
+## Images
+
+A standalone image becomes a figure; the caption comes from its title or alt text. Click to open the lightbox.
+
+![A pixel heart](/images/heart.png "Standalone images get a caption")
+
 ## Friend links
 
 {{< friend name="Hugo" url="https://gohugo.io/" desc="The world's fastest framework for building websites" >}}

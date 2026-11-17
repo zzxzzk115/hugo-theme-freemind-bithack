@@ -8,7 +8,7 @@
 <div class="gallery">
   <div class="photoset">
     {{- range split (trim .Inner "\n ") "\n" }}{{ with trim . " \r" }}
-    <img src="{{ . | relURL }}" alt="" class="nofancybox">
+    <img src="{{ partial "func/url.html" . }}" alt="" class="nofancybox">
     {{- end }}{{ end }}
   </div>
   <div class="control">

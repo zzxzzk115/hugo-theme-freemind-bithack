@@ -2,7 +2,9 @@
 
 A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack). Same look, no Node and no jQuery: just the Hugo binary (≥ 0.146, standard edition is enough) and one small script.
 
-![screenshot](images/screenshot.jpg)
+**Demo:** https://zzxzzk115.github.io/hugo-theme-freemind-bithack/ (built from [exampleSite](exampleSite) by GitHub Actions)
+
+![screenshot](images/screenshot.png)
 
 **Features**: multilingual with language switcher · instant search (`/` or Ctrl+K) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
 
@@ -16,11 +18,13 @@ git submodule add https://github.com/zzxzzk115/hugo-theme-freemind-bithack.git t
 
 Set `theme = "freemind-bithack"` and copy `[outputs]`, `[pagination]`, `[related]` and `[markup]` from [exampleSite/hugo.toml](exampleSite/hugo.toml) into your site config (Hugo does not merge those from themes). Every theme option is documented in [hugo.toml](hugo.toml).
 
-Try the demo:
+Run the demo locally:
 
 ```bash
 hugo server -s exampleSite --themesDir ../..
 ```
+
+Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`) work as-is: root-relative paths in content such as `/img/a.png` get the base path automatically.
 
 ## License
 
@@ -64,7 +68,7 @@ hugo server -s exampleSite --themesDir ../..
 | SEO / 订阅 | canonical、hreflang、Open Graph、Twitter Card、JSON-LD、sitemap、robots | 自动 |
 | | RSS、Atom、JSON Feed（默认全文） | `[feed] fullText`、`limit` |
 | | AI 翻译提示（链接到原文） | `aiTranslated: true` |
-| 其他 | 打印样式、web manifest、移动端适配、长链接自动换行 | 自动 |
+| 其他 | 打印样式、web manifest、移动端适配、长链接自动换行；子目录部署时 `/img/a.png` 这类根路径自动补上 baseURL 路径 | 自动 |
 | 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL，按 unicode-range 只在有中文时加载） | |
 
 ### 短代码

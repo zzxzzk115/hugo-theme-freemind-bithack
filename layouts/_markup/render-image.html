@@ -12,6 +12,7 @@
     {{- if and (not $w) (in (slice "image/png" "image/jpeg" "image/gif" "image/webp") .MediaType.Type) }}{{ $w = .Width }}{{ $h = .Height }}{{ end }}
   {{- end -}}
 {{- end -}}
+{{- if not $u.IsAbs }}{{ $src = partial "func/url.html" $src }}{{ end -}}
 {{- $img := printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async"%s%s%s>` $src (.PlainText | htmlEscape) (cond (ne .Title "") (printf ` title="%s"` (.Title | htmlEscape)) "") (cond (ne (string $w) "") (printf ` width="%v"` $w) "") (cond (ne (string $h) "") (printf ` height="%v"` $h) "") (cond (ne (string .Attributes.class) "") (printf ` class="%s"` .Attributes.class) "") -}}
 {{- $caption := .Title | default .PlainText -}}
 {{- if and .IsBlock (site.Params.imageCaptions | default true) $caption -}}

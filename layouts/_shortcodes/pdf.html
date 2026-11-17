@@ -2,7 +2,7 @@
   Embedded PDF with a download link.
   {{< pdf src="/files/paper.pdf" height="800" >}}
 */ -}}
-{{- $src := .Get "src" | default (.Get 0) | relURL }}
+{{- $src := partial "func/url.html" (.Get "src" | default (.Get 0)) }}
 <div class="md-pdf">
   <object data="{{ $src }}" type="application/pdf" width="100%" height="{{ .Get "height" | default "720" }}">
     <a href="{{ $src }}">{{ $src }}</a>

@@ -4,7 +4,7 @@
     avatar = "avatar.png"          # defaults to params.logo
     name = "Lazy_V"                # defaults to params.author
     bio = "…"                      # per language: [languages.xx.params.authorCard] bio = "…"
-  [[params.social]]                # icon links; `copy` copies text instead of opening a link
+  [[params.social]]                # icon links; `copy` copies text instead of opening a link; `rss = true` links this language's feed
     name = "WeChat"  icon = "fa fa-weixin"  copy = "my-wechat-id"
     name = "GitHub"  icon = "fa fa-github"  url = "https://github.com/me"
 */ -}}
@@ -24,10 +24,12 @@
   {{- with site.Params.social }}
   <div class="author-social">
     {{- range . }}
-      {{- if .copy }}
+      {{- if .rss }}
+    {{- with site.Home.OutputFormats.Get "rss" }}<a href="{{ .RelPermalink }}" title="RSS"><i class="fa fa-rss"></i></a>{{ end }}
+      {{- else if .copy }}
     <a href="#" data-copy="{{ .copy }}" data-copied="{{ T "copied_value" (dict "name" .name "value" .copy) }}" title="{{ .name }}: {{ .copy }}"><i class="{{ .icon }}"></i></a>
       {{- else }}
-    <a href="{{ .url | safeURL }}" title="{{ .name }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener me"{{ end }}><i class="{{ .icon }}"></i></a>
+    <a href="{{ partial "func/url.html" .url | safeURL }}" title="{{ .name }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener me"{{ end }}><i class="{{ .icon }}"></i></a>
       {{- end }}
     {{- end }}
   </div>

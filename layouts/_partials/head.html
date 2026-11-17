@@ -3,7 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>try{if(localStorage.getItem("reader")==="1")document.documentElement.classList.add("reader")}catch(e){}</script>
   {{- $title := slice }}
-  {{- if .IsHome }}{{ with .Paginator }}{{ if gt .PageNumber 1 }}{{ $title = $title | append (T "page" .PageNumber) }}{{ end }}{{ end }}{{ end }}
+  {{- if .IsHome }}{{ with .Paginate (partial "func/home-pages.html" .) }}{{ if gt .PageNumber 1 }}{{ $title = $title | append (T "page" .PageNumber) }}{{ end }}{{ end }}{{ end }}
   {{- if not .IsHome }}{{ with .Title }}{{ $title = $title | append . }}{{ end }}{{ end }}
   {{- $title = $title | append site.Title }}
   <title>{{ delimit $title " | " }}</title>

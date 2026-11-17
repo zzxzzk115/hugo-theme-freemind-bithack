@@ -5,9 +5,9 @@
 */ -}}
 {{- $src := .Get "src" | default (.Get 0) }}
 <figure class="md-video">
-  <video controls preload="metadata" playsinline{{ with .Get "poster" }} poster="{{ . | relURL }}"{{ end }}
+  <video controls preload="metadata" playsinline{{ with .Get "poster" }} poster="{{ partial "func/url.html" . }}"{{ end }}
     {{- if eq (.Get "autoplay") "true" }} autoplay muted{{ end }}{{ if eq (.Get "loop") "true" }} loop{{ end }}{{ if eq (.Get "muted") "true" }} muted{{ end }}>
-    <source src="{{ $src | relURL }}"{{ with path.Ext $src }} type="video/{{ strings.TrimPrefix "." . }}"{{ end }}>
+    <source src="{{ partial "func/url.html" $src }}"{{ with path.Ext $src }} type="video/{{ strings.TrimPrefix "." . }}"{{ end }}>
   </video>
   {{- with .Get "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
 </figure>

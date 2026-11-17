@@ -8,14 +8,8 @@
     {{ partial "post/slogan.html" . }}
     <div id="top_search"></div>
     <div class="mypage">
-      {{- /* `sticky: true` posts are pinned to the top, newest first. */}}
-      {{- $all := partial "func/articles.html" . }}
-      {{- $sticky := where $all "Params.sticky" true }}
-      {{- /* Build a plain slice so Hugo doesn't re-sort it by weight. */}}
-      {{- $pages := slice }}
-      {{- range $sticky }}{{ $pages = $pages | append . }}{{ end }}
-      {{- range where $all "Params.sticky" "!=" true }}{{ $pages = $pages | append . }}{{ end }}
-      {{- $paginator := .Paginate $pages }}
+      {{- /* Pinned posts first; see func/home-pages.html. */}}
+      {{- $paginator := .Paginate (partial "func/home-pages.html" .) }}
       {{- range $paginator.Pages }}
         {{ partial "post/title.html" (dict "item" . "index" true) }}
         {{ partial "post/entry.html" . }}

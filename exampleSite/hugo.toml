@@ -25,6 +25,8 @@ enableEmoji = true
 # --- Hugo does not merge these from a theme; copy them into your site. ---
 [outputs]
   home = ["html", "rss", "atom", "jsonfeed", "searchindex", "webmanifest"]
+[outputFormats.rss]
+  baseName = "rss"
 [pagination]
   pagerSize = 10
 [related]
@@ -71,48 +73,146 @@ enableEmoji = true
   pageRef = "/archives"
   weight = 10
   params.icon = "fa fa-archive"
+  params.priority = 1
+
 [[languages.en.menus.main]]
   name = "Categories"
   pageRef = "/categories"
   weight = 20
   params.icon = "fa fa-folder"
+  params.priority = 5
+
 [[languages.en.menus.main]]
   name = "Tags"
   pageRef = "/tags"
   weight = 30
   params.icon = "fa fa-tags"
+  params.priority = 6
+
+[[languages.en.menus.main]]
+  identifier = "tutorial"
+  name = "Tutorial"
+  pageRef = "/posts/tutorial"
+  weight = 40
+  params.icon = "fa fa-paint-brush"
+  params.priority = 2
+
+[[languages.en.menus.main]]
+  parent = "tutorial"
+  name = "1. Canvas"
+  pageRef = "/posts/tutorial/01-canvas"
+  weight = 1
+
+[[languages.en.menus.main]]
+  parent = "tutorial"
+  name = "2. Palette"
+  pageRef = "/posts/tutorial/02-palette"
+  weight = 2
+
+[[languages.en.menus.main]]
+  name = "About"
+  pageRef = "/about"
+  weight = 60
+  params.icon = "fa fa-user"
+  params.priority = 3
+
+[[languages.en.menus.main]]
+  name = "Friends"
+  pageRef = "/friends"
+  weight = 70
+  params.icon = "fa fa-users"
+  params.priority = 7
+
+[[languages.en.menus.main]]
+  name = "Hugo"
+  url = "https://gohugo.io/"
+  weight = 80
+  params.icon = "fa fa-external-link"
+  params.priority = 8
+
 [[languages.en.menus.main]]
   name = "RSS"
   url = "/rss.xml"
   weight = 90
   params.icon = "fa fa-rss"
+  params.priority = 9
 
 [[languages.zh.menus.main]]
   name = "归档"
   pageRef = "/archives"
   weight = 10
   params.icon = "fa fa-archive"
+  params.priority = 1
+
+[[languages.zh.menus.main]]
+  name = "分类"
+  pageRef = "/categories"
+  weight = 20
+  params.icon = "fa fa-folder"
+  params.priority = 5
+
 [[languages.zh.menus.main]]
   name = "标签"
   pageRef = "/tags"
   weight = 30
   params.icon = "fa fa-tags"
+  params.priority = 6
+
+[[languages.zh.menus.main]]
+  identifier = "tutorial"
+  name = "教程"
+  pageRef = "/posts/tutorial"
+  weight = 40
+  params.icon = "fa fa-paint-brush"
+  params.priority = 2
+
+[[languages.zh.menus.main]]
+  parent = "tutorial"
+  name = "1. 画布"
+  pageRef = "/posts/tutorial/01-canvas"
+  weight = 1
+
+[[languages.zh.menus.main]]
+  name = "关于"
+  pageRef = "/about"
+  weight = 60
+  params.icon = "fa fa-user"
+  params.priority = 3
+
+[[languages.zh.menus.main]]
+  name = "Hugo"
+  url = "https://gohugo.io/"
+  weight = 80
+  params.icon = "fa fa-external-link"
+  params.priority = 8
+
+[[languages.zh.menus.main]]
+  name = "RSS"
+  url = "/zh/rss.xml"
+  weight = 90
+  params.icon = "fa fa-rss"
+  params.priority = 9
 
 [params]
   author = "Your Name"
   mainSections = ["posts"]
+  description = "Demo site of the freemind.bithack theme for Hugo."
   # editURL = "https://github.com/you/blog/edit/main/"
   [params.authorCard]
+    name = "Your Name"
     bio = "A short bio shown in the sidebar."
   [[params.social]]
     name = "GitHub"
     icon = "fa fa-github"
-    url = "https://github.com/"
+    url = "https://github.com/zzxzzk115/hugo-theme-freemind-bithack"
   [[params.social]]
     name = "WeChat"
     icon = "fa fa-weixin"
     copy = "my-wechat-id"
-  [[params.links]]
-    title = "GitHub"
-    url = "https://github.com/"
-    icon = "fa fa-github"
+  [[params.social]]
+    name = "Email"
+    icon = "fa fa-envelope"
+    url = "mailto:you@example.com"
+  [[params.social]]
+    name = "RSS"
+    rss = true

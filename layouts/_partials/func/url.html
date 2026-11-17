@@ -1,0 +1,20 @@
+{{- /*
+  Site-relative URL for a path from content or params.
+  Unlike relURL, a root-relative path ("/img/a.png") also gets the site's base path, so a site
+  served from a subdirectory (baseURL = "https://user.github.io/blog/") still finds it:
+    "/img/a.png" -> "/blog/img/a.png",  "img/a.png" -> "/blog/img/a.png"
+  Absolute URLs, protocol-relative URLs, anchors, mailto: etc. are returned unchanged.
+*/ -}}
+{{- $p := . }}
+{{- $out := $p }}
+{{- $u := urls.Parse $p }}
+{{- $skip := or $u.IsAbs (hasPrefix $p "//") (hasPrefix $p "#") (hasPrefix $p "?") (hasPrefix $p "mailto:") (hasPrefix $p "data:") (eq $p "") }}
+{{- if not $skip }}
+  {{- $base := strings.TrimSuffix "/" (urls.Parse site.BaseURL).Path }}
+  {{- if hasPrefix $p "/" }}
+    {{- if and $base (not (hasPrefix $p (printf "%s/" $base))) }}{{ $out = printf "%s%s" $base $p }}{{ end }}
+  {{- else }}
+    {{- $out = $p | relURL }}
+  {{- end }}
+{{- end }}
+{{- return $out }}

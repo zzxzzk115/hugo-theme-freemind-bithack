@@ -5,7 +5,7 @@
 <div class="row page">
   <div class="col-md-12">
     <div class="mypage">
-      <p>Page not found. <a href="{{ "/" | relURL }}">Back home</a> or try the <a href="{{ "archives/" | relURL }}">archives</a>.</p>
+      <p>Page not found. <a href="{{ site.Home.RelPermalink }}">Back home</a>{{ with site.GetPage "/archives" }} or try the <a href="{{ .RelPermalink }}">archives</a>{{ end }}.</p>
     </div>
   </div>
 </div>

@@ -1,0 +1,10 @@
+{{- /*
+  Articles for the home page list: `sticky: true` first (newest first), then the rest by date.
+  Used by both head.html (page title) and home.html: Hugo creates a page's paginator once, on the
+  first .Paginate/.Paginator call, so every caller must paginate this same list.
+*/ -}}
+{{- $all := partial "func/articles.html" . }}
+{{- $pages := slice }}
+{{- range where $all "Params.sticky" true }}{{ $pages = $pages | append . }}{{ end }}
+{{- range where $all "Params.sticky" "!=" true }}{{ $pages = $pages | append . }}{{ end }}
+{{- return $pages }}
