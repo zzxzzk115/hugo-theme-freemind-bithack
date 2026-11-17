@@ -22,7 +22,10 @@ math[display="block"] { font-size: 1.15em; }
 /* {{< friend >}} */
 .friend-card { display: inline-flex; align-items: center; gap: 8px; margin: 6px 8px 6px 0; padding: 8px 14px; border: 1px solid #333; border-radius: 4px; background: #111; }
 .friend-card:hover { border-color: #0f0; text-decoration: none; }
-.friend-card img { width: 32px; height: 32px; border-radius: 50%; }
+.friend-avatar { position: relative; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 50%; overflow: hidden; }
+.friend-avatar svg, .friend-avatar img { position: absolute; top: 0; left: 0; width: 32px !important; height: 32px; margin: 0 !important; display: block; }
+.friend-avatar img { object-fit: cover; background: #1d1d1d; }
+.friend-avatar-default { image-rendering: pixelated; }
 .friend-desc { color: #888; font-size: 90%; }
 
 .mermaid { background: transparent; border: 0; }

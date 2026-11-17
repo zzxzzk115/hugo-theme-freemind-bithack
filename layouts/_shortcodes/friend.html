@@ -1,9 +1,18 @@
 {{- /*
   Friend link card.
   {{< friend name="Ringotc" url="https://ringotc.github.io/" desc="数据科学方向" avatar="" >}}
+  Without an avatar (or if it fails to load) a pixel default avatar of the same size is shown.
 */ -}}
 <a class="friend-card" href="{{ .Get "url" }}" target="_blank" rel="noopener">
-  {{- with .Get "avatar" }}<img src="{{ . }}" alt="" class="nofancybox" loading="lazy">{{ else }}<i class="fa fa-user"></i>{{ end }}
+  <span class="friend-avatar">
+    <svg class="friend-avatar-default" viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect width="16" height="16" fill="#1d1d1d"/>
+      <g fill="#8a8a8a"><rect x="6" y="3" width="4" height="1"/><rect x="5" y="4" width="6" height="4"/><rect x="6" y="8" width="4" height="1"/><rect x="4" y="10" width="8" height="1"/><rect x="3" y="11" width="10" height="5"/></g>
+    </svg>
+    {{- with .Get "avatar" }}
+    <img src="{{ . }}" alt="" class="nofancybox" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">
+    {{- end }}
+  </span>
   <span class="friend-name">{{ .Get "name" }}</span>
   {{- with .Get "desc" }}<span class="friend-desc">{{ . }}</span>{{ end }}
 </a>
