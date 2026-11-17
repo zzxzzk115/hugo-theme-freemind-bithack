@@ -147,7 +147,7 @@ The inside is regular Markdown: **bold**, `code`, lists and other shortcodes all
 Embed a NetEase Cloud Music song, album or playlist (artist pages can't be embedded):
 
 ```text
-{{< netease 1234567890 >}}
-{{< netease id="1234567" type="album" >}}
+{{</* netease 1234567890 */>}}
+{{</* netease id="1234567" type="album" */>}}
 ```
 
