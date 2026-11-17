@@ -1,17 +1,31 @@
-{{- /* Receives a Paginator. */ -}}
+{{- /* Receives a Paginator. Numbered pages: first, last, and two either side of the current one; gaps become "…". */ -}}
 {{- if gt .TotalPages 1 }}
+{{- $cur := .PageNumber }}{{ $total := .TotalPages }}
 <nav class="pagination page-nav" aria-label="{{ T "prev_page" }} / {{ T "next_page" }}">
   {{- if .HasPrev }}
-  <a href="{{ .Prev.URL }}" class="page-nav-btn"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev_page" }}</a>
+  <a href="{{ .Prev.URL }}" class="page-nav-btn" rel="prev"><i class="fa fa-angle-left"></i> {{ T "prev_page" }}</a>
   {{- else }}
-  <span class="page-nav-btn disabled"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev_page" }}</span>
+  <span class="page-nav-btn disabled"><i class="fa fa-angle-left"></i> {{ T "prev_page" }}</span>
   {{- end }}
-  <a href="{{ site.Home.RelPermalink }}" class="page-nav-btn"><i class="fa fa-home"></i> {{ T "home" }}</a>
-  <span class="page-nav-count">{{ .PageNumber }} / {{ .TotalPages }}</span>
+  <span class="page-nav-numbers">
+  {{- range .Pagers }}
+    {{- $n := .PageNumber }}
+    {{- $d := sub $n $cur }}
+    {{- if or (eq $n 1) (eq $n $total) (and (ge $d -2) (le $d 2)) }}
+      {{- if eq $n $cur }}
+    <span class="page-nav-num current" aria-current="page">{{ $n }}</span>
+      {{- else }}
+    <a href="{{ .URL }}" class="page-nav-num">{{ $n }}</a>
+      {{- end }}
+    {{- else if or (eq $d -3) (eq $d 3) }}
+    <span class="page-nav-gap">…</span>
+    {{- end }}
+  {{- end }}
+  </span>
   {{- if .HasNext }}
-  <a href="{{ .Next.URL }}" class="page-nav-btn">{{ T "next_page" }} <i class="fa fa-arrow-circle-o-right"></i></a>
+  <a href="{{ .Next.URL }}" class="page-nav-btn" rel="next">{{ T "next_page" }} <i class="fa fa-angle-right"></i></a>
   {{- else }}
-  <span class="page-nav-btn disabled">{{ T "next_page" }} <i class="fa fa-arrow-circle-o-right"></i></span>
+  <span class="page-nav-btn disabled">{{ T "next_page" }} <i class="fa fa-angle-right"></i></span>
   {{- end }}
 </nav>
 {{- end }}

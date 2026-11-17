@@ -301,12 +301,16 @@ body { padding-top: 64px; }
 @media (max-width: 767px) { .lang-prompt { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
 @media print { .lang-prompt { display: none !important; } }
 
-/* ---- Home page navigation (index_pagination.html): terminal-style buttons ---- */
-.page-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; }
-.page-nav .page-nav-btn { display: inline-block; padding: 5px 12px; border: 1px solid #333; background: #000 !important; color: #ccc !important;
-  text-decoration: none !important; transition: border-color .15s, color .15s; }
-.page-nav a.page-nav-btn:hover, .page-nav a.page-nav-btn:focus { border-color: #2bbc8a; color: #2bbc8a !important; background: #111 !important; }
+/* ---- Home page navigation (index_pagination.html): centred, numbered, terminal-style ---- */
+.page-nav { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; margin: 24px 0 16px; }
+.page-nav-numbers { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px; }
+.page-nav .page-nav-btn, .page-nav .page-nav-num { display: inline-block; box-sizing: border-box; padding: 4px 10px; min-width: 32px; text-align: center;
+  border: 1px solid #333; background: #000 !important; color: #ccc !important; text-decoration: none !important; line-height: 20px;
+  transition: border-color .15s, color .15s; }
+.page-nav a.page-nav-btn:hover, .page-nav a.page-nav-num:hover, .page-nav a:focus { border-color: #2bbc8a; color: #2bbc8a !important; background: #111 !important; }
+.page-nav a:hover *, .page-nav a:focus * { color: inherit !important; background: transparent !important; }
+.page-nav .page-nav-num.current { border-color: #2bbc8a; background: #2bbc8a !important; color: #000 !important; cursor: default; }
 .page-nav .page-nav-btn.disabled { color: #555 !important; border-color: #222; cursor: default; }
 .page-nav .page-nav-btn i { margin: 0 2px; }
-.page-nav a.page-nav-btn:hover *, .page-nav a.page-nav-btn:focus * { color: inherit !important; background: transparent !important; }
-.page-nav-count { color: #888; font-size: 90%; padding: 0 4px; }
+.page-nav-gap { color: #666; padding: 0 2px; }
+@media (max-width: 480px) { .page-nav .page-nav-btn { padding: 4px 8px; } }
