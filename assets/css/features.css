@@ -130,22 +130,11 @@ a.post-nav-item:hover { border-color: #2bbc8a; }
 
 /* mobile */
 @media (max-width: 767px) {
-  #main-nav .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-  #main-nav .container:before, #main-nav .container:after { display: none; }
-  #main-nav .navbar-brand { float: none; padding-left: 0; }
-  #toggleButton { float: none; order: 2; margin: 6px 0; padding: 4px 6px; margin-right: 0; }
-  #toggleButton img { display: block; height: 18px; }
-  #main-nav .navbar-collapse { order: 3; flex-basis: 100%; width: 100%; max-height: 75vh; overflow-y: auto; margin: 0; padding: 0; border-top: 1px solid #333; }
-  #main-nav .navbar-nav { float: none; margin: 4px 0; }
-  #main-nav .navbar-nav > li { float: none; }
-  #main-nav .navbar-nav > li > a { padding: 8px 4px; line-height: 20px; }
-  #main-nav .navbar-nav > li > a i { width: 20px; }
   .container { padding-left: 16px; padding-right: 16px; }
   .page-header h1 { font-size: 1.6em; word-break: break-word; }
   .post-footer { flex-direction: column; align-items: flex-start; }
   .post-nav { flex-direction: column; }
   .post-nav-item.next { text-align: left; }
-  .navbar .dropdown-menu { position: static; float: none; box-shadow: none; }
   .mypage table { display: block; overflow-x: auto; }
 }
 
@@ -203,3 +192,34 @@ body { padding-top: 64px; }
 .mypage :not(pre) > code { overflow-wrap: anywhere; word-break: break-word; white-space: normal; }
 .mypage img, .mypage video, .mypage iframe, .mypage object { max-width: 100%; }
 .mypage table { max-width: 100%; }
+
+/* ---- Pixel menu button (replaces icon-bar.png): bars when collapsed, a cross when open ---- */
+#toggleButton { background: transparent !important; border: 0 !important; padding: 4px; color: #ccc; }
+#toggleButton:hover, #toggleButton:focus { color: #2bbc8a; background: transparent !important; }
+#toggleButton svg { display: block; image-rendering: pixelated; }
+#toggleButton .icon-close { display: none; }
+#toggleButton:not(.collapsed) .icon-menu { display: none; }
+#toggleButton:not(.collapsed) .icon-close { display: block; color: #2bbc8a; }
+
+/* ---- Navbar layout ------------------------------------------------------
+   The full menu needs ~1150px, so: one row with tighter links on wide screens,
+   the pixel menu button below 1200px (Bootstrap alone would only collapse below 768px). */
+@media (min-width: 1200px) {
+  #main-nav .nav > li > a { padding-left: 8px; padding-right: 8px; }
+}
+@media (max-width: 1199px) {
+  #main-nav .container { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  #main-nav .container:before, #main-nav .container:after { display: none; }
+  #main-nav .navbar-brand { float: none; margin-left: 0 !important; padding-left: 0; }
+  #main-nav .navbar-toggle { display: block; float: none; order: 2; margin: 6px 0; margin-right: 0; }
+  #main-nav .navbar-collapse { order: 3; flex-basis: 100%; width: 100%; max-height: 75vh; overflow-y: auto; margin: 0; padding: 0; border-top: 1px solid #333; }
+  #main-nav .navbar-collapse.collapse { display: none !important; }
+  #main-nav .navbar-collapse.collapse.in { display: block !important; }
+  #main-nav .navbar-nav { float: none; margin: 4px 0; }
+  #main-nav .navbar-nav > li { float: none; }
+  #main-nav .navbar-nav > li > a { padding: 8px 4px; line-height: 20px; }
+  #main-nav .navbar-nav > li > a i { width: 20px; }
+  #main-nav .dropdown-menu { position: static; float: none; box-shadow: none; border: 0; padding-left: 20px; }
+  #main-nav .dropdown:hover > .dropdown-menu { display: none; }
+  #main-nav .dropdown.open > .dropdown-menu { display: block; }
+}

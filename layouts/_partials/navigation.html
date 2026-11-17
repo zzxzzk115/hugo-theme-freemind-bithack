@@ -6,9 +6,10 @@
 {{- end }}
 <nav id="main-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
-    <button id="toggleButton" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+    <button id="toggleButton" type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-label="Menu">
       <span class="sr-only">Toggle navigation</span>
-      <img src="{{ "icon-bar.png" | relURL }}" alt="">
+      <svg class="icon-menu" viewBox="0 0 16 14" width="32" height="28" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="0" y="1" width="1" height="12"/><rect x="15" y="1" width="1" height="12"/><rect x="4" y="3" width="8" height="2"/><rect x="4" y="6" width="8" height="2"/><rect x="4" y="9" width="8" height="2"/></svg>
+      <svg class="icon-close" viewBox="0 0 16 14" width="32" height="28" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="0" y="1" width="1" height="12"/><rect x="15" y="1" width="1" height="12"/><rect x="4" y="3" width="2" height="1"/><rect x="10" y="3" width="2" height="1"/><rect x="5" y="4" width="2" height="1"/><rect x="9" y="4" width="2" height="1"/><rect x="6" y="5" width="2" height="1"/><rect x="8" y="5" width="2" height="1"/><rect x="7" y="6" width="2" height="1"/><rect x="7" y="6" width="2" height="1"/><rect x="8" y="7" width="2" height="1"/><rect x="6" y="7" width="2" height="1"/><rect x="9" y="8" width="2" height="1"/><rect x="5" y="8" width="2" height="1"/><rect x="10" y="9" width="2" height="1"/><rect x="4" y="9" width="2" height="1"/><rect x="11" y="10" width="2" height="1"/><rect x="3" y="10" width="2" height="1"/></svg>
     </button>
     <a class="navbar-brand" href="{{ site.Home.RelPermalink }}">{{ site.Title }}</a>
     <div class="collapse navbar-collapse nav-menu">
