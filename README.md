@@ -84,6 +84,22 @@ zh = "编程语言"
 
 相关文章会把它们视为同一个标签，标签/分类页的语言切换也会跳到对应的页面。
 
+### 归档分时期
+
+在站点 `data/eras.toml` 里按日期划分时期，归档页会先按时期、再按年份分组（没有这个文件就只按年份）：
+
+```toml
+[[eras]]
+from = "2022-11-01"            # 不写 to 表示至今
+title = { en = "Work & PhD", zh = "工作与读博" }
+note = { en = "VuePress Theme Hope", zh = "VuePress Theme Hope 时期" }
+
+[[eras]]
+from = "2020-10-01"
+to = "2022-10-31"
+title = { en = "Growing Up", zh = "日渐成熟" }
+```
+
 ### 短代码
 
 - `{{< alert type="warning" title="注意" >}}**Markdown**{{< /alert >}}`：提示框

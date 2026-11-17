@@ -231,3 +231,14 @@ body { padding-top: 64px; }
   #main-nav .navbar-nav .open .dropdown-menu { position: absolute; background: #000; border: 1px solid #333; }
   #main-nav .nav-more .dropdown .dropdown-menu { position: static; border: 0; }
 }
+
+/* ---- Archive eras (data/eras.toml) ---- */
+.era-nav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; }
+.era-nav a { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; border: 1px solid #333; color: #ccc; text-decoration: none !important; background: transparent !important; }
+.era-nav a:hover { border-color: #2bbc8a; color: #fff !important; }
+.era-nav-count { color: #2bbc8a; font-size: 85%; }
+.era { margin: 10px 0 28px; padding-left: 14px; border-left: 2px solid #2bbc8a; }
+.era-title { margin: 0 0 4px; font-size: 1.35em; color: #fff; }
+.era-range { margin-left: 10px; font-size: 65%; color: #888; font-weight: normal; }
+.era-note { color: #888; font-size: 90%; margin: 0 0 10px; }
+.era h4.archive-ul { margin-top: 12px; }

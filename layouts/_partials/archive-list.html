@@ -1,4 +1,35 @@
-{{- /* Params: pages, title, icon. Renders a year-grouped archive like hexo's archive.ejs. */ -}}
+{{- /*
+  Params: pages, title, icon, page, eras (bool).
+  Year-grouped archive like hexo's archive.ejs. With eras = true and site data `eras`
+  (data/eras.toml), years are further grouped into the site's periods:
+
+    [[eras]]
+    from = "2020-10-01"          # inclusive
+    to = "2022-10-31"            # inclusive; leave out for "until now"
+    title = { en = "Growing Up", zh = "日渐成熟" }
+    note = { en = "Self-hosted Hexo blog", zh = "自建 Hexo 博客时期" }
+*/ -}}
+{{- define "_partials/inline/archive-years.html" }}
+  {{- $ctx := . }}
+  {{- range .pages.GroupByDate "2006" }}
+    {{- $key := .Key }}
+    {{- $id := printf "%s-y%s" $ctx.prefix $key }}
+    {{- if not ($ctx.page.Store.Get (printf "archive-year-%s" $key)) }}
+      {{- $ctx.page.Store.Set (printf "archive-year-%s" $key) true }}
+      {{- $id = printf "y%s" $key }}
+    {{- end }}
+    <h4 class="archive-ul" data-toggle="collapse" data-target="#{{ $id }}">{{ $key }}<b class="caret"></b></h4>
+    <ul id="{{ $id }}" class="collapse in">
+      {{- range .Pages }}
+      <li class="listing-item">
+        <span class="date_class">{{ .Date.Format "2006-01-02" }}</span> &raquo;
+        <span class="title"><a href="{{ .Params.link | default .RelPermalink }}"{{ with .Description }} title="{{ . }}"{{ end }}>{{ .Title }}</a></span>
+      </li>
+      {{- end }}
+    </ul>
+  {{- end }}
+{{- end }}
+
 {{ partial "breadcrumbs.html" .page }}
 <div class="page-header">
   <h1 class="archive-title"><i class="{{ .icon | default "fa fa-archive" }}"></i> {{ .title }}</h1>
@@ -7,16 +38,43 @@
   <div class="{{ if site.Params.widgets }}col-md-9{{ else }}col-md-12{{ end }}">
     <div id="top_search"></div>
     <div class="archive">
-      {{- range .pages.GroupByDate "2006" }}
-      <h4 class="archive-ul" data-toggle="collapse" data-target="#y{{ .Key }}">{{ .Key }}<b class="caret"></b></h4>
-      <ul id="y{{ .Key }}" class="collapse in">
-        {{- range .Pages }}
-        <li class="listing-item">
-          <span class="date_class">{{ .Date.Format "2006-01-02" }}</span> &raquo;
-          <span class="title"><a href="{{ .Params.link | default .RelPermalink }}"{{ with .Description }} title="{{ . }}"{{ end }}>{{ .Title }}</a></span>
-        </li>
+      {{- $eras := and .eras (index (hugo.Data.eras | default dict) "eras") }}
+      {{- if $eras }}
+        {{- $lang := site.Language.Lang }}
+        {{- $groups := slice }}
+        {{- $rest := .pages }}
+        {{- range $i, $e := $eras }}
+          {{- $from := time.AsTime $e.from }}
+          {{- $pages := where $.pages "Date" "ge" $from }}
+          {{- with $e.to }}{{ $pages = where $pages "Date" "lt" ((time.AsTime .).AddDate 0 0 1) }}{{ end }}
+          {{- if $pages }}
+            {{- $title := index $e.title $lang | default (index $e.title "en") | default (printf "%d" $i) }}
+            {{- $note := "" }}{{ with $e.note }}{{ $note = index . $lang | default (index . "en") }}{{ end }}
+            {{- $groups = $groups | append (dict "id" (printf "era-%d" $i) "title" $title "note" $note "pages" $pages "from" $from "to" $e.to) }}
+            {{- $rest = $rest | complement $pages }}
+          {{- end }}
         {{- end }}
-      </ul>
+        {{- with $rest }}{{ $groups = $groups | append (dict "id" "era-other" "title" (T "era_other") "note" "" "pages" .ByDate.Reverse) }}{{ end }}
+
+        <ul class="era-nav list-unstyled">
+          {{- range $groups }}
+          <li><a href="#{{ .id }}"><span class="era-nav-title">{{ .title }}</span><span class="era-nav-count">{{ len .pages }}</span></a></li>
+          {{- end }}
+        </ul>
+
+        {{- range $groups }}
+        <section class="era" id="{{ .id }}">
+          <h3 class="era-title">{{ .title }}
+            {{- with .from }}<span class="era-range">{{ .Format "2006.01" }} – {{ end }}
+            {{- with .to }}{{ (time.AsTime .).Format "2006.01" }}{{ else }}{{ if .from }}{{ T "present" }}{{ end }}{{ end }}
+            {{- if .from }}</span>{{ end }}
+          </h3>
+          {{- with .note }}<p class="era-note">{{ . }}</p>{{ end }}
+          {{ partial "inline/archive-years.html" (dict "pages" .pages "prefix" .id "page" $.page) }}
+        </section>
+        {{- end }}
+      {{- else }}
+        {{ partial "inline/archive-years.html" (dict "pages" .pages "prefix" "all" "page" .page) }}
       {{- end }}
     </div>
   </div>
