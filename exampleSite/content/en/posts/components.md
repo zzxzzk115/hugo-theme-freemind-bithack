@@ -83,7 +83,7 @@ public static T Add<T>(T a, T b) where T : INumber<T> => a + b;
             "datasets": [{ "label": "Posts", "data": [21, 16, 17], "backgroundColor": "#2bbc8a" }] } }
 ```
 
-## Long code (collapsed)
+## Long code (line numbers, copy button)
 
 ```text
 line 1
