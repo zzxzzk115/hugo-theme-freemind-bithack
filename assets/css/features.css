@@ -300,3 +300,13 @@ body { padding-top: 64px; }
 .lang-prompt-stay:hover, .lang-prompt-stay:focus { color: #fff; }
 @media (max-width: 767px) { .lang-prompt { left: 12px; right: 12px; bottom: 12px; max-width: none; } }
 @media print { .lang-prompt { display: none !important; } }
+
+/* ---- Home page navigation (index_pagination.html): terminal-style buttons ---- */
+.page-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; }
+.page-nav .page-nav-btn { display: inline-block; padding: 5px 12px; border: 1px solid #333; background: #000 !important; color: #ccc !important;
+  text-decoration: none !important; transition: border-color .15s, color .15s; }
+.page-nav a.page-nav-btn:hover, .page-nav a.page-nav-btn:focus { border-color: #2bbc8a; color: #2bbc8a !important; background: #111 !important; }
+.page-nav .page-nav-btn.disabled { color: #555 !important; border-color: #222; cursor: default; }
+.page-nav .page-nav-btn i { margin: 0 2px; }
+.page-nav a.page-nav-btn:hover *, .page-nav a.page-nav-btn:focus * { color: inherit !important; background: transparent !important; }
+.page-nav-count { color: #888; font-size: 90%; padding: 0 4px; }

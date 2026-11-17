@@ -1,16 +1,17 @@
 {{- /* Receives a Paginator. */ -}}
 {{- if gt .TotalPages 1 }}
-<div class="pagination">
+<nav class="pagination page-nav" aria-label="{{ T "prev_page" }} / {{ T "next_page" }}">
   {{- if .HasPrev }}
-  <a href="{{ .Prev.URL }}" class="btn btn-default"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev" }}</a>
+  <a href="{{ .Prev.URL }}" class="page-nav-btn"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev_page" }}</a>
   {{- else }}
-  <a class="btn btn-default disabled"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev" }}</a>
+  <span class="page-nav-btn disabled"><i class="fa fa-arrow-circle-o-left"></i> {{ T "prev_page" }}</span>
   {{- end }}
-  <a href="{{ site.Home.RelPermalink }}" class="btn btn-default"><i class="fa fa-home"></i>Home</a>
+  <a href="{{ site.Home.RelPermalink }}" class="page-nav-btn"><i class="fa fa-home"></i> {{ T "home" }}</a>
+  <span class="page-nav-count">{{ .PageNumber }} / {{ .TotalPages }}</span>
   {{- if .HasNext }}
-  <a href="{{ .Next.URL }}" class="btn btn-default">{{ T "next" }} <i class="fa fa-arrow-circle-o-right"></i></a>
+  <a href="{{ .Next.URL }}" class="page-nav-btn">{{ T "next_page" }} <i class="fa fa-arrow-circle-o-right"></i></a>
   {{- else }}
-  <a class="btn btn-default disabled">{{ T "next" }} <i class="fa fa-arrow-circle-o-right"></i></a>
+  <span class="page-nav-btn disabled">{{ T "next_page" }} <i class="fa fa-arrow-circle-o-right"></i></span>
   {{- end }}
-</div>
+</nav>
 {{- end }}

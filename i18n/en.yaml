@@ -46,3 +46,5 @@ reader_exit: Exit reader
 more: More
 present: present
 era_other: Other
+prev_page: Previous page
+next_page: Next page
