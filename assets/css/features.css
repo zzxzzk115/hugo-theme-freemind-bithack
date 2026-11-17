@@ -57,7 +57,8 @@ html.reader .mypage h4::before, html.reader .mypage h5::before, html.reader .myp
 .md-pdf object { border: 1px solid #333; background: #fff; }
 .md-pdf-link { display: inline-block; margin-top: 4px; font-size: 85%; }
 .md-chart { position: relative; margin: 1em 0; padding: 10px; background: #111; border: 1px solid #333; }
-.md-badge { font-size: 70%; vertical-align: middle; border-radius: 2px; }
+/* The DOS palette makes .label-info black (invisible); badges use CGA cyan instead. */
+.label-info.md-badge { background-color: #00aaaa; color: #fff; }
 mark { background: #fefe54; color: #000; padding: 0 2px; }
 ins { text-decoration: underline; text-decoration-color: #2bbc8a; }
 img.zoomable { cursor: zoom-in; }
@@ -91,7 +92,11 @@ body.lb-open { overflow: hidden; }
 /* post meta (sticky on desktop) */
 .post-info > div { margin: 2px 0; color: #aaa; font-size: 90%; }
 .post-info i { width: 16px; text-align: center; }
-.original-label { font-size: 70%; border-radius: 0; vertical-align: middle; }
+/* Labels (原创 / pinned / {{< badge >}}): Bootstrap's inline box with line-height 1 is shorter than
+   the CJK pixel glyphs, so they spilled out. Use the pixel font's own 12px size and a real box. */
+.label.original-label, .label.sticky-label, .label.md-badge { display: inline-block; font-size: 12px; line-height: 16px;
+  padding: 1px 6px; border-radius: 0; vertical-align: 1px; font-weight: normal; white-space: nowrap; }
+.label.sticky-label .fa { font-size: 11px; vertical-align: 0; }
 @media (min-width: 980px) {
   #side_meta #post_meta { position: sticky; top: 64px; max-height: calc(100vh - 74px); overflow-y: auto; }
 }
