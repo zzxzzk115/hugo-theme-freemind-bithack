@@ -10,8 +10,14 @@
 {{- $code := index (dict "song" 2 "album" 1 "playlist" 0) $type | default 2 }}
 {{- $h := .Get "height" | default (cond (eq $type "song") 66 430) }}
 {{- $auto := cond (eq (.Get "auto") "true") 1 0 }}
+{{- /* NetEase answers a phone on the desktop player (and a desktop on the mobile one) with a redirect
+       over plain http, which an https page blocks as mixed content. So pick the player on the visitor's
+       device, with the same user-agent test NetEase uses (Android/iPhone/iPad/iPod/Mobi/Phone). */}}
+{{- $q := printf "type=%d&id=%v&auto=%d&height=%v" $code $id $auto $h }}
+{{- $page := printf "https://music.163.com/#/%s?id=%v" (cond (eq $type "song") "song" $type) $id }}
 <div class="md-netease">
-  <iframe src="https://music.163.com/outchain/player?type={{ $code }}&amp;id={{ $id }}&amp;auto={{ $auto }}&amp;height={{ $h }}"
-    width="100%" height="{{ add (int $h) 20 }}" frameborder="0" loading="lazy" title="NetEase Cloud Music"
+  <iframe data-ne="{{ $q }}" width="100%" height="{{ add (int $h) 20 }}" frameborder="0" loading="lazy" title="NetEase Cloud Music"
     allow="autoplay; encrypted-media"></iframe>
+  <script>(function (f) { f.src = "https://music.163.com/" + (/Android|iPhone|iPad|iPod|Mobi|Phone/i.test(navigator.userAgent) ? "m/" : "") + "outchain/player?" + f.getAttribute("data-ne"); })(document.currentScript.previousElementSibling);</script>
+  <noscript><a href="{{ $page }}" target="_blank" rel="noopener">NetEase Cloud Music</a></noscript>
 </div>
