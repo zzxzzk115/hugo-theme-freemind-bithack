@@ -54,4 +54,24 @@
 </script>
 {{- end }}
 
+{{- if .Store.Get "hasMusic" }}
+{{- $ap := site.Params.aplayerCDN | default "https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/" }}
+<link rel="stylesheet" href="{{ $ap }}APlayer.min.css">
+<script src="{{ $ap }}APlayer.min.js" defer></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (!window.APlayer) return;
+    document.querySelectorAll(".md-music[data-audio]").forEach(function (el) {
+      var audio = JSON.parse(el.getAttribute("data-audio"));
+      var hasLrc = audio.some(function (a) { return a.lrc; });
+      new APlayer({
+        container: el, audio: audio, theme: "#2bbc8a", preload: "none", mutex: true, volume: 0.7,
+        lrcType: hasLrc ? 1 : 0, listFolded: el.getAttribute("data-fold") === "true", listMaxHeight: "260px",
+        order: el.getAttribute("data-order"), loop: el.getAttribute("data-loop")
+      });
+    });
+  });
+</script>
+{{- end }}
+
 {{ partial "hooks/body-end.html" . }}

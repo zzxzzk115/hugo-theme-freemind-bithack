@@ -6,7 +6,7 @@ A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithac
 
 ![screenshot](images/screenshot.png)
 
-**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / netease / details / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
+**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / music (APlayer) / netease / details / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
 
 Dark only, on purpose — it is the theme's identity.
 
@@ -109,6 +109,7 @@ title = { en = "Growing Up", zh = "日渐成熟" }
 - `{{< badge "New" "tip" >}}`：徽章
 - `{{< icon folder >}}`：行内 Font Awesome 4 图标
 - `{{< video src="/a.mp4" poster="/a.jpg" >}}`、`{{< pdf "/paper.pdf" >}}`、`{{< bilibili BV1554y1D7a1 >}}`、Hugo 自带的 `{{< youtube id >}}`
+- `{{< music ids="1402719608, 1847289377" >}}`：APlayer 音乐播放器（像素绿皮肤、播放列表、LRC 歌词），只在用到的页面加载。网易云歌曲走网易云官方外链音频（仅限可免费播放的歌），标题、歌手、封面、歌词读 `data/music.toml`；也可以放自己的音频：`{{< music src="/audio/a.mp3" title="…" artist="…" cover="…" lrc="/audio/a.lrc" >}}`。选项 `fold="true"` 折叠列表，`order="random"` 随机，`loop="none|one|all"`
 - `{{< netease 1847289377 >}}`：网易云音乐外链播放器（`type="album"` / `"playlist"` 播放专辑、歌单；歌手页不能外链，有版权限制的歌曲在外链里放不了）
 - `{{< details "标题" >}} …Markdown… {{< /details >}}`：可折叠区块（`open="true"` 默认展开）
 - `{{< linkcard url="…" title="…" desc="…" image="/img/…" >}}`：链接卡片（类似 Notion / FlowUs 的书签），左边标题、描述和站点，右边图片，整张卡片可点击；只有 `url` 是必填

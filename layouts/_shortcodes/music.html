@@ -1,0 +1,45 @@
+{{- /*
+  Music player (APlayer, MIT), loaded only on pages that use it.
+  {{< music ids="1402719608, 1847289377" >}}                       NetEase Cloud Music songs (a playlist)
+  {{< music src="/audio/song.mp3" title="Song" artist="Me" cover="/img/cover.jpg" lrc="/audio/song.lrc" >}}
+                                                                    your own audio file
+  NetEase songs stream from NetEase's own outer link (free-to-play songs only); their title, artist,
+  cover and lyrics come from data/music.toml (tools/netease_music.py writes it; edit freely).
+  Options: fold="true" starts with the playlist folded; order="random" shuffles; loop="none" | "one" | "all".
+*/ -}}
+{{- $list := slice }}
+{{- with .Get "ids" | default (.Get 0) }}
+  {{- range split (replaceRE `[\s,]+` " " (trim . " ,")) " " }}
+    {{- $id := . }}
+    {{- $m := index (site.Data.music | default dict) $id | default dict }}
+    {{- $list = $list | append (dict
+        "name" ($m.title | default (printf "NetEase #%s" $id))
+        "artist" ($m.artist | default "")
+        "cover" ($m.cover | default "")
+        "lrc" ($m.lrc | default "")
+        "url" (printf "https://music.163.com/song/media/outer/url?id=%s.mp3" $id)
+        "page" (printf "https://music.163.com/#/song?id=%s" $id)) }}
+  {{- end }}
+{{- end }}
+{{- with .Get "src" }}
+  {{- /* lrc: a file under static/ (or assets/), read at build time */}}
+  {{- $lrc := "" }}
+  {{- with $.Get "lrc" }}
+    {{- $f := path.Join "static" (strings.TrimPrefix "/" .) }}
+    {{- with resources.Get (strings.TrimPrefix "/" .) }}{{ $lrc = .Content }}{{ else }}{{ if fileExists $f }}{{ $lrc = os.ReadFile $f }}{{ end }}{{ end }}
+  {{- end }}
+  {{- $cover := "" }}{{ with $.Get "cover" }}{{ $cover = partial "func/url.html" . }}{{ end }}
+  {{- $list = $list | append (dict
+      "name" ($.Get "title" | default (path.Base .))
+      "artist" ($.Get "artist" | default "")
+      "cover" $cover
+      "lrc" $lrc
+      "url" (partial "func/url.html" .)
+      "page" (partial "func/url.html" .)) }}
+{{- end }}
+{{- if $list }}
+{{- .Page.Store.Set "hasMusic" true }}
+<div class="md-music" data-audio="{{ $list | jsonify }}" data-fold="{{ .Get "fold" | default "false" }}" data-order="{{ .Get "order" | default "list" }}" data-loop="{{ .Get "loop" | default "all" }}">
+  <noscript><ul>{{ range $list }}<li><a href="{{ .page }}" target="_blank" rel="noopener">{{ .name }}{{ with .artist }} – {{ . }}{{ end }}</a></li>{{ end }}</ul></noscript>
+</div>
+{{- end }}
