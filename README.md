@@ -1,6 +1,6 @@
 # freemind.bithack for Hugo
 
-A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack). Same look, no Node and no jQuery: just the Hugo binary (≥ 0.146, standard edition is enough) and one small script.
+A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack), recreating the author's own modified version of it (red accents, a Chinese pixel font, icon font). No Node and no jQuery: just the Hugo binary (≥ 0.146, standard edition is enough) and one small script.
 
 **Demo:** https://zzxzzk115.github.io/hugo-theme-freemind-bithack/ (built from [exampleSite](exampleSite) by GitHub Actions)
 
@@ -34,7 +34,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 
 ## 中文说明
 
-[hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack) 的 Hugo 移植版：外观保持原样（暗色终端风、像素字体），构建只要 Hugo 单文件，不需要 Node；前端不依赖 jQuery / Bootstrap JS，只有一个约 9 KB 的 `theme.js`。
+[hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack) 的 Hugo 移植版，复刻的是作者当年魔改过的版本（在原版黑底绿链接上加了红色点缀、中文像素字体和图标字体），构建只要 Hugo 单文件，不需要 Node；前端不依赖 jQuery / Bootstrap JS，只有一个约 9 KB 的 `theme.js`。
 
 只提供暗色，这是主题本身的风格。
 
