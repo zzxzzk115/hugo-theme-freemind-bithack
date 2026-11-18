@@ -13,13 +13,13 @@
   {{- $ctx := . }}
   {{- range .pages.GroupByDate "2006" }}
     {{- $key := .Key }}
-    {{- $id := printf "%s-y%s" $ctx.prefix $key }}
-    {{- if not ($ctx.page.Store.Get (printf "archive-year-%s" $key)) }}
-      {{- $ctx.page.Store.Set (printf "archive-year-%s" $key) true }}
-      {{- $id = printf "y%s" $key }}
-    {{- end }}
-    <h4 class="archive-ul" data-toggle="collapse" data-target="#{{ $id }}">{{ $key }}<b class="caret"></b></h4>
-    <ul id="{{ $id }}" class="collapse in">
+    {{- $list := printf "%s-y%s" $ctx.prefix $key }}
+    {{- /* The year's first heading on the page gets id "y<year>" (the timeline links to it). A year can
+           appear in two eras; the seen-set is per render, so a rebuild can't lose the anchors. */}}
+    {{- $anchor := "" }}
+    {{- if not ($ctx.seen.Get $key) }}{{ $ctx.seen.Set $key true }}{{ $anchor = printf "y%s" $key }}{{ end }}
+    <h4 class="archive-ul"{{ with $anchor }} id="{{ . }}"{{ end }} data-toggle="collapse" data-target="#{{ $list }}">{{ $key }}<b class="caret"></b></h4>
+    <ul id="{{ $list }}" class="collapse in">
       {{- range .Pages }}
       <li class="listing-item">
         <span class="date_class">{{ .Date.Format "2006-01-02" }}</span> &raquo;
@@ -38,6 +38,7 @@
   <div class="{{ if site.Params.widgets }}col-md-9{{ else }}col-md-12{{ end }}">
     <div id="top_search"></div>
     <div class="archive">
+      {{- $seen := newScratch }}
       {{- $eras := and .eras (index (hugo.Data.eras | default dict) "eras") }}
       {{- if $eras }}
         {{- $lang := site.Language.Lang }}
@@ -70,11 +71,11 @@
             {{- if .from }}</span>{{ end }}
           </h3>
           {{- with .note }}<p class="era-note">{{ . }}</p>{{ end }}
-          {{ partial "inline/archive-years.html" (dict "pages" .pages "prefix" .id "page" $.page) }}
+          {{ partial "inline/archive-years.html" (dict "pages" .pages "prefix" .id "page" $.page "seen" $seen) }}
         </section>
         {{- end }}
       {{- else }}
-        {{ partial "inline/archive-years.html" (dict "pages" .pages "prefix" "all" "page" .page) }}
+        {{ partial "inline/archive-years.html" (dict "pages" .pages "prefix" "all" "page" .page "seen" $seen) }}
       {{- end }}
     </div>
   </div>

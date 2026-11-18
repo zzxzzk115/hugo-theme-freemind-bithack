@@ -324,6 +324,10 @@ body { padding-top: 64px; }
 .era-range { margin-left: 10px; font-size: 65%; color: #888; font-weight: normal; }
 .era-note { color: #888; font-size: 90%; margin: 0 0 10px; }
 .era h4.archive-ul { margin-top: 12px; }
+/* Jumps from the timeline (#y2021) and the era buttons (#era-1) land below the fixed navbar;
+   the year you jumped to is highlighted. */
+.archive h4.archive-ul, .archive .era { scroll-margin-top: 70px; }
+.archive h4.archive-ul:target { color: #2bbc8a; }
 
 /* ---- Language prompt (theme.js): pixel-style box, bottom-left ---- */
 .lang-prompt { position: fixed; left: 24px; bottom: 24px; z-index: 1060; max-width: 340px; padding: 14px 16px 12px;
