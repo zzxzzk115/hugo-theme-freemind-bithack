@@ -443,12 +443,82 @@
     });
     document.addEventListener("keydown", function (e) {
       var tag = (e.target.tagName || "").toLowerCase();
-      if (e.key === "Escape" && !modal.hidden) { e.preventDefault(); close(); return; }
+      if (e.key === "Escape" && !modal.hidden) { e.preventDefault(); e.stopImmediatePropagation(); close(); return; }
       if ((e.key === "/" && tag !== "input" && tag !== "textarea" && !e.target.isContentEditable) || ((e.ctrlKey || e.metaKey) && (e.key || "").toLowerCase() === "k")) {
         e.preventDefault(); open();
       }
     });
     if (location.hash === "#search") open();
+  }
+
+  /* ------------------------------------------------------------ read on your phone (QR code)
+     Floating button (wide screens): a dialog with a pixel QR code of this page, pointing at the
+     section being read. The QR encoder (qrcode-generator, MIT) loads on first use. */
+  var qrBtn = $("#qr-toggle"), qrModal = $("#qr-modal");
+  if (qrBtn && qrModal && cfg.qrLib) {
+    var qrLib = null, qrLast = null;
+    var loadQr = function () {
+      if (window.qrcode) return Promise.resolve();
+      if (!qrLib) qrLib = new Promise(function (ok, fail) {
+        var s = document.createElement("script");
+        s.src = cfg.qrLib; s.onload = ok; s.onerror = function () { qrLib = null; fail(); };
+        document.head.appendChild(s);
+      });
+      return qrLib;
+    };
+    // This page, at the heading the reader has scrolled past (if any).
+    var qrTarget = function () {
+      var url = location.href.split("#")[0], label = "";
+      if (window.scrollY > 200) {
+        var hs = $$(".md-content h2[id], .md-content h3[id]"), cur = null;
+        for (var i = 0; i < hs.length; i++) { if (hs[i].getBoundingClientRect().top < 90) cur = hs[i]; else break; }
+        if (cur) {
+          url += "#" + encodeURIComponent(cur.id);
+          label = cur.textContent.replace(/#\s*$/, "").trim();
+        }
+      }
+      return { url: url, label: label };
+    };
+    var qrSvg = function (text) {
+      var q = window.qrcode(0, "M");
+      q.addData(text);
+      q.make();
+      var n = q.getModuleCount(), pad = 4, size = n + pad * 2, d = "";
+      for (var r = 0; r < n; r++) for (var c = 0; c < n; c++) if (q.isDark(r, c)) d += "M" + (c + pad) + " " + (r + pad) + "h1v1h-1z";
+      return '<svg viewBox="0 0 ' + size + " " + size + '" shape-rendering="crispEdges" role="img" aria-label="QR code">' +
+        '<rect width="100%" height="100%" fill="#fff"/><path d="' + d + '" fill="#000"/></svg>';
+    };
+    var qrOpen = function () {
+      var tgt = qrTarget(), box = $(".qr-code", qrModal);
+      qrLast = document.activeElement;
+      $(".qr-url", qrModal).value = tgt.url;
+      var sec = $(".qr-section", qrModal);
+      sec.textContent = tgt.label ? "§ " + tgt.label : "";
+      sec.hidden = !tgt.label;
+      box.innerHTML = '<span class="qr-loading">…</span>';
+      qrModal.hidden = false;
+      requestAnimationFrame(function () { requestAnimationFrame(function () { qrModal.classList.add("in"); }); });
+      $(".qr-close", qrModal).focus();
+      loadQr().then(function () { box.innerHTML = qrSvg(tgt.url); },
+        function () { box.innerHTML = '<span class="qr-loading">' + t("qrFailed", "Could not load the QR encoder.") + "</span>"; });
+    };
+    var qrClose = function () {
+      if (qrModal.hidden) return;
+      qrModal.classList.remove("in");
+      setTimeout(function () { qrModal.hidden = true; }, 160);
+      if (qrLast && qrLast.focus) qrLast.focus();
+    };
+    qrBtn.addEventListener("click", qrOpen);
+    $(".qr-close", qrModal).addEventListener("click", qrClose);
+    qrModal.addEventListener("mousedown", function (e) { if (e.target === qrModal) qrClose(); });
+    $(".qr-copy", qrModal).addEventListener("click", function () {
+      copyText($(".qr-url", qrModal).value).then(function () { toast(t("copied", "Copied")); }, function () { toast(t("copyFailed", "Copy failed")); });
+    });
+    $(".qr-url", qrModal).addEventListener("focus", function (e) { e.target.select(); });
+    // Registered before reader mode's handler, so Esc closes only the dialog.
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !qrModal.hidden) { e.preventDefault(); e.stopImmediatePropagation(); qrClose(); }
+    });
   }
 
   /* ------------------------------------------------------------ reader mode (articles only) */

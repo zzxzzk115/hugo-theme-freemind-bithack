@@ -414,3 +414,29 @@ body { padding-top: 64px; }
 .page-nav .page-nav-btn i { margin: 0 2px; }
 .page-nav-gap { color: #666; padding: 0 2px; }
 @media (max-width: 480px) { .page-nav .page-nav-btn { padding: 4px 8px; } }
+
+/* read on your phone: floating button (wide screens only) + QR dialog */
+#qr-toggle { position: fixed; right: 50px; bottom: 86px; width: 90px; box-sizing: border-box; text-align: center; white-space: nowrap; z-index: 1050;
+  padding: 6px 0; border: 1px solid #555; background: #000; color: #aaa; font-size: 13px; cursor: pointer; }
+body.is-article #qr-toggle { bottom: 132px; }
+#qr-toggle:hover, #qr-toggle:focus-visible { color: #fff; border-color: #2bbc8a; outline: 0; }
+@media (max-width: 767px), print { #qr-toggle, .qr-modal { display: none !important; } }
+.qr-modal { position: fixed; inset: 0; z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 16px;
+  background: rgba(0, 0, 0, .55); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); opacity: 0; transition: opacity .16s ease; }
+.qr-modal[hidden] { display: none; }
+.qr-modal.in { opacity: 1; }
+.qr-panel { position: relative; width: 300px; max-width: 100%; padding: 16px; text-align: center; background: #000;
+  border: 2px solid #2bbc8a; box-shadow: 6px 6px 0 rgba(43, 188, 138, .25), 0 0 32px rgba(43, 188, 138, .15); }
+.qr-title { color: #2bbc8a; text-align: left; margin: 0 40px 12px 0; }
+.qr-code { width: 232px; height: 232px; margin: 0 auto; display: flex; align-items: center; justify-content: center; background: #fff; }
+.qr-code svg { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.qr-loading { color: #000; font-size: 13px; padding: 0 12px; }
+.qr-section { margin-top: 10px; color: #fefe54; font-size: 13px; overflow-wrap: anywhere; }
+.qr-hint { margin: 8px 0 0; color: #888; font-size: 12px; }
+.qr-link { display: flex; margin-top: 10px; border: 1px solid #2bbc8a; }
+.qr-url { flex: 1; min-width: 0; height: 30px; padding: 0 6px; border: 0; outline: 0; background: #000; color: #ccc; font-size: 12px; }
+.qr-copy { padding: 0 10px; border: 0; border-left: 1px solid #2bbc8a; background: transparent; color: #2bbc8a; font-size: 12px; cursor: pointer; }
+.qr-copy:hover, .qr-copy:focus-visible { background: #2bbc8a; color: #000; outline: 0; }
+.qr-close { position: absolute; top: 10px; right: 10px; padding: 2px 8px; border: 1px solid #555; background: transparent; color: #888; font-size: 12px; cursor: pointer; }
+.qr-close:hover, .qr-close:focus-visible { color: #000; background: #2bbc8a; border-color: #2bbc8a; outline: 0; }
+@media (prefers-reduced-motion: reduce) { .qr-modal { transition: none; } }

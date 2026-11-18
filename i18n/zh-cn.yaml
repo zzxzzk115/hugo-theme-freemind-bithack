@@ -53,3 +53,8 @@ search_hint_move: 选择
 search_hint_open: 打开
 search_hint_close: 关闭
 close: 关闭
+qr_button: "手机阅读"
+qr_title: "用手机继续读"
+qr_hint: "手机扫码打开本页，并跳到你正在读的小节。"
+qr_copy: "复制"
+qr_failed: "二维码组件加载失败。"

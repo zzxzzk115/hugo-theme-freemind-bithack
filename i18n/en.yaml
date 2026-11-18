@@ -53,3 +53,8 @@ search_hint_move: move
 search_hint_open: open
 search_hint_close: close
 close: Close
+qr_button: "Phone"
+qr_title: "Read on your phone"
+qr_hint: "Scan to open this page on your phone, at the section you are reading."
+qr_copy: "Copy"
+qr_failed: "Could not load the QR encoder."

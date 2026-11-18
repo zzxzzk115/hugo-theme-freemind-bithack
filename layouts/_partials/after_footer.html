@@ -3,11 +3,25 @@
 <button type="button" id="reader-toggle" title="{{ T "reader_mode" }} (R)" aria-pressed="false"><i class="fa fa-book"></i> <span>{{ T "reader_mode" }}</span></button>
 {{- end }}
 
+{{- if ne site.Params.qrCode false }}
+<button type="button" id="qr-toggle" title="{{ T "qr_title" }}"><i class="fa fa-qrcode"></i> <span>{{ T "qr_button" }}</span></button>
+<div id="qr-modal" class="qr-modal" role="dialog" aria-modal="true" aria-label="{{ T "qr_title" }}" hidden>
+  <div class="qr-panel">
+    <div class="qr-title">&gt; {{ T "qr_title" }}</div>
+    <div class="qr-code"></div>
+    <div class="qr-section" hidden></div>
+    <p class="qr-hint">{{ T "qr_hint" }}</p>
+    <div class="qr-link"><input class="qr-url" type="text" readonly aria-label="URL"><button type="button" class="qr-copy">{{ T "qr_copy" }}</button></div>
+    <button type="button" class="qr-close" aria-label="{{ T "close" }}">Esc</button>
+  </div>
+</div>
+{{- end }}
 {{ partial "search-modal.html" . }}
 {{- $cfg := dict
-  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results") "searchPrompt" (T "search_prompt"))
+  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results") "searchPrompt" (T "search_prompt") "qrFailed" (T "qr_failed"))
 }}
 {{- $cfg = merge $cfg (dict "prism" (site.Params.prismCDN | default "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/")) }}
+{{- if ne site.Params.qrCode false }}{{ $cfg = merge $cfg (dict "qrLib" (site.Params.qrCDN | default "https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js")) }}{{ end }}
 {{- /* Offer the visitor's browser language when this page is in another one (params.langPrompt = false to turn off). */}}
 {{- if and hugo.IsMultilingual (ne site.Params.langPrompt false) }}{{ $cfg = merge $cfg (dict "langPrompt" (hugo.Data.langprompt | default dict)) }}{{ end }}
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
