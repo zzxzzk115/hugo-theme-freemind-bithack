@@ -217,6 +217,13 @@ body.search-lock { overflow: hidden; }
 .search-close:hover, .search-close:focus { color: #000; background: #2bbc8a; outline: 0; }
 .search-results { display: none; flex: 1 1 auto; min-height: 0; overflow-y: auto; margin-top: 10px; border-top: 1px dashed #2bbc8a; }
 .search-results.open { display: block; }
+/* pixel-terminal scrollbar instead of the browser's grey one */
+.search-results { scrollbar-width: thin; scrollbar-color: #2bbc8a #000; }
+.search-results::-webkit-scrollbar { width: 8px; }
+.search-results::-webkit-scrollbar-track { background: #000; border-left: 1px dashed #1d5e48; }
+.search-results::-webkit-scrollbar-thumb { background: #2bbc8a; border: 2px solid #000; border-radius: 0; }
+.search-results::-webkit-scrollbar-thumb:hover { background: #4fe0ad; }
+.search-results::-webkit-scrollbar-button { display: none; height: 0; }
 .search-result-list { list-style: none; margin: 0; padding: 0; }
 .search-result-list a { display: block; padding: 8px 10px; border-bottom: 1px dashed #222; border-left: 3px solid transparent; color: #ccc; text-decoration: none !important; }
 .search-result-list a:hover, .search-result-list a.active { background: #0b1a14; border-left-color: #2bbc8a; }
