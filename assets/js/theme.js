@@ -227,49 +227,82 @@
       function () { toast(text); });
   });
 
-  /* ------------------------------------------------------------ lightbox */
+  /* ------------------------------------------------------------ lightbox
+     (lb* names: theme.js is one scope, and the search dialog has its own open/close.)
+     Close: tap anywhere (image included), the close button, Esc, or the browser's Back (phones).
+     Several images: arrows, ← / →, or swipe. */
   var images = $$(".mypage img").filter(function (img) {
     return !img.classList.contains("nofancybox") && !img.closest("a") && !img.closest(".gallery") && !img.closest(".friend-card");
   });
   if (images.length) {
-    var box, boxImg, boxCap, idx = 0;
+    var box, boxImg, boxCap, idx = 0, pushed = false, touchX = null, touchY = null;
     var build = function () {
       box = document.createElement("div");
       box.className = "lightbox";
-      box.innerHTML = '<button class="lb-close" aria-label="Close">&times;</button>' +
-        '<button class="lb-prev" aria-label="Previous">&lsaquo;</button><figure><img alt=""><figcaption></figcaption></figure>' +
-        '<button class="lb-next" aria-label="Next">&rsaquo;</button>';
+      box.setAttribute("role", "dialog");
+      box.setAttribute("aria-modal", "true");
+      box.innerHTML = '<button type="button" class="lb-close" aria-label="' + t("close", "Close") + '"><span aria-hidden="true">&times;</span></button>' +
+        '<button type="button" class="lb-prev" aria-label="Previous">&lsaquo;</button><figure><img alt=""><figcaption></figcaption></figure>' +
+        '<button type="button" class="lb-next" aria-label="Next">&rsaquo;</button>';
       document.body.appendChild(box);
       boxImg = $("img", box);
       boxCap = $("figcaption", box);
       box.addEventListener("click", function (e) {
-        if (e.target.closest(".lb-prev")) show(idx - 1);
-        else if (e.target.closest(".lb-next")) show(idx + 1);
-        else if (e.target !== boxImg) close();
+        if (e.target.closest(".lb-prev")) lbShow(idx - 1);
+        else if (e.target.closest(".lb-next")) lbShow(idx + 1);
+        else lbClose();
+      });
+      box.addEventListener("touchstart", function (e) {
+        if (e.touches.length !== 1) { touchX = null; return; }
+        touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
+      }, { passive: true });
+      box.addEventListener("touchend", function (e) {
+        if (touchX === null || images.length < 2) return;
+        var dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
+        touchX = null;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+          e.preventDefault(); // a swipe, not a tap: don't let it close the box
+          lbShow(idx + (dx < 0 ? 1 : -1));
+        }
       });
     };
-    var show = function (i) {
+    var lbShow = function (i) {
       idx = (i + images.length) % images.length;
       var img = images[idx];
       boxImg.src = img.currentSrc || img.src;
       boxCap.textContent = img.title || img.alt || "";
       box.classList.toggle("single", images.length < 2);
     };
-    var close = function () { box.classList.remove("open"); document.body.classList.remove("lb-open"); };
+    var lbIsOpen = function () { return box && box.classList.contains("open"); };
+    var lbHide = function () { box.classList.remove("open"); document.body.classList.remove("lb-open"); };
+    // Opening adds a history entry so a phone's Back closes the box instead of leaving the page.
+    // Closing hides at once, then drops that entry; the popstate it causes is swallowed.
+    var swallowPop = false;
+    var lbClose = function () {
+      if (!lbIsOpen()) return;
+      lbHide();
+      if (pushed) { pushed = false; swallowPop = true; history.back(); }
+    };
+    window.addEventListener("popstate", function () {
+      if (lbIsOpen()) { pushed = false; swallowPop = false; lbHide(); }
+      else if (swallowPop) swallowPop = false;
+    });
     images.forEach(function (img, i) {
       img.classList.add("zoomable");
       img.addEventListener("click", function () {
         if (!box) build();
-        show(i);
+        lbShow(i);
         box.classList.add("open");
         document.body.classList.add("lb-open");
+        if (!pushed) { try { history.pushState({ lightbox: true }, ""); pushed = true; } catch (err) { pushed = false; } }
+        $(".lb-close", box).focus({ preventScroll: true });
       });
     });
     document.addEventListener("keydown", function (e) {
-      if (!box || !box.classList.contains("open")) return;
-      if (e.key === "Escape") close();
-      else if (e.key === "ArrowLeft") show(idx - 1);
-      else if (e.key === "ArrowRight") show(idx + 1);
+      if (!lbIsOpen()) return;
+      if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); lbClose(); }
+      else if (e.key === "ArrowLeft") lbShow(idx - 1);
+      else if (e.key === "ArrowRight") lbShow(idx + 1);
     });
   }
 
