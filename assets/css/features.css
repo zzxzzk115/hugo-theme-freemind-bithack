@@ -3,6 +3,10 @@
    did not have (vanilla JS replacements, reading features, widgets).
    ====================================================================== */
 @font-face { font-family: "Fira Code"; src: url("fonts/FiraCode.ttf") format("truetype"); font-display: swap; }
+/* Code shows exactly what was typed: Fira Code's programming ligatures would draw `***` as one odd glyph,
+   `->` as an arrow, `!=` as ≠ and so on, which misleads in code you might copy. */
+code, pre, kbd, samp, .code-toolbar, pre[class*="language-"], code[class*="language-"] {
+  font-variant-ligatures: none; font-feature-settings: "liga" 0, "calt" 0, "dlig" 0; }
 
 /* Bootstrap JS replacements: dropdown opens on hover (desktop) or .open (touch) */
 @media (min-width: 768px) { .navbar .dropdown:hover > .dropdown-menu { display: block; } }
