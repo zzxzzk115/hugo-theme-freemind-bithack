@@ -2,7 +2,7 @@
    freemind.bithack for Hugo — styles for features the original theme
    did not have (vanilla JS replacements, reading features, widgets).
    ====================================================================== */
-@font-face { font-family: "Fira Code"; src: url("fonts/FiraCode.ttf") format("truetype"); font-display: swap; }
+@font-face { font-family: "Fira Code"; src: url("fonts/FiraCode.woff2") format("woff2"), url("fonts/FiraCode.ttf") format("truetype"); font-display: swap; }
 /* Code shows exactly what was typed: Fira Code's programming ligatures would draw `***` as one odd glyph,
    `->` as an arrow, `!=` as ≠ and so on, which misleads in code you might copy. */
 code, pre, kbd, samp, .code-toolbar, pre[class*="language-"], code[class*="language-"] {
