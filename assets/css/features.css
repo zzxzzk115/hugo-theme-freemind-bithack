@@ -91,6 +91,13 @@ img.zoomable { cursor: zoom-in; }
 .lightbox.single .lb-prev, .lightbox.single .lb-next { display: none; }
 body.lb-open { overflow: hidden; }
 
+/* {{< gallery grid >}}: thumbnails, letterboxed (not cropped); click opens the lightbox */
+.md-shots { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; margin: 12px 0; }
+.md-shots img { display: block; width: 100%; height: 150px; object-fit: contain; background: #0b0b0b; border: 1px solid #333;
+  margin: 0 !important; transition: border-color .15s; }
+.md-shots img:hover { border-color: #2bbc8a; }
+.md-shots.pixel img { image-rendering: pixelated; }
+@media (max-width: 480px) { .md-shots { grid-template-columns: repeat(2, minmax(0, 1fr)); } .md-shots img { height: 110px; } }
 /* {{< gallery >}} */
 .gallery { position: relative; overflow: hidden; }
 .gallery .photoset img { display: none; margin: 0 auto; }

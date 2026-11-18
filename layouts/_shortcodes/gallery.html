@@ -1,18 +1,41 @@
 {{- /*
-  Image slideshow (uses the theme's original gallery.js).
-  {{< gallery >}}
-  /img/a.png
-  /img/b.png
-  {{< /gallery >}}
+  Images, one per line; optionally "path | caption".
+
+  Slideshow (the theme's original gallery.js):
+    {{< gallery >}}
+    /img/a.png
+    /img/b.png
+    {{< /gallery >}}
+
+  Thumbnail grid; each image opens in the lightbox (add "pixel" for crisp pixel art):
+    {{< gallery grid >}}
+    /img/a.png | Main menu
+    /img/b.png | Level 1
+    {{< /gallery >}}
 */ -}}
+{{- $grid := or (eq (.Get 0) "grid") (eq (.Get "layout") "grid") }}
+{{- $pixel := or (eq (.Get 1) "pixel") (eq (.Get "pixel") "true") }}
+{{- $items := slice }}
+{{- range split (trim .Inner "\n ") "\n" }}{{ with trim . " \r" }}
+  {{- $parts := split . "|" }}
+  {{- $items = $items | append (dict "src" (trim (index $parts 0) " ") "cap" (cond (gt (len $parts) 1) (trim (index $parts 1) " ") "")) }}
+{{- end }}{{ end }}
+{{- if $grid }}
+<div class="md-shots{{ if $pixel }} pixel{{ end }}">
+  {{- range $items }}
+  <img src="{{ partial "func/url.html" .src }}" alt="{{ .cap }}"{{ with .cap }} title="{{ . }}"{{ end }} loading="lazy">
+  {{- end }}
+</div>
+{{- else }}
 <div class="gallery">
   <div class="photoset">
-    {{- range split (trim .Inner "\n ") "\n" }}{{ with trim . " \r" }}
-    <img src="{{ partial "func/url.html" . }}" alt="" class="nofancybox">
-    {{- end }}{{ end }}
+    {{- range $items }}
+    <img src="{{ partial "func/url.html" .src }}" alt="{{ .cap }}" class="nofancybox">
+    {{- end }}
   </div>
   <div class="control">
     <div class="prev"></div>
     <div class="next"></div>
   </div>
 </div>
+{{- end }}
