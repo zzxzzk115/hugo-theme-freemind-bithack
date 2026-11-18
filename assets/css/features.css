@@ -17,6 +17,11 @@ code, pre, kbd, samp, .code-toolbar, pre[class*="language-"], code[class*="langu
 
 #gotop { display: none; }
 #gotop.show { display: block; }
+/* outlined like the reader-mode button above it, so it reads as a button */
+#gotop { box-sizing: border-box; border: 1px solid #555; }
+#gotop span { line-height: 34px; }
+#gotop:hover, #gotop:focus-visible { border-color: #2bbc8a; background: #000 !important; outline: 0; }
+#gotop:hover span, #gotop:focus-visible span { color: #2bbc8a !important; }
 
 /* reading progress */
 #reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1100; background: #2bbc8a; transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
