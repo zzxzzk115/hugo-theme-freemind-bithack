@@ -144,15 +144,11 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  /* ------------------------------------------------------------ narrow screens: move post meta / search above content */
+  /* ------------------------------------------------------------ narrow screens: move post meta above content */
   function placeBlocks() {
     var narrow = window.innerWidth < 980;
-    var meta = $("#post_meta"), search = $("#site_search");
+    var meta = $("#post_meta");
     if (meta) (narrow ? $("#top_meta") : $("#side_meta")).appendChild(meta);
-    if (search) {
-      if (narrow && $("#top_search")) $("#top_search").appendChild(search);
-      else if (!narrow && $("#sidebar")) $("#sidebar").insertBefore(search, $("#sidebar").firstChild);
-    }
   }
   placeBlocks();
   // On phones the post meta sits above the article: start with the TOC folded so the text comes first.
@@ -293,11 +289,16 @@
     if (next) next.addEventListener("click", function () { go(cur + 1); });
   });
 
-  /* ------------------------------------------------------------ search */
+  /* ------------------------------------------------------------ search (dialog)
+     Navbar button, "/" or Ctrl/Cmd+K open it; Esc or a click on the backdrop closes it.
+     While open: digital rain behind the panel, a typed prompt, and result titles that "decode".
+     Reduced motion: same dialog, no effects. */
+  var modal = $("#search-modal");
   var input = $("#local-search-input");
   var results = $("#local-search-result");
-  if (input && results && cfg.searchIndex) {
-    var index = null, loading = null, active = -1;
+  if (modal && input && results && cfg.searchIndex) {
+    var calm = cfg.searchFx !== "always" && !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var index = null, loading = null, active = -1, lastFocus = null;
     var load = function () {
       if (!loading) loading = fetch(cfg.searchIndex).then(function (r) { return r.json(); }).then(function (d) { index = d; return d; });
       return loading;
@@ -309,6 +310,63 @@
       words.forEach(function (w) { if (w) html = html.replace(new RegExp("(" + reEsc(esc(w)) + ")", "gi"), "<mark>$1</mark>"); });
       return html;
     };
+
+    /* digital rain on the dialog's canvas, ~24 fps, only while open */
+    var canvas = $(".search-rain", modal), ctx2d = canvas.getContext("2d"), drops = [], rainTimer = null;
+    var GLYPHS = "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜﾝ0123456789ABCDEFZ:.=*+-<>";
+    var FS = 16;
+    var sizeRain = function () {
+      canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+      var cols = Math.ceil(canvas.width / FS);
+      drops = []; for (var i = 0; i < cols; i++) drops.push(Math.floor(Math.random() * -40));
+    };
+    var rainStep = function () {
+      ctx2d.fillStyle = "rgba(0, 0, 0, 0.12)";
+      ctx2d.fillRect(0, 0, canvas.width, canvas.height);
+      ctx2d.font = FS + "px monospace";
+      for (var i = 0; i < drops.length; i++) {
+        var y = drops[i] * FS;
+        if (y > 0) {
+          ctx2d.fillStyle = Math.random() < 0.06 ? "#d6ffe9" : "#2bbc8a";
+          ctx2d.fillText(GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length)), i * FS, y);
+        }
+        drops[i] = (y > canvas.height && Math.random() > 0.97) ? 0 : drops[i] + 1;
+      }
+    };
+    var startRain = function () {
+      if (rainTimer) return;
+      sizeRain();
+      if (calm) { for (var k = 0; k < 60; k++) rainStep(); return; } // reduced motion: one still frame
+      rainTimer = setInterval(rainStep, 42);
+    };
+    var stopRain = function () { clearInterval(rainTimer); rainTimer = null; ctx2d.clearRect(0, 0, canvas.width, canvas.height); };
+
+    /* typed prompt */
+    var promptEl = $(".search-prompt-text", modal), typeTimer = null;
+    var typePrompt = function () {
+      var text = t("searchPrompt", "Wake up, Neo… Type to follow the white rabbit.");
+      clearInterval(typeTimer);
+      if (calm) { promptEl.textContent = text; return; }
+      var i = 0; promptEl.textContent = "";
+      typeTimer = setInterval(function () {
+        promptEl.textContent = text.slice(0, ++i);
+        if (i >= text.length) clearInterval(typeTimer);
+      }, 38);
+    };
+
+    /* result titles decode from random glyphs into the real text */
+    var decode = function (el, finalHTML, plain) {
+      if (calm) { el.innerHTML = finalHTML; return; }
+      var n = 0, steps = 9;
+      var timer = setInterval(function () {
+        n++;
+        if (n >= steps || !el.isConnected) { clearInterval(timer); el.innerHTML = finalHTML; return; }
+        var keep = Math.floor(plain.length * n / steps), s = plain.slice(0, keep);
+        for (var i = keep; i < plain.length; i++) s += plain.charAt(i) === " " ? " " : GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
+        el.textContent = s;
+      }, 28);
+    };
+
     var render = function () {
       var q = input.value.trim().toLowerCase();
       active = -1;
@@ -332,10 +390,12 @@
       if (!hits.length) {
         results.innerHTML = '<div class="search-empty">' + esc(t("noResults", "No results")) + "</div>";
       } else {
-        results.innerHTML = '<ul class="search-result-list">' + hits.slice(0, 20).map(function (h) {
-          return '<li><a href="' + h.p.url + '"><span class="search-result-title">' + mark(h.p.title, words) +
-            '</span><span class="search-result-date">' + h.p.date + '</span><p class="search-result">' + mark(h.snippet, words) + "</p></a></li>";
+        hits = hits.slice(0, 20);
+        results.innerHTML = '<ul class="search-result-list">' + hits.map(function (h) {
+          return '<li><a href="' + h.p.url + '"><span class="search-result-title"></span><span class="search-result-date">' + h.p.date +
+            '</span><p class="search-result">' + mark(h.snippet, words) + "</p></a></li>";
         }).join("") + "</ul>";
+        $$(".search-result-title", results).forEach(function (el, i) { decode(el, mark(hits[i].p.title, words), hits[i].p.title); });
       }
       results.classList.add("open");
     };
@@ -346,7 +406,32 @@
       items.forEach(function (a, i) { a.classList.toggle("active", i === active); });
       items[active].scrollIntoView({ block: "nearest" });
     };
-    input.addEventListener("focus", load);
+
+    var closing = null;
+    var open = function () {
+      clearTimeout(closing);
+      if (!modal.hidden && modal.classList.contains("in")) { input.focus(); return; }
+      lastFocus = document.activeElement;
+      modal.hidden = false;
+      document.body.classList.add("search-lock");
+      requestAnimationFrame(function () { requestAnimationFrame(function () { modal.classList.add("in"); }); });
+      startRain(); typePrompt(); load();
+      setTimeout(function () { input.focus(); input.select(); }, 30);
+    };
+    var close = function () {
+      if (modal.hidden) return;
+      modal.classList.remove("in");
+      document.body.classList.remove("search-lock");
+      stopRain(); clearInterval(typeTimer);
+      closing = setTimeout(function () { modal.hidden = true; }, 180);
+      if (location.hash === "#search") history.replaceState(null, "", location.pathname + location.search);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    };
+
+    $$(".search-open").forEach(function (b) { b.addEventListener("click", function (e) { e.preventDefault(); open(); }); });
+    $(".search-close", modal).addEventListener("click", close);
+    modal.addEventListener("mousedown", function (e) { if (e.target === modal || e.target === canvas) close(); });
+    window.addEventListener("resize", function () { if (rainTimer) sizeRain(); });
     input.addEventListener("input", function () { load().then(render); });
     input.addEventListener("keydown", function (e) {
       if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
@@ -354,16 +439,16 @@
       else if (e.key === "Enter") {
         var a = $$("li a", results)[active < 0 ? 0 : active];
         if (a) location.href = a.href;
-      } else if (e.key === "Escape") { input.value = ""; render(); input.blur(); }
+      }
     });
     document.addEventListener("keydown", function (e) {
       var tag = (e.target.tagName || "").toLowerCase();
-      if ((e.key === "/" && tag !== "input" && tag !== "textarea") || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k")) {
-        e.preventDefault();
-        input.scrollIntoView({ block: "center" });
-        input.focus();
+      if (e.key === "Escape" && !modal.hidden) { e.preventDefault(); close(); return; }
+      if ((e.key === "/" && tag !== "input" && tag !== "textarea" && !e.target.isContentEditable) || ((e.ctrlKey || e.metaKey) && (e.key || "").toLowerCase() === "k")) {
+        e.preventDefault(); open();
       }
     });
+    if (location.hash === "#search") open();
   }
 
   /* ------------------------------------------------------------ reader mode (articles only) */

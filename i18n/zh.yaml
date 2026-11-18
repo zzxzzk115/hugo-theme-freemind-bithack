@@ -48,3 +48,8 @@ present: 至今
 era_other: 其他
 prev_page: 上一页
 next_page: 下一页
+search_prompt: "醒醒，Neo……输入关键词，跟着白兔走。"
+search_hint_move: 选择
+search_hint_open: 打开
+search_hint_close: 关闭
+close: 关闭

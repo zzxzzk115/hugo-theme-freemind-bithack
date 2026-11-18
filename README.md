@@ -6,7 +6,7 @@ A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithac
 
 ![screenshot](images/screenshot.png)
 
-**Features**: multilingual with language switcher and a browser-language prompt · instant search (`/` or Ctrl+K) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / netease / details / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
+**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / netease / details / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
 
 Dark only, on purpose — it is the theme's identity.
 
@@ -60,7 +60,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | Markdown | 数学公式（构建时 KaTeX → MathML） | `math: true` 或 `math = "always"` |
 | | Mermaid、Chart.js 图表 | ` ```mermaid `、` ```chart `（Chart.js JSON 配置） |
 | | 提示框 `> [!TIP]`、`==标记==`、`H~2~O`、`x^2^`、脚注、emoji | 见 exampleSite 的 markup 配置 |
-| 导航 | 即时搜索（`/` 或 Ctrl+K，方向键选择，关键词高亮） | 输出 `search.json` |
+| 导航 | 即时搜索：顶栏按钮弹出对话框（`/` 或 Ctrl+K；背景虚化 + 数字雨、打字提示，方向键选择，关键词高亮；系统开启“减少动态效果”时只显示静态一帧） | 输出 `search.json`；`searchEffects = "always"` 无视减少动态效果设置 |
 | | 下拉菜单、多语言切换 | 菜单项 `parent`；有译文跳译文 |
 | | 作者卡片（头像、简介、统计、社交图标，微信号点击复制） | `authorCard`、`[[social]]`（`copy = "…"`） |
 | 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭） | `[comments]`、`onPages` |

@@ -48,3 +48,8 @@ present: present
 era_other: Other
 prev_page: Previous page
 next_page: Next page
+search_prompt: "Wake up, Neo… Type to follow the white rabbit."
+search_hint_move: move
+search_hint_open: open
+search_hint_close: close
+close: Close

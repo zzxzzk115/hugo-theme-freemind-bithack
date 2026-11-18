@@ -3,13 +3,15 @@
 <button type="button" id="reader-toggle" title="{{ T "reader_mode" }} (R)" aria-pressed="false"><i class="fa fa-book"></i> <span>{{ T "reader_mode" }}</span></button>
 {{- end }}
 
+{{ partial "search-modal.html" . }}
 {{- $cfg := dict
-  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results"))
+  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results") "searchPrompt" (T "search_prompt"))
 }}
 {{- $cfg = merge $cfg (dict "prism" (site.Params.prismCDN | default "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/")) }}
 {{- /* Offer the visitor's browser language when this page is in another one (params.langPrompt = false to turn off). */}}
 {{- if and hugo.IsMultilingual (ne site.Params.langPrompt false) }}{{ $cfg = merge $cfg (dict "langPrompt" (hugo.Data.langprompt | default dict)) }}{{ end }}
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
+{{- with site.Params.searchEffects }}{{ $cfg = merge $cfg (dict "searchFx" .) }}{{ end }}
 <script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>
 {{- $js := resources.Get "js/theme.js" }}
 {{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end }}

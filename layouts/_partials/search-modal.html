@@ -1,0 +1,17 @@
+{{- /* Site search: opened from the navbar button, "/" or Ctrl/Cmd+K. theme.js drives it (digital rain,
+       typed prompt, decoding result titles); with reduced motion it opens without the effects. */ -}}
+{{- if site.Home.OutputFormats.Get "searchindex" }}
+<div id="search-modal" class="search-modal" role="dialog" aria-modal="true" aria-label="{{ T "search" }}" hidden>
+  <canvas class="search-rain" aria-hidden="true"></canvas>
+  <div class="search-panel">
+    <div class="search-prompt" aria-hidden="true"><span class="search-prompt-text"></span><span class="search-cursor"></span></div>
+    <div class="search-box">
+      <span class="search-ps1">&gt;</span>
+      <input type="search" id="local-search-input" name="q" autocomplete="off" spellcheck="false" placeholder="{{ T "search" }}…" aria-label="{{ T "search" }}">
+      <button type="button" class="search-close" aria-label="{{ T "close" | default "Close" }}">Esc</button>
+    </div>
+    <div id="local-search-result" class="search-results"></div>
+    <div class="search-hint" aria-hidden="true"><kbd>↑</kbd><kbd>↓</kbd> {{ T "search_hint_move" }} · <kbd>Enter</kbd> {{ T "search_hint_open" }} · <kbd>Esc</kbd> {{ T "search_hint_close" }}</div>
+  </div>
+</div>
+{{- end }}

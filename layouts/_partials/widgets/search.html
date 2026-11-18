@@ -1,7 +1,2 @@
-<div id="site_search">
-  <div class="form-group search-box">
-    <i class="fa fa-search"></i>
-    <input type="search" id="local-search-input" name="q" autocomplete="off" placeholder="{{ T "search" }}  ( / )" aria-label="{{ T "search" }}" class="st-search-input form-control">
-  </div>
-  <div id="local-search-result" class="search-results"></div>
-</div>
+{{- /* Search now lives in the navbar (button, "/" or Ctrl+K opens a search dialog: _partials/search-modal.html).
+       Kept so configs that still list "search" in params.widgets keep working; it renders nothing. */ -}}

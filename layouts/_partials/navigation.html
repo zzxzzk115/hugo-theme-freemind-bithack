@@ -37,6 +37,9 @@
       <li{{ if $active }} class="active"{{ end }} data-priority="{{ $prio }}">{{ partial "inline/nav-link.html" $m }}</li>
       {{- end }}
       {{- end }}
+      {{- if site.Home.OutputFormats.Get "searchindex" }}
+      <li class="nav-search" data-priority="0"><a href="#search" role="button" class="search-open" title="{{ T "search" }} ( / )" aria-label="{{ T "search" }}"><i class="fa fa-search"></i></a></li>
+      {{- end }}
       {{- /* Language switch: the translation if there is one, else that language's home. */}}
       {{- if hugo.IsMultilingual }}
       {{- range hugo.Sites }}

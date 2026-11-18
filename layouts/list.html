@@ -6,7 +6,6 @@
 </div>
 <div class="row page">
   <div class="{{ if site.Params.widgets }}col-md-9{{ else }}col-md-12{{ end }}">
-    <div id="top_search"></div>
     {{- with .Content }}<div class="mypage md-content">{{ . }}</div>{{ end }}
     {{- $articles := where .RegularPagesRecursive "Params.article" "!=" false }}
     {{- $others := where .RegularPages "Params.article" false }}
