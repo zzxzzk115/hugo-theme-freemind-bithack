@@ -1,0 +1,32 @@
+{{- /*
+  itch.io game card, drawn by the theme (no itch.io iframe: itch rate-limits its embed widget and
+  answers HTTP 429, which leaves the embed blank).
+  {{< itch url="https://lazy-v.itch.io/catmario-gb" >}}   (or just {{< itch "https://…" >}} when no other option is given)
+  Details come from site.Data.itch, keyed by the game's URL (the blog's tools/itch_card.py writes it);
+  any of them can be given or overridden here:
+    title, author, desc, cover (image path), button (label, default "Play on itch.io"), pixel="true"
+    (pixel-art cover: no smoothing when scaled).
+*/ -}}
+{{- $url := .Get "url" | default (.Get 0) }}
+{{- $d := index (site.Data.itch | default dict) $url | default dict }}
+{{- $u := urls.Parse $url }}
+{{- $title := .Get "title" | default $d.title | default (path.Base $u.Path) }}
+{{- $author := .Get "author" | default $d.author | default (index (split $u.Host ".") 0) }}
+{{- $desc := .Get "desc" | default $d.desc }}
+{{- $cover := .Get "cover" | default $d.cover }}
+{{- $button := .Get "button" | default (T "itch_play") | default "Play on itch.io" }}
+{{- $pixel := or (eq (.Get "pixel") "true") (eq $d.pixel true) }}
+<a class="itch-card" href="{{ $url }}" target="_blank" rel="noopener" aria-label="{{ $title }} – {{ $button }}">
+  <span class="itch-cover{{ if $pixel }} pixel{{ end }}">
+    {{- with $cover }}<img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" class="nofancybox">{{ end -}}
+  </span>
+  <span class="itch-body">
+    <span class="itch-title">{{ $title }}</span>
+    {{- with $author }}<span class="itch-author">by {{ . }}</span>{{ end }}
+    {{- with $desc }}<span class="itch-desc">{{ . }}</span>{{ end }}
+    <span class="itch-foot">
+      <span class="itch-button">{{ $button }}</span>
+      <span class="itch-site" aria-hidden="true"><svg viewBox="0 0 16 16" width="14" height="14" shape-rendering="crispEdges" fill="currentColor"><rect x="1" y="3" width="14" height="2"/><rect x="2" y="5" width="12" height="2"/><rect x="2" y="7" width="12" height="7"/><rect x="5" y="9" width="2" height="2" fill="#111"/><rect x="9" y="9" width="2" height="2" fill="#111"/></svg> itch.io</span>
+    </span>
+  </span>
+</a>

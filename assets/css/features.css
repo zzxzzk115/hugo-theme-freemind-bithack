@@ -482,3 +482,34 @@ body.is-article #qr-toggle { bottom: 132px; }
 .md-music.aplayer .aplayer-lrc p.aplayer-lrc-current { color: #2bbc8a; }
 .md-music.aplayer .aplayer-notice { background: #000; color: #2bbc8a; }
 .md-music.aplayer a, .md-music.aplayer a:hover { color: inherit; background: transparent !important; }
+
+/* {{< itch >}}: same footprint and layout as itch.io's own embed widget (552 x 167, white card,
+   cover left, title / author / blurb right, red Play button, itch.io mark), drawn locally. */
+.itch-card { position: relative; display: flex; gap: 14px; box-sizing: border-box; width: 552px; max-width: 100%; height: 167px;
+  margin: 14px 0; padding: 10px; background: #fff; border: 1px solid #dadada; border-radius: 0; color: #222;
+  text-decoration: none !important; overflow: hidden; transition: box-shadow .15s, border-color .15s; }
+.mypage a.itch-card:hover, a.itch-card:hover, a.itch-card:focus-visible { background: #fff !important; border-color: #fa5c5c;
+  box-shadow: 4px 4px 0 rgba(250, 92, 92, .35); outline: 0; }
+.mypage a.itch-card:hover * { background: transparent; }
+.itch-cover { flex: 0 0 auto; height: 100%; aspect-ratio: 315 / 250; position: relative; background: #eee; }
+.itch-cover img { position: absolute; inset: 0; width: 100% !important; height: 100%; margin: 0 !important; object-fit: cover; display: block; }
+.itch-cover.pixel img { image-rendering: pixelated; }
+.itch-body { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; padding-top: 2px; }
+.itch-title { color: #222; font-family: "Lato", "Helvetica Neue", Arial, sans-serif; font-size: 24px; font-weight: bold; line-height: 1.15;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mypage a.itch-card:hover .itch-title { color: #222 !important; }
+.itch-author { margin-top: 3px; color: #858585; font-family: "Lato", "Helvetica Neue", Arial, sans-serif; font-size: 12px; }
+.mypage a.itch-card:hover .itch-author { color: #858585 !important; }
+.itch-desc { margin-top: 2px; color: #555; font-family: "Lato", "Helvetica Neue", Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-size: 12px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.mypage a.itch-card:hover .itch-desc { color: #555 !important; }
+.itch-foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; }
+.itch-button { display: inline-block; padding: 0 12px; height: 32px; line-height: 32px; border-radius: 3px; background: #fa5c5c; color: #fff;
+  font-family: "Lato", "Helvetica Neue", Arial, "Microsoft YaHei", "PingFang SC", sans-serif; font-size: 13px; font-weight: bold;
+  box-shadow: inset 0 0 1px rgba(255, 255, 255, .5); text-shadow: 0 1px 0 rgba(0, 0, 0, .15); white-space: nowrap; }
+.mypage a.itch-card:hover .itch-button { color: #fff !important; background: #ff6c6c !important; }
+.itch-site { display: inline-flex; align-items: center; gap: 4px; color: #bbb; font-family: "Lato", Arial, sans-serif; font-size: 11px; }
+.itch-site svg rect[fill] { fill: #fff; }
+.mypage a.itch-card:hover .itch-site { color: #fa5c5c !important; }
+/* like itch's widget: narrow screens drop the cover */
+@media (max-width: 480px) { .itch-cover { display: none; } .itch-title { font-size: 20px; } }
