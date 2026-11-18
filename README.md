@@ -111,6 +111,7 @@ title = { en = "Growing Up", zh = "日渐成熟" }
 - `{{< video src="/a.mp4" poster="/a.jpg" >}}`、`{{< pdf "/paper.pdf" >}}`、`{{< bilibili BV1554y1D7a1 >}}`、Hugo 自带的 `{{< youtube id >}}`
 - `{{< netease 1847289377 >}}`：网易云音乐外链播放器（`type="album"` / `"playlist"` 播放专辑、歌单；歌手页不能外链，有版权限制的歌曲在外链里放不了）
 - `{{< details "标题" >}} …Markdown… {{< /details >}}`：可折叠区块（`open="true"` 默认展开）
+- `{{< linkcard url="…" title="…" desc="…" image="/img/…" >}}`：链接卡片（类似 Notion / FlowUs 的书签），左边标题、描述和站点，右边图片，整张卡片可点击；只有 `url` 是必填
 - `{{< gallery grid >}}` 每行一张图（可写 `路径 | 说明`）：缩略图网格，点开进灯箱；`{{< gallery grid pixel >}}` 适合像素图；不带 `grid` 则是原来的幻灯片
 - `{{< embed src="/GameSrc/CatMarioGB/" ratio="4:3" >}}`：iframe，可嵌网页游戏
 - `{{< gallery >}}` 每行一个图片路径 `{{< /gallery >}}`：轮播图

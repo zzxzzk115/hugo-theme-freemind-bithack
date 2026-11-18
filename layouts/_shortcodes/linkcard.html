@@ -1,0 +1,21 @@
+{{- /*
+  Link card (a.k.a. bookmark / link preview): title, description, site and an image; the whole card is a link.
+  {{< linkcard url="https://github.com/dotnet/roslyn" title="dotnet/roslyn" desc="The Roslyn .NET compiler…" image="/img/linkcards/roslyn.png" >}}
+  Only url is required. Without a title the URL is shown; without an image the card has no picture.
+  `site` overrides the domain shown at the bottom. The blog's tools/linkcard.py fills these in for a URL.
+*/ -}}
+{{- $url := .Get "url" | default (.Get 0) }}
+{{- $u := urls.Parse $url }}
+{{- $site := .Get "site" | default (strings.TrimPrefix "www." $u.Host) }}
+{{- $title := .Get "title" | default $url }}
+{{- $external := strings.HasPrefix $url "http" }}
+<a class="linkcard{{ if not (.Get "image") }} no-image{{ end }}" href="{{ $url }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>
+  <span class="linkcard-text">
+    <span class="linkcard-title">{{ $title }}</span>
+    {{- with .Get "desc" }}<span class="linkcard-desc">{{ . }}</span>{{ end }}
+    <span class="linkcard-site"><i class="fa fa-link"></i> {{ $site }}</span>
+  </span>
+  {{- with .Get "image" }}
+  <span class="linkcard-image"><img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" class="nofancybox"></span>
+  {{- end }}
+</a>
