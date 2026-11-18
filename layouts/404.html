@@ -9,4 +9,25 @@
     </div>
   </div>
 </div>
+{{- /* A missing page may exist in another language (e.g. a post written in only one of them):
+       look for the same path under each other language's home and go there if it exists.
+       GitHub Pages serves this one 404 page for every missing path, so it handles all languages. */}}
+{{- $homes := slice }}{{ range hugo.Sites }}{{ $homes = $homes | append .Home.RelPermalink }}{{ end }}
+<script>
+(function () {
+  var homes = {{ $homes | jsonify | safeJS }}.sort(function (a, b) { return b.length - a.length; });
+  var path = location.pathname, own = null;
+  for (var i = 0; i < homes.length; i++) if (path.indexOf(homes[i]) === 0) { own = homes[i]; break; }
+  if (own === null || path.length === own.length || !window.fetch) return;
+  var rest = path.slice(own.length);
+  var tries = homes.filter(function (h) { return h !== own; });
+  (function next() {
+    var h = tries.shift();
+    if (!h) return;
+    fetch(h + rest, { method: "HEAD" }).then(function (r) {
+      if (r.ok) location.replace(h + rest + location.search + location.hash); else next();
+    }, next);
+  })();
+})();
+</script>
 {{ end }}

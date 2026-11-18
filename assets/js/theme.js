@@ -483,7 +483,7 @@
      with the navbar language switch. */
   (function () {
     var texts = cfg.langPrompt;
-    if (!texts) return;
+    if (!texts || document.body.classList.contains("kind-404")) return; // 404: see layouts/404.html
     var PREF = "lang-pref";
     var store = {
       get: function () { try { return localStorage.getItem(PREF); } catch (e) { return null; } },
