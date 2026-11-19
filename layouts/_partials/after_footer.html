@@ -27,6 +27,8 @@
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
 {{- with site.Params.searchEffects }}{{ $cfg = merge $cfg (dict "searchFx" .) }}{{ end }}
 <script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>
+{{- /* params.searchEffects = "always": keep the theme's animations (search effects, spinning record) even with reduced motion */}}
+{{- if eq site.Params.searchEffects "always" }}<script>document.documentElement.classList.add("fx-always");</script>{{ end }}
 {{- $js := resources.Get "js/theme.js" }}
 {{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end }}
 <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
@@ -83,6 +85,7 @@
         btn.innerHTML = playing ? PAUSE : PLAY;
         btn.setAttribute("aria-label", playing ? "Pause" : "Play");
         btn.classList.toggle("playing", playing);
+        el.classList.toggle("md-playing", playing);  // spins the record-style cover
       };
       btn.addEventListener("click", function (e) { e.stopPropagation(); ap.toggle(); });
       ["play", "pause", "ended", "listswitch"].forEach(function (ev) { ap.on(ev, sync); });

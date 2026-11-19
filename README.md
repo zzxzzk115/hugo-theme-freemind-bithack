@@ -60,7 +60,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | Markdown | 数学公式（构建时 KaTeX → MathML） | `math: true` 或 `math = "always"` |
 | | Mermaid、Chart.js 图表 | ` ```mermaid `、` ```chart `（Chart.js JSON 配置） |
 | | 提示框 `> [!TIP]`、`==标记==`、`H~2~O`、`x^2^`、脚注、emoji | 见 exampleSite 的 markup 配置 |
-| 导航 | 即时搜索：顶栏按钮弹出对话框（`/` 或 Ctrl+K；背景虚化 + 数字雨、打字提示，方向键选择，关键词高亮；系统开启“减少动态效果”时只显示静态一帧） | 输出 `search.json`；`searchEffects = "always"` 无视减少动态效果设置 |
+| 导航 | 即时搜索：顶栏按钮弹出对话框（`/` 或 Ctrl+K；背景虚化 + 数字雨、打字提示，方向键选择，关键词高亮；系统开启“减少动态效果”时只显示静态一帧） | 输出 `search.json`；`searchEffects = "always"` 无视减少动态效果设置（同样作用于音乐播放器的旋转唱片封面） |
 | | 下拉菜单、多语言切换 | 菜单项 `parent`；有译文跳译文 |
 | | 作者卡片（头像、简介、统计、社交图标，微信号点击复制） | `authorCard`、`[[social]]`（`copy = "…"`） |
 | 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭） | `[comments]`、`onPages` |

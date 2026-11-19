@@ -504,6 +504,18 @@ body.is-article #qr-toggle { bottom: 132px; }
 .md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:focus-visible path { fill: #000; }
 .md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #1a6e51; }
 
+/* music player: the cover is a record that turns clockwise while playing and stops where it is when paused
+   (like NetEase Cloud Music); dark vinyl rim and a spindle hole. No motion with prefers-reduced-motion,
+   unless the site sets params.searchEffects = "always" (html.fx-always). */
+.md-music.aplayer .aplayer-pic { border-radius: 50% !important; box-sizing: border-box; border: 5px solid #161616;
+  box-shadow: 0 0 0 1px #333, inset 0 0 0 1px rgba(255, 255, 255, .08); background-size: cover;
+  animation: md-record 18s linear infinite; animation-play-state: paused; }
+.md-music.aplayer .aplayer-pic::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px;
+  margin: -5px 0 0 -5px; border-radius: 50%; background: #000; box-shadow: 0 0 0 2px #161616, 0 0 0 3px #333; }
+.md-music.md-playing.aplayer .aplayer-pic { animation-play-state: running; }
+@keyframes md-record { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { html:not(.fx-always) .md-music.aplayer .aplayer-pic { animation: none; } }
+
 /* {{< itch >}}: same footprint and layout as itch.io's own embed widget (552 x 167, white card,
    cover left, title / author / blurb right, red Play button, itch.io mark), drawn locally. */
 .itch-card { position: relative; display: flex; gap: 14px; box-sizing: border-box; width: 552px; max-width: 100%; height: 167px;
