@@ -519,3 +519,12 @@ body.is-article #qr-toggle { bottom: 132px; }
 .mypage a.itch-card:hover .itch-site { color: #fa5c5c !important; }
 /* like itch's widget: narrow screens drop the cover */
 @media (max-width: 480px) { .itch-cover { display: none; } .itch-title { font-size: 20px; } }
+
+/* Task lists (- [ ] / - [x]): a pixel box in place of the bullet; ticked = green with a black pixel tick.
+   (Browsers grey out the disabled checkboxes Markdown produces, so ticked and unticked looked alike.) */
+.mypage li:has(> input[type="checkbox"]) { list-style: none; }
+.mypage li > input[type="checkbox"] { -webkit-appearance: none; appearance: none; box-sizing: border-box;
+  width: 14px; height: 14px; margin: 0 8px 0 -22px; vertical-align: -2px; border: 2px solid #666; border-radius: 0;
+  background: #000 center / 10px 10px no-repeat; opacity: 1; cursor: default; }
+.mypage li > input[type="checkbox"]:checked { border-color: #2bbc8a; background-color: #2bbc8a;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2010%2010%22%20shape-rendering%3D%22crispEdges%22%20fill%3D%22%23000%22%3E%3Crect%20x%3D%221%22%20y%3D%225%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%223%22%20y%3D%227%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%226%22%20y%3D%224%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%227%22%20y%3D%222%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%224%22%20y%3D%226%22%20width%3D%222%22%20height%3D%222%22/%3E%3C/svg%3E"); }
