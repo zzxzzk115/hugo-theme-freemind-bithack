@@ -575,10 +575,12 @@ body.is-article #qr-toggle { bottom: 132px; }
 .project-ph::before { content: "> "; color: #555; }
 .project-body { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px 12px; flex: 1 1 auto; }
 .project-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 12px; line-height: 1; }
+/* Fusion Pixel is pixel-exact at 12px (Fixedsys, an outline font, blurs at small sizes); Chinese falls back to the
+   theme's CJK pixel faces under "DOS". The star count uses it at 2x (24px), matching the 2x pixel star. */
+.project-cat, .project-tag, .project-stars > span { font-family: "Fusion Pixel", "DOS", monospace; -webkit-font-smoothing: none; font-weight: normal; }
 /* category, tags and the star badge: same 22px height, text centred both ways */
 .project-cat, .project-tag, .project-meta .project-stars { display: inline-flex; align-items: center; justify-content: center; height: 22px; box-sizing: border-box; }
-/* padding-top 2px: both pixel fonts draw their glyphs a little above the middle of the line box */
-.project-cat { color: #000; background: #2bbc8a; padding: 2px 7px 0; border: 1px solid #2bbc8a; }
+.project-cat { color: #000; background: #2bbc8a; padding: 0 7px; border: 1px solid #2bbc8a; }
 .project-tag { color: #888; border: 1px solid #333; padding: 0 6px; }
 .mypage h4.project-title { margin: 2px 0 0; padding: 0; font-size: 1.1em; line-height: 1.3; border: 0; }
 .mypage h4.project-title::before { content: none; }
@@ -627,7 +629,7 @@ body.is-article #qr-toggle { bottom: 132px; }
 #main-nav .sub-menu .sub-menu { margin-left: 16px; border-bottom: 0; }
 
 /* project cards: GitHub star count (pixel star) at the end of the meta row; GitHub icon on GitHub links */
-.project-meta .project-stars { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 0 8px; font-size: 15px; line-height: 1; font-weight: bold; color: #fefe54; border: 1px solid #5a5a1e; font-variant-numeric: tabular-nums; }
+.project-meta .project-stars { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 0 8px; font-size: 24px; line-height: 1; color: #fefe54; border: 1px solid #5a5a1e; font-variant-numeric: tabular-nums; }
 .mypage .project-meta a.project-stars:hover { color: #000 !important; background: #fefe54 !important; border-color: #fefe54; }
 .project-stars .pixel-star { display: block; flex: none; image-rendering: pixelated; } /* 18px = 2px per star pixel */
 .project-links a .fa-github { margin-right: 5px; font-size: 13px; }
