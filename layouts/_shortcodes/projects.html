@@ -1,17 +1,19 @@
 {{- /*
-  Project gallery from data/projects.json (a list of {id, title, desc, category, tags, status, order, featured,
-  image, imageFit, page, links:[{label, href}]}; the blog's tools/sync_projects.py writes it).
-  {{< projects featured="6" >}}     the first 6 featured projects (by `featured`, then `order`)
-  {{< projects filter="true" >}}    every project, with category filter chips
-  {{< projects ids="a, b, c" >}}    these projects, in this order; ids may also come from data/projects_extra.json
-                                    (same shape, hand-written: projects that are not in projects.json)
-  Translations (optional): data/projects_<lang>.toml with [<id>] title/desc/status, and [labels] for link labels.
+  Project gallery from data/projects.json: a list of {id, title, desc, category, tags, status, order, featured,
+  image, imageFit, page, repo, links:[{label, href}], groups:[...], groupOrder:{group: n}}
+  (the blog generates it from its project catalog with tools/catalog.py).
+  {{< projects featured="6" >}}       the first 6 featured projects (by `featured`, then `order`)
+  {{< projects filter="true" >}}      every project, with category filter chips
+  {{< projects group="porting" >}}    projects whose `groups` include it, by `groupOrder.porting` (else `order`);
+                                      combines with featured / filter
+  {{< projects ids="a, b, c" >}}      these projects, in this order
+  Translations (optional): data/projects_<lang>.(json|toml|yaml) with <id>: {title, desc, status, page, hrefs: [one per
+  link]} and labels: {"English label": "translated"}.
   Category names: i18n keys project_cat_<category> (falls back to the raw value).
   A project without `image` gets a pixel placeholder with its title. `page` and link `href` may be a content path
   ("/posts/my-post"): it links to that page in the current language.
-  GitHub: a card's repo is its "Source" link (else its first GitHub link or page, else data/projects_repos.toml
-  {id = "owner/repo"}, which also adds a Source link); its star count comes from data/github_stars.json
-  ({"owner/repo": n}, see the blog's tools/github_stars.py) and shows as a pixel star. GitHub links get the icon.
+  GitHub: the card's repo is `repo` (else its "Source" link, else its first GitHub link or page); the star count from
+  data/github_stars.json ({"owner/repo": n}) shows as a pixel star linking to the repo. GitHub links get the icon.
 */ -}}
 {{- define "_partials/inline/project-href.html" }}
   {{- $h := . }}
@@ -20,21 +22,26 @@
 {{- end }}
 {{- $star := `<svg class="pixel-star" viewBox="0 0 9 9" width="13" height="13" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="4" y="0" width="1" height="2"/><rect x="3" y="2" width="3" height="1"/><rect x="0" y="3" width="9" height="1"/><rect x="1" y="4" width="7" height="1"/><rect x="2" y="5" width="5" height="1"/><rect x="2" y="6" width="2" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="1" y="7" width="2" height="1"/><rect x="6" y="7" width="2" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/></svg>` }}
 {{- $stars := hugo.Data.github_stars | default dict }}
-{{- $repos := hugo.Data.projects_repos | default dict }}
 {{- $all := hugo.Data.projects | default slice }}
 {{- $tr := index hugo.Data (printf "projects_%s" (index (split site.Language.Lang "-") 0)) | default dict }}
 {{- $labels := $tr.labels | default dict }}
-{{- $list := sort $all "order" }}
+{{- $pool := $all }}
+{{- $group := .Get "group" }}
+{{- if $group }}
+  {{- $in := slice }}
+  {{- range $all }}{{ if in (.groups | default slice) $group }}{{ $in = $in | append (merge . (dict "_pos" (index (.groupOrder | default dict) $group | default .order))) }}{{ end }}{{ end }}
+  {{- $pool = sort $in "_pos" }}
+{{- end }}
+{{- $list := cond (ne $group "") $pool (sort $pool "order") }}
 {{- with .Get "featured" }}
-  {{- $f := where $all "featured" "!=" nil }}
+  {{- $f := where $pool "featured" "!=" nil }}
   {{- $list = first (int .) (sort (sort $f "order") "featured") }}
 {{- end }}
 {{- with .Get "ids" }}
-  {{- $pool := $all | append (hugo.Data.projects_extra | default slice) }}
   {{- $list = slice }}
   {{- range split . "," }}
     {{- $id := trim . " \n" }}
-    {{- with where $pool "id" $id }}{{ $list = $list | append (index . 0) }}{{ else }}{{ warnf "projects shortcode: no project with id %q" $id }}{{ end }}
+    {{- with where $all "id" $id }}{{ $list = $list | append (index . 0) }}{{ else }}{{ warnf "projects shortcode: no project with id %q" $id }}{{ end }}
   {{- end }}
 {{- end }}
 {{- $filter := eq (.Get "filter") "true" }}
@@ -52,24 +59,26 @@
     {{- range $list }}
     {{- $t := index $tr .id | default dict }}
     {{- $title := $t.title | default .title }}
-    {{- $external := hasPrefix .page "http" }}
-    {{- /* GitHub repo: the Source link, else the first GitHub link or page, else data/projects_repos.toml */}}
-    {{- $links := .links | default slice }}
-    {{- $repo := "" }}
+    {{- $page := $t.page | default .page }}
+    {{- $external := hasPrefix $page "http" }}
+    {{- /* links, with this language's targets when the translation has them */}}
+    {{- $links := slice }}
+    {{- range $k, $l := .links | default slice }}{{ $links = $links | append (dict "label" $l.label "href" (index ($t.hrefs | default slice) $k | default $l.href)) }}{{ end }}
+    {{- /* GitHub repo: `repo`, else the Source link, else the first GitHub link or page */}}
+    {{- $repo := .repo | default "" }}
     {{- $cands := slice }}
     {{- range $links }}{{ if eq .label "Source" }}{{ $cands = $cands | append .href }}{{ end }}{{ end }}
     {{- range $links }}{{ $cands = $cands | append .href }}{{ end }}
-    {{- $cands = $cands | append .page }}
+    {{- $cands = $cands | append $page }}
     {{- range $cands }}{{ if not $repo }}{{ with findRESubmatch `^https?://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)` . 1 }}{{ $repo = printf "%s/%s" (index . 0 1) (strings.TrimSuffix ".git" (index . 0 2)) }}{{ end }}{{ end }}{{ end }}
-    {{- if not $repo }}{{ with index $repos .id }}{{ $repo = . }}{{ $links = $links | append (dict "label" "Source" "href" (printf "https://github.com/%s" .)) }}{{ end }}{{ end }}
     <article class="project-card" data-cat="{{ .category }}">
-      <a class="project-image{{ if eq .imageFit "contain" }} contain{{ end }}{{ if eq .imageFit "pixel" }} contain pixel{{ end }}" href="{{ partial "inline/project-href.html" .page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }} tabindex="-1" aria-hidden="true">
+      <a class="project-image{{ if eq .imageFit "contain" }} contain{{ end }}{{ if eq .imageFit "pixel" }} contain pixel{{ end }}" href="{{ partial "inline/project-href.html" $page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }} tabindex="-1" aria-hidden="true">
         {{- with .image }}<img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" decoding="async" class="nofancybox">{{ else }}<span class="project-ph">{{ $title }}</span>{{ end -}}
       </a>
       <div class="project-body">
         <div class="project-meta">{{ with .category }}<span class="project-cat">{{ T (printf "project_cat_%s" .) | default . }}</span>{{ end }}{{ range first 3 .tags }}<span class="project-tag">{{ . }}</span>{{ end }}
           {{- if and $repo (isset $stars $repo) }}<a class="project-stars" href="https://github.com/{{ $repo }}" target="_blank" rel="noopener" title="GitHub stars · {{ $repo }}">{{ $star | safeHTML }}<span>{{ index $stars $repo }}</span></a>{{ end }}</div>
-        <h4 class="project-title"><a href="{{ partial "inline/project-href.html" .page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ $title }}</a></h4>
+        <h4 class="project-title"><a href="{{ partial "inline/project-href.html" $page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ $title }}</a></h4>
         <p class="project-desc">{{ $t.desc | default .desc }}</p>
         {{- with ($t.status | default .status) }}<p class="project-status">{{ . }}</p>{{ end }}
         {{- with $links }}
