@@ -618,6 +618,9 @@ body:has(#main-nav .dropdown.open) :is(#reader-toggle, #qr-toggle, #gotop) { vis
 #main-nav .sub-menu > li > a:hover { background: #141414 !important; color: #2bbc8a !important; }
 #main-nav .sub-menu > li > a:hover i { color: #2bbc8a; }
 #main-nav .nav-more .dropdown-sub .sub-row > a { padding-left: 16px; }
+/* a plain item next to groups in a dropdown inside the more menu (e.g. "All projects") lines up with the groups */
+#main-nav .nav-more .dropdown-menu .dropdown-menu > li:not(.dropdown-sub):not(.dropdown-self) > a { padding: 9px 8px 9px 16px; line-height: 20px; }
+#main-nav .nav-more .dropdown-menu .dropdown-menu > li:not(.dropdown-sub):not(.dropdown-self) > a i { width: 20px; margin-right: 6px; text-align: center; }
 /* Long labels (English: "Graphics & Engines Gallery") wrap instead of widening the menu past the screen edge;
    the icon stays put and the wrapped line lines up with the text. */
 #main-nav .dropdown-menu { max-width: calc(100vw - 40px); } /* 100vw includes a desktop scrollbar */
