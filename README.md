@@ -57,7 +57,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false` |
 | | 上一篇 / 下一篇（显示标题，全站按时间） | |
 | | 相关文章（各语言结果一致：按标签/分类的统一键计分） | `relatedPosts`；跨语言的标签对应写在站点 `data/terms.toml` |
-| | 图片注释（单独成段的图片用 title / alt 作 figcaption）、灯箱 | `imageCaptions` |
+| | 图片注释（单独成段的图片用 title / alt 作 figcaption）、灯箱 | `imageCaptions`；单张不要注释：图片下一行写 `{.no-caption}` |
 | | 在 GitHub 上编辑 | `editURL` |
 | Markdown | 数学公式（构建时 KaTeX → MathML） | `math: true` 或 `math = "always"` |
 | | Mermaid、Chart.js 图表 | ` ```mermaid `、` ```chart `（Chart.js JSON 配置） |
