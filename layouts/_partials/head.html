@@ -3,9 +3,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>try{if(localStorage.getItem("reader")==="1")document.documentElement.classList.add("reader")}catch(e){}</script>
   {{- with site.Params.bodyFont }}
-  {{- /* Optional site-wide pixel font (params.bodyFont): every text element uses it, at fixed CSS sizes so the page
-       looks the same on every screen (pixel-exact where a size is a whole multiple of the font's pixel size on that
-       screen, slightly soft elsewhere). Sizes (CSS px): `sizes = {small, text, h4, h3, h2, h1, xl}`. */}}
+  {{- /* Optional site-wide pixel font (params.bodyFont): every text element uses it. `sizes.text` (CSS px, default
+       16) becomes the root size and the theme's proportions follow it (see features.css). */}}
   {{- $z := merge (dict "small" 16 "text" 16 "h4" 24 "h3" 24 "h2" 32 "h1" 32 "xl" 40) (.sizes | default dict) }}
   <style>@font-face{font-family:"{{ .family }}";src:url("{{ partial "func/url.html" .src }}") format("woff2");font-display:swap}:root{--px-font:"{{ .family }}";--px-small:{{ $z.small }}px;--px-size:{{ $z.text }}px;--px-h4:{{ $z.h4 }}px;--px-h3:{{ $z.h3 }}px;--px-h2:{{ $z.h2 }}px;--px-h1:{{ $z.h1 }}px;--px-xl:{{ $z.xl }}px}</style>
   <link rel="preload" href="{{ partial "func/url.html" .src }}" as="font" type="font/woff2" crossorigin>
