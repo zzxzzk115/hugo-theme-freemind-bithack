@@ -1,11 +1,16 @@
 {{- /*
   Comments. params.comments.provider = "giscus" | "valine" | "" (off).
-  giscus uses a dark theme (params.comments.giscus.theme) and follows the page language.
+  giscus follows the page language. Theme: params.comments.giscus.theme = "pixel" (default: static/css/giscus-theme.css,
+  pixel fonts and square UI matching the blog) or any giscus theme name / CSS URL.
 */ -}}
 {{- $c := site.Params.comments }}
 {{- if eq $c.provider "giscus" }}
 {{- with $c.giscus }}
 {{- $lang := .lang | default (cond (hasPrefix site.Language.Lang "zh") "zh-CN" "en") }}
+{{- $theme := .theme | default "pixel" }}
+{{- /* giscus.app can only load a custom theme from a public https address (browsers block it from reaching
+       localhost), so `hugo server` previews use giscus's own dark theme instead. */}}
+{{- if eq $theme "pixel" }}{{ $theme = cond hugo.IsServer "transparent_dark" ("css/giscus-theme.css" | absURL) }}{{ end }}
 <section id="comments" class="comments">
   <h4><i class="fa fa-comments"></i> {{ T "comment" }}</h4>
   <div class="giscus"></div>
@@ -20,7 +25,7 @@
         "data-category": {{ .category }}, "data-category-id": {{ .categoryId }},
         "data-mapping": {{ .mapping | default "pathname" }}, "data-strict": {{ .strict | default "0" }},
         "data-reactions-enabled": {{ .reactions | default "1" }}, "data-emit-metadata": "0",
-        "data-input-position": {{ .inputPosition | default "top" }}, "data-theme": {{ .theme | default "transparent_dark" }},
+        "data-input-position": {{ .inputPosition | default "top" }}, "data-theme": {{ $theme }},
         "data-lang": {{ $lang }}, "data-loading": "lazy"
       };
       Object.keys(attrs).forEach(function (k) { s.setAttribute(k, attrs[k]); });

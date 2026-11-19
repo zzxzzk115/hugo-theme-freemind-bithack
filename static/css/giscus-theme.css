@@ -1,0 +1,93 @@
+/* giscus theme for freemind-bithack: giscus's transparent dark theme restyled to match the blog —
+   pixel fonts (Fixedsys for Latin, Fusion Pixel for CJK), square corners, flat borders and the
+   blog's green accent with hard pixel shadows. giscus loads this file inside its iframe, so the
+   fonts are fetched cross-origin (GitHub Pages allows it); font URLs are relative to this file.
+   Selected with params.comments.giscus.theme = "pixel" (the default). */
+@import url("https://giscus.app/themes/transparent_dark.css");
+
+@font-face {
+  font-family: "DOS";
+  src: url("fonts/Fixedsys500c.woff") format("woff"), url("fonts/Fixedsys500c.ttf") format("truetype");
+  font-display: swap;
+}
+@font-face {
+  font-family: "DOS";
+  src: url("fonts/fusion-pixel/fusion-pixel-12px-proportional-zh_hans.otf.woff2") format("woff2");
+  unicode-range: U+2E80-2FFF, U+3000-303F, U+3040-30FF, U+3100-312F, U+3190-31FF, U+3200-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
+  font-display: swap;
+}
+
+/* ---- palette: the blog's green instead of GitHub blue; borders in the blog's greys ---- */
+main {
+  --color-accent-fg: #2bbc8a;
+  --color-accent-emphasis: #2bbc8a;
+  --color-accent-muted: rgba(43, 188, 138, .45);
+  --color-accent-subtle: rgba(43, 188, 138, .14);
+  --color-btn-primary-bg: #2bbc8a;
+  --color-btn-primary-border: #2bbc8a;
+  --color-btn-primary-hover-bg: #34d39b;
+  --color-btn-primary-hover-border: #34d39b;
+  --color-btn-primary-selected-bg: #239c72;
+  --color-btn-primary-text: #000;
+  --color-btn-primary-shadow: none;
+  --color-btn-primary-inset-shadow: none;
+  --color-btn-primary-disabled-bg: rgba(43, 188, 138, .45);
+  --color-btn-primary-disabled-border: rgba(43, 188, 138, .45);
+  --color-btn-primary-disabled-text: rgba(0, 0, 0, .65);
+  --color-btn-bg: #111;
+  --color-btn-border: #555;
+  --color-btn-hover-bg: #1b1b1b;
+  --color-btn-hover-border: #2bbc8a;
+  --color-btn-shadow: none;
+  --color-btn-inset-shadow: none;
+  --color-border-default: #333;
+  --color-border-muted: #2a2a2a;
+  --color-canvas-subtle: #111;
+  --color-canvas-inset: #000;
+  --color-canvas-overlay: #111;
+}
+
+/* ---- type: pixel faces everywhere, at whole sizes so bitmap glyphs stay crisp ---- */
+main, main *, .gsc-main {
+  font-family: "DOS", "Fira Code", Consolas, "Microsoft YaHei", "PingFang SC", monospace !important;
+}
+main .gsc-comment-content, main .markdown, main textarea { font-size: 16px !important; line-height: 1.6; }
+main .text-xs, main .text-sm, main .gsc-reactions-count, main .gsc-comment-author, main time { font-size: 14px !important; }
+
+/* ---- shape: square corners everywhere (avatars, boxes, buttons, pills, editor, popovers) ---- */
+main *, main *::before, main *::after { border-radius: 0 !important; }
+
+/* ---- buttons: flat, bordered, hard pixel shadow like the blog's dialogs ---- */
+main .btn, main button.btn {
+  border: 1px solid var(--color-btn-border); background: var(--color-btn-bg); box-shadow: none; transition: none;
+}
+main .btn:hover:not(:disabled), main button.btn:hover:not(:disabled) { border-color: #2bbc8a; color: #2bbc8a; }
+main .btn-primary, main button.btn-primary {
+  background: #2bbc8a; border-color: #2bbc8a; color: #000 !important; box-shadow: 3px 3px 0 #1a6e51;
+}
+main .btn-primary:hover:not(:disabled) { background: #34d39b; color: #000 !important; }
+main .btn-primary:active:not(:disabled) { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #1a6e51; }
+
+/* ---- boxes: comment cards, the editor and the reactions bar get the blog's flat frames ---- */
+main .gsc-comment-box, main .gsc-comment > div, main .gsc-reply-box, main .gsc-comment-box-tabs,
+main .gsc-comment-box-main, main .color-bg-primary, main .gsc-homepage-bg {
+  border-color: #333 !important;
+}
+main textarea, main .form-control {
+  background: #000 !important; border: 1px solid #333 !important; box-shadow: none !important; caret-color: #2bbc8a;
+}
+main textarea:focus, main .form-control:focus { border-color: #2bbc8a !important; outline: none; box-shadow: 0 0 0 1px #2bbc8a !important; }
+
+/* reactions and the emoji picker: square chips with a thin frame */
+main .gsc-social-reaction-summary-item, main .gsc-direct-reaction-button, main .gsc-emoji-button {
+  border: 1px solid #333 !important; background: #0b0b0b !important;
+}
+main .gsc-social-reaction-summary-item.has-reacted, main .gsc-direct-reaction-button.has-reacted {
+  border-color: #2bbc8a !important; background: rgba(43, 188, 138, .14) !important;
+}
+main .gsc-reactions-popover { border: 1px solid #2bbc8a !important; box-shadow: 4px 4px 0 rgba(43, 188, 138, .25) !important; }
+
+/* code inside comments */
+main code, main pre, main kbd, main samp { font-family: "DOS", "Fira Code", Consolas, monospace !important; }
+main pre { background: #111 !important; border: 1px solid #333; }
+main :not(pre) > code { background: #1b1b1b !important; color: #fefe54; padding: 0 4px; }
