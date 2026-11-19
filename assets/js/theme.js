@@ -564,7 +564,7 @@
   /* ------------------------------------------------------------ share: device share menu ("Share…")
      Touch devices with the Web Share API get a Share… button (hidden otherwise); it shares the title, a one-line
      summary and this page's address at the section being read. On phones the bar then keeps only
-     Share… / WeChat / copy link (CSS: .share-links.native-on). */
+     Share… and copy link (CSS: .share-links.native-on); WeChat is in the device menu. */
   var touch = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
   $$(".share-native").forEach(function (a) {
     if (!navigator.share || !touch) return;

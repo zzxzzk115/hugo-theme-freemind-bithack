@@ -68,7 +68,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 作者卡片（头像、简介、统计、社交图标，微信号点击复制） | `authorCard`、`[[social]]`（`copy = "…"`） |
 | 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭）。giscus 默认用主题自带的像素主题（像素字体、直角、绿色按钮）；它只能从公网 https 地址加载，所以 `hugo server` 本地预览时用 giscus 自带的暗色主题 | `[comments]`、`[comments.giscus] theme`（默认 `"pixel"`，也可填 giscus 主题名或 CSS 地址）、`onPages` |
 | | 阅读量（不蒜子 / Vercount） | `[pageviews] provider` |
-| | 分享（系统分享菜单、X、LinkedIn、Reddit、Telegram、微博、QQ空间、微信、邮件、复制链接）。「分享…」调起设备自带的分享菜单（Web Share API，只在支持它的触屏设备上出现），手机上分享栏随之精简为 分享… / 微信 / 复制链接。微信没有网页分享接口：宽屏弹出本页二维码，微信扫码后点「···」分享到朋友圈；手机上复制链接 | `share`（`"native"` 即「分享…」） |
+| | 分享（系统分享菜单、X、LinkedIn、Reddit、Telegram、微博、QQ空间、微信、邮件、复制链接）。「分享…」调起设备自带的分享菜单（Web Share API，只在支持它的触屏设备上出现），手机上分享栏随之精简为 分享… / 复制链接（微信、QQ 等都在系统菜单里）。微信没有网页分享接口：宽屏弹出本页二维码，微信扫码后点「···」分享到朋友圈；手机上复制链接 | `share`（`"native"` 即「分享…」） |
 | | 统计（GA、Umami、Plausible、GoatCounter、Cloudflare、百度） | `[analytics]`，仅生产构建 |
 | SEO / 订阅 | canonical、hreflang、Open Graph、Twitter Card、JSON-LD、sitemap、robots | 自动 |
 | | RSS、Atom、JSON Feed（默认全文） | `[feed] fullText`、`limit` |

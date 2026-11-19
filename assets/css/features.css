@@ -559,6 +559,6 @@ body.is-article #qr-toggle { bottom: 132px; }
 .share-links a.share-native { width: auto; padding: 0 10px; color: #2bbc8a; border-color: #2bbc8a; white-space: nowrap; }
 .share-links a.share-native:hover, .share-links a.share-native:active { color: #000 !important; background: #2bbc8a !important; }
 @media (max-width: 767px) {
-  .share-links.native-on a:not(.share-native):not(.share-wechat):not([data-copy]) { display: none; }
+  .share-links.native-on a:not(.share-native):not([data-copy]) { display: none; }
   .share-links.native-on a { height: 34px; line-height: 34px; min-width: 34px; }
 }

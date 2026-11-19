@@ -1,6 +1,6 @@
 {{- /* Share links. params.share = ["native", "x", "facebook", "linkedin", "reddit", "telegram", "weibo", "qzone", "wechat", "email", "copy"]
        native: "Share…" opens the device's own share menu (Web Share API); shown only on touch devices that support it,
-       and on phones the bar then slims to Share… / WeChat / copy link.
+       and on phones the bar then slims to Share… / copy link.
        wechat: WeChat has no share URL, so the button shows the page's QR code (scan in WeChat, then share to
        Moments); on phones it opens the system share sheet instead. */ -}}
 {{- $list := site.Params.share | default (slice "native" "x" "linkedin" "reddit" "telegram" "weibo" "qzone" "wechat" "email" "copy") }}
