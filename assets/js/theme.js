@@ -49,7 +49,6 @@
       var list = document.getElementById(sub.getAttribute("aria-controls"));
       var opening = sub.getAttribute("aria-expanded") !== "true";
       sub.setAttribute("aria-expanded", opening);
-      sub.setAttribute("data-touched", "");
       sub.closest(".dropdown-sub").classList.toggle("open-sub", opening);
       if (list) list.hidden = !opening;
       return;
@@ -110,7 +109,7 @@
       items.forEach(function (li) { navUl.insertBefore(li, more); });
       more.hidden = true;
       more.classList.remove("open");
-      if (fits()) { foldGroups(); return; }
+      if (fits()) return;
       more.hidden = false;
       var order = items.slice().sort(function (a, b) {
         return (+b.getAttribute("data-priority")) - (+a.getAttribute("data-priority")) ||
@@ -120,20 +119,6 @@
       $$(":scope > li", moreList)
         .sort(function (a, b) { return a.getAttribute("data-index") - b.getAttribute("data-index"); })
         .forEach(function (li) { moreList.appendChild(li); });
-      foldGroups();
-    };
-    // In the "more" menu (one long column on phones) nested groups start folded; in the navbar dropdowns they keep
-    // their default (second level open). A group the reader toggled keeps the reader's choice.
-    var foldGroups = function () {
-      $$(".sub-toggle", navUl).forEach(function (t) {
-        if (t.hasAttribute("data-touched")) return;
-        if (!t.hasAttribute("data-default")) t.setAttribute("data-default", t.getAttribute("aria-expanded"));
-        var open = !more.contains(t) && t.getAttribute("data-default") === "true";
-        t.setAttribute("aria-expanded", open);
-        t.closest(".dropdown-sub").classList.toggle("open-sub", open);
-        var list = document.getElementById(t.getAttribute("aria-controls"));
-        if (list) list.hidden = !open;
-      });
     };
     var navTimer;
     fitNav();
