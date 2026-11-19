@@ -622,3 +622,9 @@ body.is-article #qr-toggle { bottom: 132px; }
 /* deeper groups (third level and below) indent one step per level */
 #main-nav .sub-menu .sub-row > a { padding-left: 42px; font-size: 95%; color: #aaa; }
 #main-nav .sub-menu .sub-menu { margin-left: 16px; border-bottom: 0; }
+
+/* project cards: GitHub star count (pixel star) at the end of the meta row; GitHub icon on GitHub links */
+.project-meta .project-stars { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; color: #fefe54; border: 1px solid #5a5a1e; font-variant-numeric: tabular-nums; }
+.mypage .project-meta a.project-stars:hover { color: #000 !important; background: #fefe54 !important; border-color: #fefe54; }
+.project-stars .pixel-star { display: block; image-rendering: pixelated; }
+.project-links a .fa-github { margin-right: 5px; font-size: 13px; }

@@ -9,12 +9,18 @@
   Category names: i18n keys project_cat_<category> (falls back to the raw value).
   A project without `image` gets a pixel placeholder with its title. `page` and link `href` may be a content path
   ("/posts/my-post"): it links to that page in the current language.
+  GitHub: a card's repo is its "Source" link (else its first GitHub link or page, else data/projects_repos.toml
+  {id = "owner/repo"}, which also adds a Source link); its star count comes from data/github_stars.json
+  ({"owner/repo": n}, see the blog's tools/github_stars.py) and shows as a pixel star. GitHub links get the icon.
 */ -}}
 {{- define "_partials/inline/project-href.html" }}
   {{- $h := . }}
   {{- if not (or (hasPrefix . "http") (hasPrefix . "//") (hasPrefix . "#")) }}{{ with site.GetPage . }}{{ $h = .RelPermalink }}{{ else }}{{ $h = partial "func/url.html" . }}{{ end }}{{ end }}
   {{- return $h }}
 {{- end }}
+{{- $star := `<svg class="pixel-star" viewBox="0 0 9 9" width="13" height="13" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="4" y="0" width="1" height="2"/><rect x="3" y="2" width="3" height="1"/><rect x="0" y="3" width="9" height="1"/><rect x="1" y="4" width="7" height="1"/><rect x="2" y="5" width="5" height="1"/><rect x="2" y="6" width="2" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="1" y="7" width="2" height="1"/><rect x="6" y="7" width="2" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/></svg>` }}
+{{- $stars := hugo.Data.github_stars | default dict }}
+{{- $repos := hugo.Data.projects_repos | default dict }}
 {{- $all := hugo.Data.projects | default slice }}
 {{- $tr := index hugo.Data (printf "projects_%s" (index (split site.Language.Lang "-") 0)) | default dict }}
 {{- $labels := $tr.labels | default dict }}
@@ -47,18 +53,28 @@
     {{- $t := index $tr .id | default dict }}
     {{- $title := $t.title | default .title }}
     {{- $external := hasPrefix .page "http" }}
+    {{- /* GitHub repo: the Source link, else the first GitHub link or page, else data/projects_repos.toml */}}
+    {{- $links := .links | default slice }}
+    {{- $repo := "" }}
+    {{- $cands := slice }}
+    {{- range $links }}{{ if eq .label "Source" }}{{ $cands = $cands | append .href }}{{ end }}{{ end }}
+    {{- range $links }}{{ $cands = $cands | append .href }}{{ end }}
+    {{- $cands = $cands | append .page }}
+    {{- range $cands }}{{ if not $repo }}{{ with findRESubmatch `^https?://github\.com/([A-Za-z0-9_.-]+)/([A-Za-z0-9_.-]+)` . 1 }}{{ $repo = printf "%s/%s" (index . 0 1) (strings.TrimSuffix ".git" (index . 0 2)) }}{{ end }}{{ end }}{{ end }}
+    {{- if not $repo }}{{ with index $repos .id }}{{ $repo = . }}{{ $links = $links | append (dict "label" "Source" "href" (printf "https://github.com/%s" .)) }}{{ end }}{{ end }}
     <article class="project-card" data-cat="{{ .category }}">
       <a class="project-image{{ if eq .imageFit "contain" }} contain{{ end }}{{ if eq .imageFit "pixel" }} contain pixel{{ end }}" href="{{ partial "inline/project-href.html" .page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }} tabindex="-1" aria-hidden="true">
         {{- with .image }}<img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" decoding="async" class="nofancybox">{{ else }}<span class="project-ph">{{ $title }}</span>{{ end -}}
       </a>
       <div class="project-body">
-        <div class="project-meta">{{ with .category }}<span class="project-cat">{{ T (printf "project_cat_%s" .) | default . }}</span>{{ end }}{{ range first 3 .tags }}<span class="project-tag">{{ . }}</span>{{ end }}</div>
+        <div class="project-meta">{{ with .category }}<span class="project-cat">{{ T (printf "project_cat_%s" .) | default . }}</span>{{ end }}{{ range first 3 .tags }}<span class="project-tag">{{ . }}</span>{{ end }}
+          {{- if and $repo (isset $stars $repo) }}<a class="project-stars" href="https://github.com/{{ $repo }}" target="_blank" rel="noopener" title="GitHub stars · {{ $repo }}">{{ $star | safeHTML }}<span>{{ index $stars $repo }}</span></a>{{ end }}</div>
         <h4 class="project-title"><a href="{{ partial "inline/project-href.html" .page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ $title }}</a></h4>
         <p class="project-desc">{{ $t.desc | default .desc }}</p>
         {{- with ($t.status | default .status) }}<p class="project-status">{{ . }}</p>{{ end }}
-        {{- with .links }}
+        {{- with $links }}
         <div class="project-links">
-          {{- range . }}<a href="{{ partial "inline/project-href.html" .href }}"{{ if hasPrefix .href "http" }} target="_blank" rel="noopener"{{ end }}>{{ index $labels .label | default .label }}</a>{{ end -}}
+          {{- range . }}<a href="{{ partial "inline/project-href.html" .href }}"{{ if hasPrefix .href "http" }} target="_blank" rel="noopener"{{ end }}>{{ if strings.Contains .href "://github.com/" }}<i class="fa fa-github" aria-hidden="true"></i>{{ end }}{{ index $labels .label | default .label }}</a>{{ end -}}
         </div>
         {{- end }}
       </div>
