@@ -315,20 +315,9 @@ body { padding-top: 64px; }
 
 /* ---- CJK pixel font ------------------------------------------------------
    Fusion Pixel Font 12px (SIL OFL 1.1, https://github.com/TakWolf/fusion-pixel-font), registered under the
-   theme's existing families for CJK code points only: Latin keeps Fixedsys / Fira Code, Chinese gets
-   pixels too, and the file is only downloaded on pages that contain CJK text. */
-@font-face {
-  font-family: "DOS";
-  src: url("fonts/fusion-pixel/fusion-pixel-12px-proportional-zh_hans.otf.woff2") format("woff2");
-  unicode-range: U+2E80-2FFF, U+3000-303F, U+3040-30FF, U+3100-312F, U+3190-31FF, U+3200-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Fira Code";
-  src: url("fonts/fusion-pixel/fusion-pixel-12px-proportional-zh_hans.otf.woff2") format("woff2");
-  unicode-range: U+2E80-2FFF, U+3000-303F, U+3040-30FF, U+3100-312F, U+3190-31FF, U+3200-33FF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE10-FE1F, U+FE30-FE4F, U+FF00-FFEF;
-  font-display: swap;
-}
+   theme's existing families for CJK code points only: Latin keeps Fixedsys / Fira Code, Chinese gets pixels too.
+   The @font-face rules live in fusion-pixel.css (tools/split_fusion_pixel.py): three frequency pieces, so a page
+   downloads only the pieces holding characters it shows (common hanzi: ~100 KB instead of the 680 KB font). */
 
 /* ---- Overflow: long URLs / identifiers wrap instead of running out of their box ---- */
 .mypage p, .mypage li, .mypage blockquote, .mypage td, .mypage th, .mypage h1, .mypage h2, .mypage h3,

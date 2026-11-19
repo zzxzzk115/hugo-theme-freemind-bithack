@@ -4,7 +4,8 @@
   <script>try{if(localStorage.getItem("reader")==="1")document.documentElement.classList.add("reader")}catch(e){}</script>
   {{- $title := slice }}
   {{- if .IsHome }}{{ with .Paginate (partial "func/home-pages.html" .) }}{{ if gt .PageNumber 1 }}{{ $title = $title | append (T "page" .PageNumber) }}{{ end }}{{ end }}{{ end }}
-  {{- if not .IsHome }}{{ with .Title }}{{ $title = $title | append . }}{{ end }}{{ end }}
+  {{- $pageTitle := .Title }}{{ if eq .Kind "taxonomy" }}{{ $pageTitle = T .Data.Plural | default .Title }}{{ end }}
+  {{- if not .IsHome }}{{ with $pageTitle }}{{ $title = $title | append . }}{{ end }}{{ end }}
   {{- $title = $title | append site.Title }}
   <title>{{ delimit $title " | " }}</title>
   {{- $desc := "" }}
@@ -41,7 +42,7 @@
   {{- $card := "summary" }}
   {{- if $image }}{{ $card = "summary_large_image" }}{{ else }}{{ with site.Params.ogImage | default site.Params.logo }}{{ $image = . | absURL }}{{ end }}{{ end }}
   <meta property="og:site_name" content="{{ site.Title }}">
-  <meta property="og:title" content="{{ .Title | default site.Title }}">
+  <meta property="og:title" content="{{ $pageTitle | default site.Title }}">
   <meta property="og:url" content="{{ .Permalink }}">
   <meta property="og:locale" content="{{ replace (site.Language.Locale | default site.Language.Lang) "-" "_" }}">
   {{- with $desc }}
@@ -58,7 +59,7 @@
   <meta property="og:type" content="website">
   {{- end }}
   <meta name="twitter:card" content="{{ $card }}">
-  <meta name="twitter:title" content="{{ .Title | default site.Title }}">
+  <meta name="twitter:title" content="{{ $pageTitle | default site.Title }}">
   {{- with $desc }}
   <meta name="twitter:description" content="{{ . }}">{{ end }}
   {{- with $image }}
@@ -101,6 +102,10 @@
   {{- $bundle := $css | resources.Concat "css/bundle.css" }}
   {{- if hugo.IsProduction }}{{ $bundle = $bundle | minify | fingerprint }}{{ end }}
   <link rel="stylesheet" href="{{ $bundle.RelPermalink }}"{{ with $bundle.Data.Integrity }} integrity="{{ . }}"{{ end }}>
+  {{- /* CJK pixel font faces: ~80 KB of unicode-range lists, so loaded without blocking the first paint */}}
+  {{- with resources.Get "css/fusion-pixel.css" }}{{ $fp := . }}{{ if hugo.IsProduction }}{{ $fp = . | minify | fingerprint }}{{ end }}
+  <link rel="stylesheet" href="{{ $fp.RelPermalink }}" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="{{ $fp.RelPermalink }}"></noscript>{{ end }}
 
   {{- if and (eq site.Params.mathOutput "htmlAndMathml") (partial "func/math-enabled.html" .) }}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">{{ end }}

@@ -74,7 +74,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | RSS、Atom、JSON Feed（默认全文） | `[feed] fullText`、`limit` |
 | | AI 翻译提示（链接到原文） | `aiTranslated: true` |
 | 其他 | 404 页：同路径在另一种语言存在时自动跳过去（适合只写了一种语言的文章）。打印样式、web manifest、移动端适配、长链接自动换行；子目录部署时 `/img/a.png` 这类根路径自动补上 baseURL 路径 | 自动 |
-| 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL，按 unicode-range 只在有中文时加载） | |
+| 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL；按字频拆成三片 woff2，按 unicode-range 只下载页面用到的分片，常用字约 100 KB，见 `tools/split_fusion_pixel.py`） | |
 
 ### 跨语言的标签 / 分类
 
