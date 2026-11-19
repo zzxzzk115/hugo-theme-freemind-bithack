@@ -677,3 +677,14 @@ html.px-body:not(.reader) #main-nav .sub-menu > li > a { font-size: 15.2px; }
   #gotop#gotop span { font-size: 0 !important; line-height: 38px !important; } /* doubled id: beats the px-body rule */
   #reader-toggle .fa, #gotop .fa { font-size: 18px; line-height: 38px; vertical-align: top; }
 }
+
+/* a project's own page (sites that render one): picture, summary, links, overview */
+.project-page > .project-image { margin: 0 0 16px; border: 1px solid #333; max-width: 720px; }
+.project-page .project-lead { font-size: 1.1em; color: #ddd; }
+.project-page .project-status { color: #2bbc8a; }
+.project-page .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.project-page .project-links { margin: 4px 0 18px; padding-top: 0; }
+.project-page .project-overview { margin: 0 0 20px; padding: 10px 14px; border-left: 3px solid #2bbc8a; background: #111; }
+.project-page .project-overview dt { color: #2bbc8a; }
+.project-page .project-overview dd { margin: 0 0 8px; }
+.project-page .project-overview dd p { margin: 0; }
