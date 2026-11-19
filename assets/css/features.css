@@ -687,7 +687,9 @@ html.px-body:not(.reader) :is(.date, .slogan, .post-slogan) { font-size: var(--p
 html.px-body:not(.reader) .tag_box li { line-height: 1; }
 html.px-body:not(.reader) .tag_box a { display: inline-flex; align-items: flex-start; gap: 3px; margin: 2px 2px 4px 0; padding: 5px 7px 4px; line-height: 1 !important; vertical-align: top; }
 html.px-body:not(.reader) :is(#sidebar, #post_meta, .page, .archive) .tag_box a span { position: static; top: 0; vertical-align: baseline; margin: -3px 0 0 1px; font-size: 12px !important; line-height: 1 !important; }
-html.px-body:not(.reader) :is(#reader-toggle, #qr-toggle) { width: auto; min-width: 136px; padding: 7px 12px !important; line-height: 1 !important; }
+/* the three stacked corner buttons (phone QR, reader mode, back to top): one size, text centred */
+html.px-body:not(.reader) :is(#reader-toggle, #qr-toggle, #gotop) { box-sizing: border-box; width: 136px; min-width: 0; height: 41px; padding: 0 8px !important; line-height: 39px !important; text-align: center; white-space: nowrap; }
+html.px-body:not(.reader) #gotop span { line-height: 39px !important; }
 html.px-body:not(.reader) div.code-toolbar > .toolbar .toolbar-item > :is(span, button, a) { line-height: 1 !important; padding: 4px 8px !important; }
 /* phones: smaller title steps (multiples of 4px stay pixel-exact on 3x screens with a 12px font) */
 @media (max-width: 767px) {
