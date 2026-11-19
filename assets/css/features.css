@@ -624,7 +624,7 @@ body.is-article #qr-toggle { bottom: 132px; }
 #main-nav .sub-menu .sub-menu { margin-left: 16px; border-bottom: 0; }
 
 /* project cards: GitHub star count (pixel star) at the end of the meta row; GitHub icon on GitHub links */
-.project-meta .project-stars { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; padding: 0 6px; color: #fefe54; border: 1px solid #5a5a1e; font-variant-numeric: tabular-nums; }
+.project-meta .project-stars { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; padding: 1px 8px; font-size: 15px; line-height: 20px; font-weight: bold; color: #fefe54; border: 1px solid #5a5a1e; font-variant-numeric: tabular-nums; }
 .mypage .project-meta a.project-stars:hover { color: #000 !important; background: #fefe54 !important; border-color: #fefe54; }
-.project-stars .pixel-star { display: block; image-rendering: pixelated; }
+.project-stars .pixel-star { display: block; flex: none; image-rendering: pixelated; } /* 18px = 2px per star pixel */
 .project-links a .fa-github { margin-right: 5px; font-size: 13px; }
