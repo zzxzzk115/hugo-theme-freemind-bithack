@@ -1,7 +1,7 @@
 {{- /*
   Priority+ navigation: items that don't fit move into the "more" menu (pixel ☰), least important first.
   Importance: menu item `params.priority` (lower = kept longer); default is the menu order.
-  Dropdown items with children of their own become foldable groups (a toggle next to the item opens them in place).
+  Dropdown items with children of their own become foldable groups: the second level starts open, deeper levels folded.
   The language switch has priority 0 and is the last to go.
 */ -}}
 {{- define "_partials/inline/nav-link.html" }}
@@ -9,6 +9,25 @@
   <a href="{{ partial "func/url.html" .URL }}" title="{{ .Title | default .Name }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>
     {{- with .Params.icon }}<i class="{{ . }}"></i>{{ end }}{{ .Name -}}
   </a>
+{{- end }}
+{{- /* Items of a dropdown, recursively. An item with children is a group: its own link plus a toggle that
+     folds the children in place. Groups at depth 2 (directly in the dropdown) start open, deeper ones folded. */}}
+{{- define "_partials/inline/nav-items.html" }}
+  {{- $depth := .depth }}
+  {{- range .items }}
+  {{- if .HasChildren }}
+  {{- $open := le $depth 2 }}
+  {{- $id := printf "nav-sub-%s" (.Identifier | default .Name | anchorize) }}
+  <li class="dropdown-sub{{ if $open }} open-sub{{ end }}">
+    <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="{{ $open }}" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><span aria-hidden="true"></span></button></div>
+    <ul class="sub-menu" id="{{ $id }}"{{ if not $open }} hidden{{ end }}>
+      {{- partial "inline/nav-items.html" (dict "items" .Children "depth" (add $depth 1)) }}
+    </ul>
+  </li>
+  {{- else }}
+  <li>{{ partial "inline/nav-link.html" . }}</li>
+  {{- end }}
+  {{- end }}
 {{- end }}
 {{- $frame := `<rect x="1" y="0" width="14" height="1"/><rect x="1" y="13" width="14" height="1"/><rect x="0" y="1" width="1" height="12"/><rect x="15" y="1" width="1" height="12"/>` }}
 {{- $bars := `<rect x="4" y="3" width="8" height="2"/><rect x="4" y="6" width="8" height="2"/><rect x="4" y="9" width="8" height="2"/>` }}
@@ -29,22 +48,7 @@
           {{- /* The parent's own page, for touch screens where tapping the parent only opens the menu. */}}
           <li class="dropdown-self"><a href="{{ partial "func/url.html" $m.URL }}">{{ $m.Name }}</a></li>
           <li class="divider dropdown-self"></li>
-          {{- range $m.Children }}
-          {{- if .HasChildren }}
-          {{- /* Nested group: the item's own link plus a toggle that folds its children open in place (folded at first). */}}
-          {{- $id := printf "nav-sub-%s" (.Identifier | default .Name | anchorize) }}
-          <li class="dropdown-sub">
-            <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="false" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><span aria-hidden="true"></span></button></div>
-            <ul class="sub-menu" id="{{ $id }}" hidden>
-              {{- range .Children }}
-              <li>{{ partial "inline/nav-link.html" . }}</li>
-              {{- end }}
-            </ul>
-          </li>
-          {{- else }}
-          <li>{{ partial "inline/nav-link.html" . }}</li>
-          {{- end }}
-          {{- end }}
+          {{- partial "inline/nav-items.html" (dict "items" $m.Children "depth" 2) }}
         </ul>
       </li>
       {{- else }}

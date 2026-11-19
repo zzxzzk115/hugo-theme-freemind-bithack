@@ -64,7 +64,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 提示框 `> [!TIP]`、`==标记==`、`H~2~O`、`x^2^`、脚注、emoji | 见 exampleSite 的 markup 配置 |
 | | 任务列表 `- [ ]` / `- [x]`：像素方框代替项目符号，勾选为绿底黑勾 | |
 | 导航 | 即时搜索：顶栏按钮弹出对话框（`/` 或 Ctrl+K；背景虚化 + 数字雨、打字提示，方向键选择，关键词高亮；系统开启“减少动态效果”时只显示静态一帧） | 输出 `search.json`；`searchEffects = "always"` 无视减少动态效果设置（同样作用于音乐播放器的旋转唱片封面） |
-| | 下拉菜单（可再嵌套一层，二级项默认折叠，点右侧三角展开）、多语言切换 | 菜单项 `parent`（子项的 `parent` 指向二级项的 `identifier` 即为折叠分组）；有译文跳译文 |
+| | 下拉菜单（可多层嵌套：二级分组默认展开，三级及以下默认折叠，点右侧三角折叠/展开）、多语言切换 | 菜单项 `parent`（子项的 `parent` 指向二级项的 `identifier` 即为折叠分组）；有译文跳译文 |
 | | 作者卡片（头像、简介、统计、社交图标，微信号点击复制）。像素画头像设 `pixels = 32`（网格边长），按屏幕物理像素取整数倍显示，150% 缩放下也不糊不歪 | `authorCard`（`pixels`）、`[[social]]`（`copy = "…"`） |
 | 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭）。giscus 默认用主题自带的像素主题（像素字体、直角、绿色按钮）；它只能从公网 https 地址加载，所以 `hugo server` 本地预览时用 giscus 自带的暗色主题 | `[comments]`、`[comments.giscus] theme`（默认 `"pixel"`，也可填 giscus 主题名或 CSS 地址）、`onPages` |
 | | 阅读量（不蒜子 / Vercount） | `[pageviews] provider` |
