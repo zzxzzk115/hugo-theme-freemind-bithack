@@ -586,3 +586,10 @@ body.is-article #qr-toggle { bottom: 132px; }
 .project-links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 6px; }
 .mypage .project-links a { font-size: 12px; line-height: 20px; padding: 0 8px; border: 1px solid #2bbc8a; color: #2bbc8a; white-space: nowrap; }
 .mypage .project-links a:hover { color: #000 !important; background: #2bbc8a !important; }
+
+/* Phones: .content's -20px side margins (style.css) are wider than the container's gutter there and pushed the page
+   4px past the screen edge (a sideways wobble); keep the same 16px inset without the overflow. */
+@media (max-width: 767px) {
+  .content { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+  .content .page-header { margin-left: 0; margin-right: 0; }
+}
