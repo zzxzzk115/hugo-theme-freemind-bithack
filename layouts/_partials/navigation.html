@@ -31,12 +31,11 @@
           <li class="divider dropdown-self"></li>
           {{- range $m.Children }}
           {{- if .HasChildren }}
-          {{- /* Nested group: the item's own link plus a toggle that folds its children open in place. */}}
-          {{- $open := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
+          {{- /* Nested group: the item's own link plus a toggle that folds its children open in place (folded at first). */}}
           {{- $id := printf "nav-sub-%s" (.Identifier | default .Name | anchorize) }}
-          <li class="dropdown-sub{{ if $open }} open-sub{{ end }}">
-            <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="{{ $open }}" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><span aria-hidden="true"></span></button></div>
-            <ul class="sub-menu" id="{{ $id }}"{{ if not $open }} hidden{{ end }}>
+          <li class="dropdown-sub">
+            <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="false" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><span aria-hidden="true"></span></button></div>
+            <ul class="sub-menu" id="{{ $id }}" hidden>
               {{- range .Children }}
               <li>{{ partial "inline/nav-link.html" . }}</li>
               {{- end }}

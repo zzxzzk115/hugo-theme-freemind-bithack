@@ -613,9 +613,9 @@ body.is-article #qr-toggle { bottom: 132px; }
 #main-nav .nav-more .dropdown-sub .sub-row > a { padding-left: 16px; }
 /* Long labels (English: "Graphics & Engines Gallery") wrap instead of widening the menu past the screen edge;
    the icon stays put and the wrapped line lines up with the text. */
-#main-nav .dropdown-menu { max-width: calc(100vw - 24px); }
+#main-nav .dropdown-menu { max-width: calc(100vw - 40px); } /* 100vw includes a desktop scrollbar */
 #main-nav .nav-more > .dropdown-menu { width: max-content; }
-#main-nav .navbar-nav > .dropdown:not(.nav-more) > .dropdown-menu { width: max-content; max-width: min(360px, calc(100vw - 24px)); }
+#main-nav .navbar-nav > .dropdown:not(.nav-more) > .dropdown-menu { width: max-content; max-width: min(360px, calc(100vw - 40px)); }
 #main-nav .dropdown-menu a { display: flex !important; align-items: baseline; white-space: normal !important; overflow-wrap: break-word; }
 #main-nav .dropdown-menu a > i { flex: 0 0 auto; }
 #main-nav .dropdown-sub .sub-row > a { min-width: 0; }

@@ -122,7 +122,14 @@
     };
     var navTimer;
     fitNav();
-    window.addEventListener("resize", function () { clearTimeout(navTimer); navTimer = setTimeout(fitNav, 60); });
+    // Only a width change can change what fits; phones also fire resize when the address bar slides in and out,
+    // and refitting then would close an open menu.
+    var navW = window.innerWidth;
+    window.addEventListener("resize", function () {
+      if (window.innerWidth === navW) return;
+      navW = window.innerWidth;
+      clearTimeout(navTimer); navTimer = setTimeout(fitNav, 60);
+    });
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitNav);
   }
 
