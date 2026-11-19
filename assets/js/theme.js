@@ -521,8 +521,14 @@
       return '<svg viewBox="0 0 ' + size + " " + size + '" shape-rendering="crispEdges" role="img" aria-label="QR code">' +
         '<rect width="100%" height="100%" fill="#fff"/><path d="' + d + '" fill="#000"/></svg>';
     };
-    var qrOpen = function () {
-      var tgt = qrTarget(), box = $(".qr-code", qrModal);
+    var qrTitleEl = $(".qr-title", qrModal), qrHintEl = $(".qr-hint", qrModal);
+    var qrTitle0 = qrTitleEl.innerHTML, qrHint0 = qrHintEl.textContent;
+    // opts (optional): { url, title, hint } - e.g. the share bar's WeChat button; default: this page at the section being read
+    var qrOpen = function (opts) {
+      opts = opts && opts.url ? opts : null;
+      var tgt = opts ? { url: opts.url, label: "" } : qrTarget(), box = $(".qr-code", qrModal);
+      qrTitleEl.innerHTML = opts && opts.title ? "&gt; " + opts.title : qrTitle0;
+      qrHintEl.textContent = opts && opts.hint ? opts.hint : qrHint0;
       qrLast = document.activeElement;
       $(".qr-url", qrModal).value = tgt.url;
       var sec = $(".qr-section", qrModal);
@@ -541,7 +547,8 @@
       setTimeout(function () { qrModal.hidden = true; }, 160);
       if (qrLast && qrLast.focus) qrLast.focus();
     };
-    qrBtn.addEventListener("click", qrOpen);
+    qrBtn.addEventListener("click", function () { qrOpen(); });
+    window.__qrOpen = qrOpen;  // used by the share bar's WeChat button
     $(".qr-close", qrModal).addEventListener("click", qrClose);
     qrModal.addEventListener("mousedown", function (e) { if (e.target === qrModal) qrClose(); });
     $(".qr-copy", qrModal).addEventListener("click", function () {
@@ -553,6 +560,24 @@
       if (e.key === "Escape" && !qrModal.hidden) { e.preventDefault(); e.stopImmediatePropagation(); qrClose(); }
     });
   }
+
+  /* ------------------------------------------------------------ share: WeChat
+     WeChat has no web share URL. Phones: the system share sheet (WeChat/QQ appear there); otherwise copy the link.
+     Wider screens: the QR dialog with this page's public address, to scan in WeChat and share to Moments. */
+  $$(".share-wechat").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var url = a.getAttribute("data-url"), title = a.getAttribute("data-title") || document.title;
+      var phone = window.matchMedia && window.matchMedia("(max-width: 767px)").matches;
+      if (phone && navigator.share) {
+        navigator.share({ title: title, url: url }).catch(function () { /* dismissed */ });
+      } else if (!phone && window.__qrOpen) {
+        window.__qrOpen({ url: url, title: t("wechatTitle", "Share on WeChat"), hint: t("wechatHint", "Scan with WeChat, then tap ··· to share to Moments.") });
+      } else {
+        copyText(url).then(function () { toast(t("wechatCopied", "Link copied: paste it in WeChat")); }, function () { toast(t("copyFailed", "Copy failed")); });
+      }
+    });
+  });
 
   /* ------------------------------------------------------------ reader mode (articles only) */
   var readerBtn = $("#reader-toggle");

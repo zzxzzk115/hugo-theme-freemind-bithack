@@ -18,7 +18,7 @@
 {{- end }}
 {{ partial "search-modal.html" . }}
 {{- $cfg := dict
-  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results") "searchPrompt" (T "search_prompt") "qrFailed" (T "qr_failed"))
+  "i18n" (dict "reader" (T "reader_mode") "readerExit" (T "reader_exit") "copied" (T "copied") "copyFailed" (T "copy_failed") "noResults" (T "no_results") "searchPrompt" (T "search_prompt") "qrFailed" (T "qr_failed") "wechatTitle" (T "wechat_title") "wechatHint" (T "wechat_hint") "wechatCopied" (T "wechat_copied"))
 }}
 {{- $cfg = merge $cfg (dict "prism" (site.Params.prismCDN | default "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/")) }}
 {{- if ne site.Params.qrCode false }}{{ $cfg = merge $cfg (dict "qrLib" (site.Params.qrCDN | default "https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js")) }}{{ end }}

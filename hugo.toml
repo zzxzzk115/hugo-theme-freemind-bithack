@@ -79,8 +79,8 @@
   # "Edit this page" link: repository URL up to (not including) "content/", e.g.
   # "https://github.com/me/blog/edit/main/"
   editURL = ""
-  # Share buttons: x, facebook, linkedin, reddit, telegram, weibo, email, copy. [] hides them.
-  share = ["x", "linkedin", "reddit", "telegram", "weibo", "email", "copy"]
+  # Share buttons: x, facebook, linkedin, reddit, telegram, weibo, qzone, wechat (QR code / phone share sheet), email, copy. [] hides them.
+  share = ["x", "linkedin", "reddit", "telegram", "weibo", "qzone", "wechat", "email", "copy"]
 
   # Math: "auto" renders only on pages with `math: true`; "always" everywhere; "never" off.
   math = "auto"
