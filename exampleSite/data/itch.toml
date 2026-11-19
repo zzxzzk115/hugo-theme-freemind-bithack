@@ -1,0 +1,8 @@
+# itch.io games for {{< itch >}}: one table per game URL.
+
+["https://lazy-v.itch.io/catmario-gb"]
+title = "CatMario-GB"
+author = "Lazy_V"
+desc = "GB version of CatMario."
+cover = "/img/itch/lazy-v-catmario-gb.png"
+pixel = true

@@ -11,7 +11,7 @@
 {{- with .Get "ids" | default (.Get 0) }}
   {{- range split (replaceRE `[\s,]+` " " (trim . " ,")) " " }}
     {{- $id := . }}
-    {{- $m := index (site.Data.music | default dict) $id | default dict }}
+    {{- $m := index (hugo.Data.music | default dict) $id | default dict }}
     {{- $list = $list | append (dict
         "name" ($m.title | default (printf "NetEase #%s" $id))
         "artist" ($m.artist | default "")

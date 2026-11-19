@@ -2,13 +2,13 @@
   itch.io game card, drawn by the theme (no itch.io iframe: itch rate-limits its embed widget and
   answers HTTP 429, which leaves the embed blank).
   {{< itch url="https://lazy-v.itch.io/catmario-gb" >}}   (or just {{< itch "https://…" >}} when no other option is given)
-  Details come from site.Data.itch, keyed by the game's URL (the blog's tools/itch_card.py writes it);
+  Details come from hugo.Data.itch (data/itch.toml), keyed by the game's URL (the blog's tools/itch_card.py writes it);
   any of them can be given or overridden here:
     title, author, desc, cover (image path), button (label, default "Play on itch.io"), pixel="true"
     (pixel-art cover: no smoothing when scaled).
 */ -}}
 {{- $url := .Get "url" | default (.Get 0) }}
-{{- $d := index (site.Data.itch | default dict) $url | default dict }}
+{{- $d := index (hugo.Data.itch | default dict) $url | default dict }}
 {{- $u := urls.Parse $url }}
 {{- $title := .Get "title" | default $d.title | default (path.Base $u.Path) }}
 {{- $author := .Get "author" | default $d.author | default (index (split $u.Host ".") 0) }}

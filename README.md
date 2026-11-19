@@ -1,12 +1,12 @@
 # freemind.bithack for Hugo
 
-A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack), recreating the author's own modified version of it (red accents, a Chinese pixel font, icon font). No Node and no jQuery: just the Hugo binary (≥ 0.146, standard edition is enough) and one small script.
+A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack), recreating the author's own modified version of it (red accents, a Chinese pixel font, icon font). No Node and no jQuery: just the Hugo binary (≥ 0.156, standard edition is enough) and one small script.
 
 **Demo:** https://zzxzzk115.github.io/hugo-theme-freemind-bithack/ (built from [exampleSite](exampleSite) by GitHub Actions)
 
 ![screenshot](images/screenshot.png)
 
-**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · reader mode (R) · CJK pixel font · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / music (APlayer) / netease / details / gallery / friend / embed shortcodes · giscus comments · page views · share buttons · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · print styles · web manifest.
+**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · pixel-font code (inline and blocks) · pixel task-list checkboxes · reader mode (R) · CJK pixel font · read on your phone (QR code of the page, at the section you are reading) · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and lightbox · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / music (APlayer, spinning record cover) / netease / itch (itch.io game card, drawn locally) / linkcard / details / gallery / friend / embed shortcodes · giscus comments with a matching pixel theme · page views · share buttons (incl. QQ Zone, and WeChat via QR code) · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus · 404 page that finds the same page in the other language · print styles · web manifest.
 
 Dark only, on purpose — it is the theme's identity.
 
@@ -50,6 +50,8 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 标题锚点 | `headingAnchors` |
 | | 代码块：[Prism.js](https://prismjs.com) 官方插件（行号、语言标签、复制、行高亮）；单行不显示行号；只在有代码的页面加载 | `prismCDN`；单块 ```` ```go {linenos=false hl_lines="2-3"} ```` |
 | | 纯享阅读：单栏、易读字体、柔和配色（按 R 切换，Esc 退出，记住选择） | 文章页右下角按钮 |
+| | 代码字体：行内代码和代码块都用像素字体，与正文一致；纯享阅读时切回 Fira Code | |
+| | 手机阅读：右下角按钮弹出本页二维码（宽屏显示），扫码后跳到正在读的小节 | `qrCode = false` 关闭；`qrCDN` |
 | | 字数、阅读时间、更新日期、原创标记、阅读进度条 | `lastmod`、`original: true` |
 | | 摘要说明：`description` 用于 meta 标签和链接提示，默认不在正文显示（文章开头通常就是同一句话） | 单篇 `showDescription: true` 在正文顶部显示为提示框 |
 | | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false` |
@@ -60,17 +62,18 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | Markdown | 数学公式（构建时 KaTeX → MathML） | `math: true` 或 `math = "always"` |
 | | Mermaid、Chart.js 图表 | ` ```mermaid `、` ```chart `（Chart.js JSON 配置） |
 | | 提示框 `> [!TIP]`、`==标记==`、`H~2~O`、`x^2^`、脚注、emoji | 见 exampleSite 的 markup 配置 |
+| | 任务列表 `- [ ]` / `- [x]`：像素方框代替项目符号，勾选为绿底黑勾 | |
 | 导航 | 即时搜索：顶栏按钮弹出对话框（`/` 或 Ctrl+K；背景虚化 + 数字雨、打字提示，方向键选择，关键词高亮；系统开启“减少动态效果”时只显示静态一帧） | 输出 `search.json`；`searchEffects = "always"` 无视减少动态效果设置（同样作用于音乐播放器的旋转唱片封面） |
 | | 下拉菜单、多语言切换 | 菜单项 `parent`；有译文跳译文 |
 | | 作者卡片（头像、简介、统计、社交图标，微信号点击复制） | `authorCard`、`[[social]]`（`copy = "…"`） |
-| 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭） | `[comments]`、`onPages` |
+| 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭）。giscus 默认用主题自带的像素主题（像素字体、直角、绿色按钮）；它只能从公网 https 地址加载，所以 `hugo server` 本地预览时用 giscus 自带的暗色主题 | `[comments]`、`[comments.giscus] theme`（默认 `"pixel"`，也可填 giscus 主题名或 CSS 地址）、`onPages` |
 | | 阅读量（不蒜子 / Vercount） | `[pageviews] provider` |
-| | 分享（X、LinkedIn、Reddit、Telegram、微博、邮件、复制链接） | `share` |
+| | 分享（X、LinkedIn、Reddit、Telegram、微博、QQ空间、微信、邮件、复制链接）。微信没有网页分享接口：宽屏弹出本页二维码，微信扫码后点「···」分享到朋友圈；手机上调起系统分享菜单 | `share` |
 | | 统计（GA、Umami、Plausible、GoatCounter、Cloudflare、百度） | `[analytics]`，仅生产构建 |
 | SEO / 订阅 | canonical、hreflang、Open Graph、Twitter Card、JSON-LD、sitemap、robots | 自动 |
 | | RSS、Atom、JSON Feed（默认全文） | `[feed] fullText`、`limit` |
 | | AI 翻译提示（链接到原文） | `aiTranslated: true` |
-| 其他 | 打印样式、web manifest、移动端适配、长链接自动换行；子目录部署时 `/img/a.png` 这类根路径自动补上 baseURL 路径 | 自动 |
+| 其他 | 404 页：同路径在另一种语言存在时自动跳过去（适合只写了一种语言的文章）。打印样式、web manifest、移动端适配、长链接自动换行；子目录部署时 `/img/a.png` 这类根路径自动补上 baseURL 路径 | 自动 |
 | 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL，按 unicode-range 只在有中文时加载） | |
 
 ### 跨语言的标签 / 分类
@@ -110,6 +113,8 @@ title = { en = "Growing Up", zh = "日渐成熟" }
 - `{{< icon folder >}}`：行内 Font Awesome 4 图标
 - `{{< video src="/a.mp4" poster="/a.jpg" >}}`、`{{< pdf "/paper.pdf" >}}`、`{{< bilibili BV1554y1D7a1 >}}`、Hugo 自带的 `{{< youtube id >}}`
 - `{{< music ids="1402719608, 1847289377" >}}`：APlayer 音乐播放器（像素绿皮肤、播放列表、LRC 歌词），只在用到的页面加载。网易云歌曲走网易云官方外链音频（仅限可免费播放的歌），标题、歌手、封面、歌词读 `data/music.toml`；也可以放自己的音频：`{{< music src="/audio/a.mp3" title="…" artist="…" cover="…" lrc="/audio/a.lrc" >}}`。选项 `fold="true"` 折叠列表，`order="random"` 随机，`loop="none|one|all"`
+  `data/music.toml` 的格式（每首一节，按歌曲 ID）：`["1402719608"]` 下写 `title`、`artist`、`album`、`cover`、`lrc`（可选）。网易云封面面向圆形唱片显示，播放时顺时针转动、暂停时停住；系统开启“减少动态效果”时不转（`searchEffects = "always"` 例外）
+- `{{< itch url="https://user.itch.io/game" >}}`：itch.io 游戏卡片，和 itch 官方嵌入挂件同尺寸（552×167）同布局，但由主题绘制，页面不请求 itch.io（官方挂件会被 itch 限流成空白）。资料写在 `data/itch.toml`：`["https://user.itch.io/game"]` 下写 `title`、`author`、`desc`、`cover`（站内图片路径）、`pixel = true`（像素封面不模糊）；单篇可用 `desc="…"` 等参数覆盖（比如中文译文）
 - `{{< netease 1847289377 >}}`：网易云音乐外链播放器（`type="album"` / `"playlist"` 播放专辑、歌单；歌手页不能外链，有版权限制的歌曲在外链里放不了）
 - `{{< details "标题" >}} …Markdown… {{< /details >}}`：可折叠区块（`open="true"` 默认展开）
 - `{{< linkcard url="…" title="…" desc="…" image="/img/…" >}}`：链接卡片（类似 Notion / FlowUs 的书签），左边标题、描述和站点，右边图片，整张卡片可点击；只有 `url` 是必填

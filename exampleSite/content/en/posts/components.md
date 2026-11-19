@@ -151,3 +151,39 @@ Embed a NetEase Cloud Music song, album or playlist (artist pages can't be embed
 {{</* netease id="1234567" type="album" */>}}
 ```
 
+## Music player (APlayer)
+
+A playlist of NetEase Cloud Music songs, streamed from NetEase's own outer link; titles and covers come from
+`data/music.toml`. The cover turns like a record while a song plays.
+
+```text
+{{</* music ids="1402719608, 1431168150" */>}}
+{{</* music src="/audio/song.mp3" title="Song" artist="Me" cover="/img/cover.jpg" */>}}
+```
+
+{{< music ids="1402719608, 1431168150, 1402843948, 1847289377" >}}
+
+## itch.io game card
+
+Same size and layout as itch.io's embed widget, drawn by the theme from `data/itch.toml`, so the page makes no
+requests to itch.io:
+
+```text
+{{</* itch url="https://lazy-v.itch.io/catmario-gb" */>}}
+```
+
+{{< itch url="https://lazy-v.itch.io/catmario-gb" >}}
+
+## Link card
+
+```text
+{{</* linkcard url="https://gohugo.io/" title="Hugo" desc="The world's fastest framework for building websites." */>}}
+```
+
+{{< linkcard url="https://gohugo.io/" title="Hugo" desc="The world's fastest framework for building websites." >}}
+
+## Task list
+
+- [x] Port the theme to Hugo
+- [x] Pixel fonts for code too
+- [ ] Write more posts
