@@ -1,0 +1,63 @@
+{{- /*
+  Project gallery from data/projects.json (a list of {id, title, desc, category, tags, status, order, featured,
+  image, imageFit, page, links:[{label, href}]}; the blog's tools/sync_projects.py writes it).
+  {{< projects featured="6" >}}     the first 6 featured projects (by `featured`, then `order`)
+  {{< projects filter="true" >}}    every project, with category filter chips
+  Translations (optional): data/projects_<lang>.toml with [<id>] title/desc, and [labels] for link labels.
+  Category names: i18n keys project_cat_<category> (falls back to the raw value).
+*/ -}}
+{{- $all := hugo.Data.projects | default slice }}
+{{- $tr := index hugo.Data (printf "projects_%s" (index (split site.Language.Lang "-") 0)) | default dict }}
+{{- $labels := $tr.labels | default dict }}
+{{- $list := sort $all "order" }}
+{{- with .Get "featured" }}
+  {{- $f := where $all "featured" "!=" nil }}
+  {{- $list = first (int .) (sort (sort $f "order") "featured") }}
+{{- end }}
+{{- $filter := eq (.Get "filter") "true" }}
+<div class="project-gallery">
+  {{- if $filter }}
+  {{- $cats := slice }}{{ range $list }}{{ if not (in $cats .category) }}{{ $cats = $cats | append .category }}{{ end }}{{ end }}
+  <div class="project-filter" role="group" aria-label="{{ T "project_filter" | default "Filter" }}">
+    <button type="button" class="on" data-cat="" aria-pressed="true">{{ T "project_all" | default "All" }} <span>{{ len $list }}</span></button>
+    {{- range $cats }}{{ $c := . }}
+    <button type="button" data-cat="{{ $c }}" aria-pressed="false">{{ T (printf "project_cat_%s" $c) | default $c }} <span>{{ len (where $list "category" $c) }}</span></button>
+    {{- end }}
+  </div>
+  {{- end }}
+  <div class="project-grid">
+    {{- range $list }}
+    {{- $t := index $tr .id | default dict }}
+    <article class="project-card" data-cat="{{ .category }}">
+      <a class="project-image{{ if eq .imageFit "contain" }} contain{{ end }}" href="{{ .page }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+        {{- with .image }}<img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" decoding="async" class="nofancybox">{{ end -}}
+      </a>
+      <div class="project-body">
+        <div class="project-meta"><span class="project-cat">{{ T (printf "project_cat_%s" .category) | default .category }}</span>{{ range first 3 .tags }}<span class="project-tag">{{ . }}</span>{{ end }}</div>
+        <h4 class="project-title"><a href="{{ .page }}" target="_blank" rel="noopener">{{ $t.title | default .title }}</a></h4>
+        <p class="project-desc">{{ $t.desc | default .desc }}</p>
+        {{- with ($t.status | default .status) }}<p class="project-status">{{ . }}</p>{{ end }}
+        {{- with .links }}
+        <div class="project-links">
+          {{- range . }}<a href="{{ .href }}" target="_blank" rel="noopener">{{ index $labels .label | default .label }}</a>{{ end -}}
+        </div>
+        {{- end }}
+      </div>
+    </article>
+    {{- end }}
+  </div>
+</div>
+{{- if $filter }}
+<script>
+  (function (g) {
+    var btns = g.querySelectorAll(".project-filter button"), cards = g.querySelectorAll(".project-card");
+    btns.forEach(function (b) {
+      b.addEventListener("click", function () {
+        var c = b.getAttribute("data-cat");
+        btns.forEach(function (x) { x.classList.toggle("on", x === b); x.setAttribute("aria-pressed", x === b); });
+        cards.forEach(function (k) { k.hidden = !!c && k.getAttribute("data-cat") !== c; });
+      });
+    });
+  })(document.currentScript.previousElementSibling);
+</script>
+{{- end }}
