@@ -111,5 +111,5 @@
     provider = ""
 
   # [params.analytics]  googleId, umami = {src, id}, plausible = {domain, src}, goatcounter, cloudflare, baidu
-  # [params.authorCard] avatar, name, bio
+  # [params.authorCard] avatar, name, bio (pixels = N for an N x N pixel-art avatar: drawn pixel-perfect)
   # [[params.social]]   name, icon, url  — or `copy` to copy a value (e.g. a WeChat ID) instead of linking

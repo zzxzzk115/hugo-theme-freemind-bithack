@@ -2,6 +2,7 @@
   Author card.
   [params.authorCard]
     avatar = "avatar.png"          # without it, a pixel placeholder is shown
+    pixels = 32                    # pixel-art avatar: its grid size; drawn at a whole number of screen pixels per cell
     name = "Lazy_V"                # defaults to params.author
     bio = "…"                      # per language: [languages.xx.params.authorCard] bio = "…"
   [[params.social]]                # icon links; `copy` copies text instead of opening a link; `rss = true` links this language's feed
@@ -12,7 +13,7 @@
 {{- $articles := partial "func/articles.html" . }}
 <div class="widget author-card">
   {{- with $c.avatar }}
-  <img class="author-avatar nofancybox" src="{{ partial "func/url.html" . }}" alt="{{ $c.name | default site.Params.author }}" width="96" height="96">
+  <img class="author-avatar nofancybox" src="{{ partial "func/url.html" . }}" alt="{{ $c.name | default site.Params.author }}" width="96" height="96"{{ with $c.pixels }} data-pixels="{{ . }}"{{ end }}>
   {{- else }}
   <svg class="author-avatar" viewBox="0 0 16 16" width="96" height="96" shape-rendering="crispEdges" aria-hidden="true">
     <rect width="16" height="16" fill="#1d1d1d"/>

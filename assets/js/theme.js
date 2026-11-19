@@ -227,6 +227,22 @@
       function () { toast(text); });
   });
 
+  /* ------------------------------------------------------------ pixel-perfect pixel art ([data-pixels])
+     An image whose cells are N pixels across (data-pixels="N") is resized so each cell covers a whole number of
+     *device* pixels: at 150 % display scaling a 32-cell avatar at 96 CSS px would get 4.5 screen pixels per cell
+     and uneven rows; it is snapped to the nearest whole multiple instead (5 per cell: 106.7 CSS px). */
+  function snapPixels() {
+    var dpr = window.devicePixelRatio || 1;
+    $$("[data-pixels]").forEach(function (el) {
+      var n = +el.getAttribute("data-pixels"), want = +el.getAttribute("width") || el.offsetWidth;
+      if (!n || !want) return;
+      var size = Math.max(1, Math.round(want * dpr / n)) * n / dpr + "px";
+      el.style.width = size; el.style.height = size;
+    });
+  }
+  snapPixels();
+  window.addEventListener("resize", snapPixels); /* browser zoom changes devicePixelRatio and fires resize */
+
   /* ------------------------------------------------------------ lightbox
      (lb* names: theme.js is one scope, and the search dialog has its own open/close.)
      Close: tap anywhere (image included), the close button, Esc, or the browser's Back (phones).

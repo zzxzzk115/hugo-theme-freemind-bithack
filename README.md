@@ -65,7 +65,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 任务列表 `- [ ]` / `- [x]`：像素方框代替项目符号，勾选为绿底黑勾 | |
 | 导航 | 即时搜索：顶栏按钮弹出对话框（`/` 或 Ctrl+K；背景虚化 + 数字雨、打字提示，方向键选择，关键词高亮；系统开启“减少动态效果”时只显示静态一帧） | 输出 `search.json`；`searchEffects = "always"` 无视减少动态效果设置（同样作用于音乐播放器的旋转唱片封面） |
 | | 下拉菜单、多语言切换 | 菜单项 `parent`；有译文跳译文 |
-| | 作者卡片（头像、简介、统计、社交图标，微信号点击复制） | `authorCard`、`[[social]]`（`copy = "…"`） |
+| | 作者卡片（头像、简介、统计、社交图标，微信号点击复制）。像素画头像设 `pixels = 32`（网格边长），按屏幕物理像素取整数倍显示，150% 缩放下也不糊不歪 | `authorCard`（`pixels`）、`[[social]]`（`copy = "…"`） |
 | 互动 | giscus / Valine 评论（文章和普通页面都有，页面可 `comments: false` 关闭）。giscus 默认用主题自带的像素主题（像素字体、直角、绿色按钮）；它只能从公网 https 地址加载，所以 `hugo server` 本地预览时用 giscus 自带的暗色主题 | `[comments]`、`[comments.giscus] theme`（默认 `"pixel"`，也可填 giscus 主题名或 CSS 地址）、`onPages` |
 | | 阅读量（不蒜子 / Vercount） | `[pageviews] provider` |
 | | 分享（系统分享菜单、X、LinkedIn、Reddit、Telegram、微博、QQ空间、微信、邮件、复制链接）。「分享…」调起设备自带的分享菜单（Web Share API，只在支持它的触屏设备上出现），手机上分享栏随之精简为 分享… / 复制链接（微信、QQ 等都在系统菜单里）。微信没有网页分享接口：宽屏弹出本页二维码，微信扫码后点「···」分享到朋友圈；手机上复制链接 | `share`（`"native"` 即「分享…」） |
