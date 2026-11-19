@@ -489,17 +489,20 @@ body.is-article #qr-toggle { bottom: 132px; }
 .md-music.aplayer .aplayer-notice { background: #000; color: #2bbc8a; }
 .md-music.aplayer a, .md-music.aplayer a:hover { color: inherit; background: transparent !important; }
 
-/* music player: play / pause drawn as solid pixel buttons so they read on any cover art
-   (APlayer's default is a thin, see-through white circle that busy covers swallow) */
-.md-music.aplayer .aplayer-pic .aplayer-button { border-radius: 0; opacity: 1; background: #000; border: 2px solid #2bbc8a;
-  box-shadow: 2px 2px 0 rgba(0, 0, 0, .7); text-shadow: none; transition: none; }
-.md-music.aplayer .aplayer-pic .aplayer-button path { fill: #2bbc8a; }
-.md-music.aplayer .aplayer-pic:hover .aplayer-button { background: #2bbc8a; }
-.md-music.aplayer .aplayer-pic:hover .aplayer-button path { fill: #000; }
-.md-music.aplayer .aplayer-pic .aplayer-play { width: 30px; height: 30px; margin: 0 -15px -15px 0; }
-.md-music.aplayer .aplayer-pic .aplayer-play svg { top: 3px; left: 4px; width: 20px; height: 20px; }
-.md-music.aplayer .aplayer-pic .aplayer-pause { width: 22px; height: 22px; bottom: 3px; right: 3px; }
-.md-music.aplayer .aplayer-pic .aplayer-pause svg { top: 3px; left: 3px; width: 12px; height: 12px; }
+/* music player: play / pause sits in the control row as a pixel button (theme partial adds it);
+   the cover's own overlay buttons are hidden, since busy cover art swallowed them. Clicking the cover still toggles. */
+.md-music.aplayer .aplayer-pic .aplayer-button { display: none !important; }
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle {
+  width: 24px; height: 18px; margin: 0 8px 0 0; padding: 0; opacity: 1; vertical-align: middle;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: #000; border: 1px solid #2bbc8a; box-shadow: 2px 2px 0 #1a6e51; }
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle svg { width: 10px; height: 10px; display: block; }
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle path { fill: #2bbc8a; }
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:hover,
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:focus-visible { background: #2bbc8a; outline: 0; }
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:hover path,
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:focus-visible path { fill: #000; }
+.md-music.aplayer .aplayer-info .aplayer-controller .aplayer-time .aplayer-toggle:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 #1a6e51; }
 
 /* {{< itch >}}: same footprint and layout as itch.io's own embed widget (552 x 167, white card,
    cover left, title / author / blurb right, red Play button, itch.io mark), drawn locally. */

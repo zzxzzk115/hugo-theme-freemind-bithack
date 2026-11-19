@@ -64,11 +64,29 @@
     document.querySelectorAll(".md-music[data-audio]").forEach(function (el) {
       var audio = JSON.parse(el.getAttribute("data-audio"));
       var hasLrc = audio.some(function (a) { return a.lrc; });
-      new APlayer({
+      var ap = new APlayer({
         container: el, audio: audio, theme: "#2bbc8a", preload: "none", mutex: true, volume: 0.7,
         lrcType: hasLrc ? 1 : 0, listFolded: el.getAttribute("data-fold") === "true", listMaxHeight: "260px",
         order: el.getAttribute("data-order"), loop: el.getAttribute("data-loop")
       });
+      // Play / pause lives in the control row (APlayer only puts it over the cover, where busy art hides it).
+      var row = el.querySelector(".aplayer-time");
+      if (!row) return;
+      var PLAY = '<svg viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 1h1v6H2zM3 2h1v4H3zM4 3h1v2H4z"/></svg>';
+      var PAUSE = '<svg viewBox="0 0 8 8" shape-rendering="crispEdges" aria-hidden="true"><path d="M1 1h2v6H1zM5 1h2v6H5z"/></svg>';
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "aplayer-icon aplayer-toggle";
+      row.insertBefore(btn, row.firstChild);
+      var sync = function () {
+        var playing = !ap.audio.paused;
+        btn.innerHTML = playing ? PAUSE : PLAY;
+        btn.setAttribute("aria-label", playing ? "Pause" : "Play");
+        btn.classList.toggle("playing", playing);
+      };
+      btn.addEventListener("click", function (e) { e.stopPropagation(); ap.toggle(); });
+      ["play", "pause", "ended", "listswitch"].forEach(function (ev) { ap.on(ev, sync); });
+      sync();
     });
   });
 </script>
