@@ -19,7 +19,7 @@
   {{- $open := le $depth 2 }}
   {{- $id := printf "nav-sub-%s" (.Identifier | default .Name | anchorize) }}
   <li class="dropdown-sub{{ if $open }} open-sub{{ end }}">
-    <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="{{ $open }}" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><span aria-hidden="true"></span></button></div>
+    <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="{{ $open }}" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><svg aria-hidden="true" width="7" height="10" viewBox="0 0 7 10"><path d="M0 0L7 5 0 10z" fill="currentColor"/></svg></button></div>
     <ul class="sub-menu" id="{{ $id }}"{{ if not $open }} hidden{{ end }}>
       {{- partial "inline/nav-items.html" (dict "items" .Children "depth" (add $depth 1)) }}
     </ul>

@@ -606,10 +606,11 @@ body.is-article #qr-toggle { bottom: 132px; }
 #main-nav .dropdown-sub .sub-row > a:hover { background: #141414 !important; color: #2bbc8a !important; }
 #main-nav .dropdown-sub .sub-row > a:hover i { color: #2bbc8a; }
 #main-nav .sub-toggle { flex: 0 0 38px; padding: 0; border: 0; border-left: 1px solid #1c1c1c; background: transparent; color: #888; cursor: pointer; }
-#main-nav .sub-toggle span { display: inline-block; box-sizing: content-box; width: 7px; height: 10px; padding: 0; border: 0; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); vertical-align: middle; transition: transform .15s; }
-#main-nav { z-index: 1055; } /* the open menu stays above the corner buttons (z-index 1050) */
+#main-nav .sub-toggle svg { display: inline-block; vertical-align: middle; transition: transform .15s; } /* inline SVG: iOS drew both a border triangle and a clip-path one as a block */
+#main-nav { z-index: 1055; }
+body:has(#main-nav .dropdown.open) :is(#reader-toggle, #qr-toggle, #gotop) { visibility: hidden; } /* iOS drew them over the open menu anyway */ /* the open menu stays above the corner buttons (z-index 1050) */
 #main-nav .sub-toggle:hover, #main-nav .sub-toggle:focus-visible { color: #2bbc8a; background: #141414; outline: 0; }
-#main-nav .sub-toggle[aria-expanded="true"] span { transform: rotate(90deg); }
+#main-nav .sub-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
 #main-nav .sub-menu { list-style: none; margin: 0; padding: 2px 0; background: #0a0a0a; border-bottom: 1px solid #1c1c1c; }
 #main-nav .sub-menu[hidden] { display: none; }
 #main-nav .sub-menu > li > a { display: block; padding: 7px 16px 7px 42px; line-height: 20px; font-size: 95%; color: #aaa; white-space: nowrap; }
