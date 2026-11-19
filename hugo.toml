@@ -111,4 +111,6 @@
 
   # [params.analytics]  googleId, umami = {src, id}, plausible = {domain, src}, goatcounter, cloudflare, baidu
   # [params.authorCard] avatar, name, bio (pixels = N for an N x N pixel-art avatar: drawn pixel-perfect)
+  # [params.bodyFont] family, src (a woff2 in the site's static/), sizes = {small, text, h4, h3, h2, h1, xl} in CSS px:
+  #   the whole site in that pixel font (reader mode excepted)
   # [[params.social]]   name, icon, url  — or `copy` to copy a value (e.g. a WeChat ID) instead of linking

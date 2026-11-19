@@ -633,3 +633,66 @@ body.is-article #qr-toggle { bottom: 132px; }
 .mypage .project-meta a.project-stars:hover { color: #000 !important; background: #fefe54 !important; border-color: #fefe54; }
 .project-stars .pixel-star { display: block; flex: none; image-rendering: pixelated; } /* 18px = 2px per star pixel */
 .project-links a .fa-github { margin-right: 5px; font-size: 13px; }
+
+/* ---- Optional pixel body font (params.bodyFont; head.html sets --px-font and --px-size) ----
+   Article text and code use it at a size snapped to whole device pixels per font pixel; headings, navigation and
+   the rest keep the theme's fonts. Reader mode is not pixel art and keeps its own type. */
+html.px-body:not(.reader) .md-content :is(p, li, blockquote, dd, dt, td, th, figcaption),
+html.px-body:not(.reader) .md-content :not(pre) > code {
+  font-family: var(--px-font), "DOS", monospace !important; font-size: var(--px-size, 24px); line-height: 1.75;
+}
+html.px-body:not(.reader) .md-content :is(li, blockquote, td, th) :is(p, li) { font-size: inherit; }
+html.px-body:not(.reader) .md-content :not(pre) > code { font-size: 1em; }
+html.px-body:not(.reader) :is(.md-content, .entry) pre, html.px-body:not(.reader) :is(.md-content, .entry) pre code,
+html.px-body:not(.reader) :is(.md-content, .entry) pre[class*="language-"] > code, html.px-body:not(.reader) .line-numbers-rows > span::before {
+  font-family: var(--px-font), "DOS", monospace !important; font-size: var(--px-size, 24px) !important; line-height: 1.5 !important;
+}
+
+/* Smaller text in the body font too, at --px-small: sidebar, post info and table of contents, breadcrumbs, archive
+   and search lists, post navigation, related posts, share bar, footer, captions and cards. Headings and icons keep
+   their own fonts; home-page summaries use the body size. */
+html.px-body:not(.reader) :is(#sidebar, #post_meta, .breadcrumbs, .archive, .post-nav, .related-posts, .series,
+  .share-links, .share-label, .edit-link, footer, .md-figure figcaption, .md-video figcaption, .translation-note,
+  .search-results, .search-hint, .linkcard, .friend-desc, .friend-tag, .timeline, .page-nav, .project-card, .project-filter,
+  .lang-prompt, #reader-toggle, #qr-toggle, #gotop, .qr-panel, .entry .more, div.code-toolbar > .toolbar),
+html.px-body:not(.reader) :is(#sidebar, #post_meta, .breadcrumbs, .archive, .post-nav, .related-posts, .series,
+  .share-links, .share-label, .edit-link, footer, .md-figure figcaption, .md-video figcaption, .translation-note,
+  .search-results, .search-hint, .linkcard, .friend-desc, .friend-tag, .timeline, .page-nav, .project-card, .project-filter,
+  .lang-prompt, #reader-toggle, #qr-toggle, #gotop, .qr-panel, .entry .more, div.code-toolbar > .toolbar)
+  :not(h1, h2, h3, h4, h5, h6, .fa, i, svg, svg *, img, .project-title, .project-title a) {
+  font-family: var(--px-font), "DOS", monospace !important; font-size: var(--px-small, 12px) !important; line-height: 1.6;
+}
+html.px-body:not(.reader) .entry :is(p, li, blockquote, td, th), html.px-body:not(.reader) .entry :not(pre) > code { font-family: var(--px-font), "DOS", monospace !important; font-size: var(--px-size, 24px); line-height: 1.75; }
+/* project cards: labels grow with the snapped size, so their boxes do too; the star count is at the body size */
+html.px-body:not(.reader) :is(.project-cat, .project-tag, .project-meta .project-stars) { height: auto; min-height: 22px; padding-top: 3px; padding-bottom: 3px; line-height: 1 !important; }
+html.px-body:not(.reader) .project-stars > span { font-size: var(--px-size, 24px) !important; }
+html.px-body:not(.reader) .mypage .project-links a { line-height: 1.6 !important; }
+
+/* ---- Whole site in the body font (preview of option A): every text element, sizes snapped to whole device pixels.
+   Steps: --px-small (labels, nav, lists), --px-size (text), --px-h4 … --px-h1 (headings), --px-xl (page titles). */
+html.px-body:not(.reader) { font-synthesis: none; }
+html.px-body:not(.reader) body,
+html.px-body:not(.reader) body :not(.fa, [class^="icon-"], [class*=" icon-"], .katex, .katex *, svg, svg *) {
+  font-family: var(--px-font), monospace !important;
+}
+html.px-body:not(.reader) body { font-size: var(--px-size); }
+html.px-body:not(.reader) #main-nav :is(a, button, span):not(.fa) { font-size: var(--px-small) !important; }
+html.px-body:not(.reader) :is(.md-content h4, .md-content h5, .md-content h6, .widget h4, .meta-widget h4, .archive-ul) { font-size: var(--px-h4) !important; }
+html.px-body:not(.reader) :is(.md-content h3, .toc-widget h4) { font-size: var(--px-h3) !important; }
+html.px-body:not(.reader) .md-content h2 { font-size: var(--px-h2) !important; }
+html.px-body:not(.reader) :is(.md-content h1, .mypage h1.title, .mypage h3.title) { font-size: var(--px-h1) !important; }
+html.px-body:not(.reader) :is(.page-header h1, .archive-title, .logo > h1) { font-size: var(--px-xl) !important; }
+html.px-body:not(.reader) :is(.date, .slogan, .post-slogan) { font-size: var(--px-small) !important; }
+/* With the body font: pills (tags, categories) and the floating buttons size to their text, which is bigger now */
+html.px-body:not(.reader) .tag_box li { line-height: 1; }
+html.px-body:not(.reader) .tag_box a { display: inline-flex; align-items: flex-start; gap: 3px; margin: 2px 2px 4px 0; padding: 5px 7px 4px; line-height: 1 !important; vertical-align: top; }
+html.px-body:not(.reader) :is(#sidebar, #post_meta, .page, .archive) .tag_box a span { position: static; top: 0; vertical-align: baseline; margin: -3px 0 0 1px; font-size: 12px !important; line-height: 1 !important; }
+html.px-body:not(.reader) :is(#reader-toggle, #qr-toggle) { width: auto; min-width: 136px; padding: 7px 12px !important; line-height: 1 !important; }
+html.px-body:not(.reader) div.code-toolbar > .toolbar .toolbar-item > :is(span, button, a) { line-height: 1 !important; padding: 4px 8px !important; }
+/* phones: smaller title steps (multiples of 4px stay pixel-exact on 3x screens with a 12px font) */
+@media (max-width: 767px) {
+  html.px-body:not(.reader) .logo > h1 { font-size: 24px !important; }
+  html.px-body:not(.reader) :is(.page-header h1, .archive-title) { font-size: 28px !important; }
+  html.px-body:not(.reader) :is(.md-content h1, .mypage h1.title, .mypage h3.title, .md-content h2) { font-size: 24px !important; }
+}
+@media (max-width: 359px) { html.px-body:not(.reader) .logo > h1 { font-size: 20px !important; } }
