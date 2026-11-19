@@ -666,3 +666,14 @@ html.px-body:not(.reader) .project-stars > span { font-size: 21px; }
 @media (max-width: 767px) { html.px-body:not(.reader) .logo > h1 { font-size: min(25px, 6.4vw); } }
 html.px-body:not(.reader) #main-nav .dropdown-menu a, html.px-body:not(.reader) #main-nav .dropdown-sub .sub-row > a { font-size: 16px; }
 html.px-body:not(.reader) #main-nav .sub-menu > li > a { font-size: 15.2px; }
+
+/* phones: the corner buttons shrink to icon-only squares so they cover less of the text (labels stay for screen readers) */
+@media (max-width: 767px) {
+  #reader-toggle, #gotop { box-sizing: border-box; width: 40px !important; min-width: 0; height: 40px !important; right: 12px !important; padding: 0 !important;
+    border: 1px solid #555; line-height: 38px !important; text-align: center; font-size: 18px !important; }
+  #gotop { bottom: 16px !important; }
+  #reader-toggle { bottom: 64px !important; }
+  #reader-toggle > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  #gotop#gotop span { font-size: 0 !important; line-height: 38px !important; } /* doubled id: beats the px-body rule */
+  #reader-toggle .fa, #gotop .fa { font-size: 18px; line-height: 38px; vertical-align: top; }
+}
