@@ -1,6 +1,7 @@
 {{- /*
   Priority+ navigation: items that don't fit move into the "more" menu (pixel ☰), least important first.
   Importance: menu item `params.priority` (lower = kept longer); default is the menu order.
+  Dropdown items with children of their own become foldable groups (a toggle next to the item opens them in place).
   The language switch has priority 0 and is the last to go.
 */ -}}
 {{- define "_partials/inline/nav-link.html" }}
@@ -29,7 +30,21 @@
           <li class="dropdown-self"><a href="{{ partial "func/url.html" $m.URL }}">{{ $m.Name }}</a></li>
           <li class="divider dropdown-self"></li>
           {{- range $m.Children }}
+          {{- if .HasChildren }}
+          {{- /* Nested group: the item's own link plus a toggle that folds its children open in place. */}}
+          {{- $open := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) }}
+          {{- $id := printf "nav-sub-%s" (.Identifier | default .Name | anchorize) }}
+          <li class="dropdown-sub{{ if $open }} open-sub{{ end }}">
+            <div class="sub-row">{{ partial "inline/nav-link.html" . }}<button type="button" class="sub-toggle" aria-expanded="{{ $open }}" aria-controls="{{ $id }}" aria-label="{{ .Name }}"><span aria-hidden="true"></span></button></div>
+            <ul class="sub-menu" id="{{ $id }}"{{ if not $open }} hidden{{ end }}>
+              {{- range .Children }}
+              <li>{{ partial "inline/nav-link.html" . }}</li>
+              {{- end }}
+            </ul>
+          </li>
+          {{- else }}
           <li>{{ partial "inline/nav-link.html" . }}</li>
+          {{- end }}
           {{- end }}
         </ul>
       </li>

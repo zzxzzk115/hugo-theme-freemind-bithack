@@ -43,6 +43,16 @@
 
   /* ------------------------------------------------------------ collapse / dropdown / tabs */
   document.addEventListener("click", function (e) {
+    var sub = e.target.closest(".sub-toggle");
+    if (sub) { // foldable group inside a dropdown menu
+      e.preventDefault();
+      var list = document.getElementById(sub.getAttribute("aria-controls"));
+      var opening = sub.getAttribute("aria-expanded") !== "true";
+      sub.setAttribute("aria-expanded", opening);
+      sub.closest(".dropdown-sub").classList.toggle("open-sub", opening);
+      if (list) list.hidden = !opening;
+      return;
+    }
     var trg = e.target.closest("[data-toggle]");
     var openDropdowns = $$(".dropdown.open");
     if (!trg) {
