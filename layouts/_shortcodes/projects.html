@@ -1,5 +1,5 @@
 {{- /*
-  Project gallery from data/projects.json: a list of {id, title, desc, category, tags, status, order, featured,
+  Project gallery. Data (from _partials/func/projects-data.html; by default data/projects.json): a list of {id, title, desc, category, tags, status, order, featured,
   image, imageFit, page, repo, links:[{label, href}], groups:[...], groupOrder:{group: n}}
   (the blog generates it from its project catalog with tools/catalog.py).
   {{< projects featured="6" >}}       the first 6 featured projects (by `featured`, then `order`)
@@ -21,9 +21,12 @@
   {{- return $h }}
 {{- end }}
 {{- $star := `<svg class="pixel-star" viewBox="0 0 9 9" width="13" height="13" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="4" y="0" width="1" height="2"/><rect x="3" y="2" width="3" height="1"/><rect x="0" y="3" width="9" height="1"/><rect x="1" y="4" width="7" height="1"/><rect x="2" y="5" width="5" height="1"/><rect x="2" y="6" width="2" height="1"/><rect x="5" y="6" width="2" height="1"/><rect x="1" y="7" width="2" height="1"/><rect x="6" y="7" width="2" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="7" y="8" width="1" height="1"/></svg>` }}
-{{- $stars := hugo.Data.github_stars | default dict }}
-{{- $all := hugo.Data.projects | default slice }}
-{{- $tr := index hugo.Data (printf "projects_%s" (index (split site.Language.Lang "-") 0)) | default dict }}
+{{- /* cards, translations and star counts; a site can override _partials/func/projects-data.html to build them
+     from another source */}}
+{{- $d := partialCached "func/projects-data.html" . site.Language.Lang }}
+{{- $stars := $d.stars | default dict }}
+{{- $all := $d.cards | default slice }}
+{{- $tr := $d.tr | default dict }}
 {{- $labels := $tr.labels | default dict }}
 {{- $pool := $all }}
 {{- $group := .Get "group" }}

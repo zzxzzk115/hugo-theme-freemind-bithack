@@ -81,7 +81,7 @@
 
   {{- /* Feeds, icons, manifest */}}
   {{- range .AlternativeOutputFormats }}
-  <link rel="{{ .Rel }}" type="{{ .MediaType.Type }}" href="{{ .Permalink }}" title="{{ site.Title }}">
+  <link rel="{{ .Rel }}" type="{{ if eq .Name "jsonfeed" }}application/feed+json{{ else }}{{ .MediaType.Type }}{{ end }}" href="{{ .Permalink }}" title="{{ site.Title }}">
   {{- end }}
   {{- if not .IsHome }}
   {{- with site.Home.OutputFormats.Get "rss" }}

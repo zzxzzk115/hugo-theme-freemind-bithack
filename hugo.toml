@@ -21,11 +21,10 @@
   isPlainText = true
   notAlternative = true
 
-# JSON Feed 1.1
-[mediaTypes."application/feed+json"]
-  suffixes = ["json"]
+# JSON Feed 1.1. Served as application/json: a second media type with the "json" suffix would stop Hugo from
+# recognising JSON fetched with resources.GetRemote. The <link> in the head still says application/feed+json.
 [outputFormats.jsonfeed]
-  mediaType = "application/feed+json"
+  mediaType = "application/json"
   baseName = "feed"
   isPlainText = true
   rel = "alternate"

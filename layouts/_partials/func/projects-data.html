@@ -1,0 +1,10 @@
+{{- /*
+  Data for the projects shortcode, for the current language: dict "cards" (list), "tr" (translations of cards, keyed
+  by id, plus "labels") and "stars" ({"owner/repo": n}). Default: data/projects.json, data/projects_<lang>.* and
+  data/github_stars.json. A site can override this partial to build the same shapes from elsewhere.
+*/ -}}
+{{- $lang := index (split site.Language.Lang "-") 0 }}
+{{- return dict
+  "cards" (hugo.Data.projects | default slice)
+  "tr" (index hugo.Data (printf "projects_%s" $lang) | default dict)
+  "stars" (hugo.Data.github_stars | default dict) }}
