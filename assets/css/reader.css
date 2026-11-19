@@ -35,7 +35,8 @@ html.reader body.is-article .mypage h3 { font-size: 1.2em; }
 html.reader body.is-article .mypage strong { color: #ff8f8f; }
 html.reader body.is-article .mypage a { color: #6fd6ad; }
 html.reader body.is-article .mypage blockquote { background: #1d1d21; border-left-color: #3a3a40; color: #c8c8c8; }
-html.reader body.is-article .mypage :not(pre) > code { background: #26262b; color: #f2a5b8; border-color: #333; font-size: .88em; }
+html.reader body.is-article .mypage :not(pre) > code { background: #26262b; color: #f2a5b8; border-color: #333; font-size: .88em;
+  font-family: "Fira Code", Consolas, monospace !important; }  /* reader mode is not pixel art */
 html.reader body.is-article .mypage img { border-radius: 2px; }
 html.reader body.is-article .article-footer-copyright { background: #1d1d21; }
 
