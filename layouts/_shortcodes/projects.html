@@ -3,9 +3,18 @@
   image, imageFit, page, links:[{label, href}]}; the blog's tools/sync_projects.py writes it).
   {{< projects featured="6" >}}     the first 6 featured projects (by `featured`, then `order`)
   {{< projects filter="true" >}}    every project, with category filter chips
-  Translations (optional): data/projects_<lang>.toml with [<id>] title/desc, and [labels] for link labels.
+  {{< projects ids="a, b, c" >}}    these projects, in this order; ids may also come from data/projects_extra.json
+                                    (same shape, hand-written: projects that are not in projects.json)
+  Translations (optional): data/projects_<lang>.toml with [<id>] title/desc/status, and [labels] for link labels.
   Category names: i18n keys project_cat_<category> (falls back to the raw value).
+  A project without `image` gets a pixel placeholder with its title. `page` and link `href` may be a content path
+  ("/posts/my-post"): it links to that page in the current language.
 */ -}}
+{{- define "_partials/inline/project-href.html" }}
+  {{- $h := . }}
+  {{- if not (or (hasPrefix . "http") (hasPrefix . "//") (hasPrefix . "#")) }}{{ with site.GetPage . }}{{ $h = .RelPermalink }}{{ else }}{{ $h = partial "func/url.html" . }}{{ end }}{{ end }}
+  {{- return $h }}
+{{- end }}
 {{- $all := hugo.Data.projects | default slice }}
 {{- $tr := index hugo.Data (printf "projects_%s" (index (split site.Language.Lang "-") 0)) | default dict }}
 {{- $labels := $tr.labels | default dict }}
@@ -13,6 +22,14 @@
 {{- with .Get "featured" }}
   {{- $f := where $all "featured" "!=" nil }}
   {{- $list = first (int .) (sort (sort $f "order") "featured") }}
+{{- end }}
+{{- with .Get "ids" }}
+  {{- $pool := $all | append (hugo.Data.projects_extra | default slice) }}
+  {{- $list = slice }}
+  {{- range split . "," }}
+    {{- $id := trim . " \n" }}
+    {{- with where $pool "id" $id }}{{ $list = $list | append (index . 0) }}{{ else }}{{ warnf "projects shortcode: no project with id %q" $id }}{{ end }}
+  {{- end }}
 {{- end }}
 {{- $filter := eq (.Get "filter") "true" }}
 <div class="project-gallery">
@@ -28,18 +45,20 @@
   <div class="project-grid">
     {{- range $list }}
     {{- $t := index $tr .id | default dict }}
+    {{- $title := $t.title | default .title }}
+    {{- $external := hasPrefix .page "http" }}
     <article class="project-card" data-cat="{{ .category }}">
-      <a class="project-image{{ if eq .imageFit "contain" }} contain{{ end }}" href="{{ .page }}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
-        {{- with .image }}<img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" decoding="async" class="nofancybox">{{ end -}}
+      <a class="project-image{{ if eq .imageFit "contain" }} contain{{ end }}{{ if eq .imageFit "pixel" }} contain pixel{{ end }}" href="{{ partial "inline/project-href.html" .page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }} tabindex="-1" aria-hidden="true">
+        {{- with .image }}<img src="{{ partial "func/url.html" . }}" alt="" loading="lazy" decoding="async" class="nofancybox">{{ else }}<span class="project-ph">{{ $title }}</span>{{ end -}}
       </a>
       <div class="project-body">
-        <div class="project-meta"><span class="project-cat">{{ T (printf "project_cat_%s" .category) | default .category }}</span>{{ range first 3 .tags }}<span class="project-tag">{{ . }}</span>{{ end }}</div>
-        <h4 class="project-title"><a href="{{ .page }}" target="_blank" rel="noopener">{{ $t.title | default .title }}</a></h4>
+        <div class="project-meta">{{ with .category }}<span class="project-cat">{{ T (printf "project_cat_%s" .) | default . }}</span>{{ end }}{{ range first 3 .tags }}<span class="project-tag">{{ . }}</span>{{ end }}</div>
+        <h4 class="project-title"><a href="{{ partial "inline/project-href.html" .page }}"{{ if $external }} target="_blank" rel="noopener"{{ end }}>{{ $title }}</a></h4>
         <p class="project-desc">{{ $t.desc | default .desc }}</p>
         {{- with ($t.status | default .status) }}<p class="project-status">{{ . }}</p>{{ end }}
         {{- with .links }}
         <div class="project-links">
-          {{- range . }}<a href="{{ .href }}" target="_blank" rel="noopener">{{ index $labels .label | default .label }}</a>{{ end -}}
+          {{- range . }}<a href="{{ partial "inline/project-href.html" .href }}"{{ if hasPrefix .href "http" }} target="_blank" rel="noopener"{{ end }}>{{ index $labels .label | default .label }}</a>{{ end -}}
         </div>
         {{- end }}
       </div>

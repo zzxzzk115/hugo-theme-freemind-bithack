@@ -1,0 +1,13 @@
+{{- /*
+  A list of pages by content path, with each page's date and title in the current language:
+    {{< pagelist "/posts/first-post, /posts/second-post" >}}
+  Missing pages are skipped with a build warning.
+*/ -}}
+<ul class="page-list list-unstyled">
+  {{- range split (.Get 0) "," }}
+  {{- $path := trim . " \n" }}
+  {{- with site.GetPage $path }}
+  <li class="listing-item"><span class="date_class">{{ .Date.Format "2006-01-02" }}</span> &raquo; <a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+  {{- else }}{{ warnf "pagelist: no page %q (%s)" $path site.Language.Lang }}{{ end }}
+  {{- end }}
+</ul>
