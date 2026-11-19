@@ -553,3 +553,12 @@ body.is-article #qr-toggle { bottom: 132px; }
   background: #000 center / 10px 10px no-repeat; opacity: 1; cursor: default; }
 .mypage li > input[type="checkbox"]:checked { border-color: #2bbc8a; background-color: #2bbc8a;
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2010%2010%22%20shape-rendering%3D%22crispEdges%22%20fill%3D%22%23000%22%3E%3Crect%20x%3D%221%22%20y%3D%225%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%222%22%20y%3D%226%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%223%22%20y%3D%227%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%225%22%20y%3D%225%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%226%22%20y%3D%224%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%227%22%20y%3D%222%22%20width%3D%222%22%20height%3D%222%22/%3E%3Crect%20x%3D%224%22%20y%3D%226%22%20width%3D%222%22%20height%3D%222%22/%3E%3C/svg%3E"); }
+
+/* share bar: the Share… button (device share menu) and the slim phone layout */
+.share-links a[hidden] { display: none !important; }
+.share-links a.share-native { width: auto; padding: 0 10px; color: #2bbc8a; border-color: #2bbc8a; white-space: nowrap; }
+.share-links a.share-native:hover, .share-links a.share-native:active { color: #000 !important; background: #2bbc8a !important; }
+@media (max-width: 767px) {
+  .share-links.native-on a:not(.share-native):not(.share-wechat):not([data-copy]) { display: none; }
+  .share-links.native-on a { height: 34px; line-height: 34px; min-width: 34px; }
+}

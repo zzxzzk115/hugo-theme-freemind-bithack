@@ -561,17 +561,36 @@
     });
   }
 
+  /* ------------------------------------------------------------ share: device share menu ("Share…")
+     Touch devices with the Web Share API get a Share… button (hidden otherwise); it shares the title, a one-line
+     summary and this page's address at the section being read. On phones the bar then keeps only
+     Share… / WeChat / copy link (CSS: .share-links.native-on). */
+  var touch = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  $$(".share-native").forEach(function (a) {
+    if (!navigator.share || !touch) return;
+    a.hidden = false;
+    a.closest(".share-links").classList.add("native-on");
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var url = a.getAttribute("data-url"), cur = null;
+      if (window.scrollY > 200) {
+        $$(".md-content h2[id], .md-content h3[id]").forEach(function (h) { if (h.getBoundingClientRect().top < 90) cur = h; });
+        if (cur) url += "#" + encodeURIComponent(cur.id);
+      }
+      var data = { title: a.getAttribute("data-title") || document.title, text: a.getAttribute("data-text") || "", url: url };
+      navigator.share(data).catch(function () { /* dismissed or not allowed: nothing to do */ });
+    });
+  });
+
   /* ------------------------------------------------------------ share: WeChat
-     WeChat has no web share URL. Phones: the system share sheet (WeChat/QQ appear there); otherwise copy the link.
-     Wider screens: the QR dialog with this page's public address, to scan in WeChat and share to Moments. */
+     WeChat has no web share URL. Wider screens: the QR dialog with this page's public address, to scan in WeChat
+     and share to Moments. Phones: copy the link (WeChat via the system menu is what Share… is for). */
   $$(".share-wechat").forEach(function (a) {
     a.addEventListener("click", function (e) {
       e.preventDefault();
       var url = a.getAttribute("data-url"), title = a.getAttribute("data-title") || document.title;
       var phone = window.matchMedia && window.matchMedia("(max-width: 767px)").matches;
-      if (phone && navigator.share) {
-        navigator.share({ title: title, url: url }).catch(function () { /* dismissed */ });
-      } else if (!phone && window.__qrOpen) {
+      if (!phone && window.__qrOpen) {
         window.__qrOpen({ url: url, title: t("wechatTitle", "Share on WeChat"), hint: t("wechatHint", "Scan with WeChat, then tap ··· to share to Moments.") });
       } else {
         copyText(url).then(function () { toast(t("wechatCopied", "Link copied: paste it in WeChat")); }, function () { toast(t("copyFailed", "Copy failed")); });

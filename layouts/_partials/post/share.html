@@ -1,7 +1,9 @@
-{{- /* Share links. params.share = ["x", "facebook", "linkedin", "reddit", "telegram", "weibo", "qzone", "wechat", "email", "copy"]
+{{- /* Share links. params.share = ["native", "x", "facebook", "linkedin", "reddit", "telegram", "weibo", "qzone", "wechat", "email", "copy"]
+       native: "Share…" opens the device's own share menu (Web Share API); shown only on touch devices that support it,
+       and on phones the bar then slims to Share… / WeChat / copy link.
        wechat: WeChat has no share URL, so the button shows the page's QR code (scan in WeChat, then share to
        Moments); on phones it opens the system share sheet instead. */ -}}
-{{- $list := site.Params.share | default (slice "x" "linkedin" "reddit" "telegram" "weibo" "qzone" "wechat" "email" "copy") }}
+{{- $list := site.Params.share | default (slice "native" "x" "linkedin" "reddit" "telegram" "weibo" "qzone" "wechat" "email" "copy") }}
 {{- if $list }}
 {{- $u := .Permalink | urlquery }}{{ $t := .Title | urlquery }}{{ $s := .Summary | plainify | htmlUnescape | truncate 120 | urlquery }}
 {{- $defs := dict
@@ -17,7 +19,9 @@
 <div class="share-links">
   <span class="share-label"><i class="fa fa-share-alt"></i> {{ T "share" }}</span>
   {{- range $list }}
-    {{- if eq . "wechat" }}
+    {{- if eq . "native" }}
+    <a href="{{ $.Permalink }}" class="share-native" role="button" hidden data-url="{{ $.Permalink }}" data-title="{{ $.Title }}" data-text="{{ $.Summary | plainify | htmlUnescape | truncate 120 }}"><i class="fa fa-share-alt"></i> {{ T "share_native" }}</a>
+    {{- else if eq . "wechat" }}
     <a href="{{ $.Permalink }}" class="share-wechat" role="button" data-url="{{ $.Permalink }}" data-title="{{ $.Title }}" title="{{ T "share_wechat" }}"><i class="fa fa-weixin"></i></a>
     {{- else if eq . "copy" }}
     <a href="{{ $.Permalink }}" data-copy="{{ $.Permalink }}" data-copied="{{ T "link_copied" }}" title="{{ T "copy_link" }}"><i class="fa fa-link"></i></a>
