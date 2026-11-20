@@ -22,6 +22,7 @@ code, pre, kbd, samp, .code-toolbar, pre[class*="language-"], code[class*="langu
 #gotop span { line-height: 34px; }
 #gotop:hover, #gotop:focus-visible { border-color: #2bbc8a; background: #000 !important; outline: 0; }
 #gotop:hover span, #gotop:focus-visible span { color: #2bbc8a !important; }
+#gotop .px-icon { display: inline-block; vertical-align: middle; margin-top: -3px; } /* pixel arrow; theme.js sizes and snaps it */
 
 /* reading progress */
 #reading-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1100; background: #2bbc8a; transform: scaleX(0); transform-origin: 0 50%; pointer-events: none; }
@@ -86,23 +87,30 @@ mark { background: #fefe54; color: #000; padding: 0 2px; }
 ins { text-decoration: underline; text-decoration-color: #2bbc8a; }
 img.zoomable { cursor: zoom-in; }
 
-/* lightbox */
-.lightbox { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 2000; display: none; align-items: center; justify-content: center; background: rgba(0, 0, 0, .92); }
-.lightbox.open { display: flex; }
-.lightbox figure { margin: 0; max-width: 92vw; max-height: 90vh; text-align: center; }
-.lightbox.open { cursor: zoom-out; }
-.lightbox img { max-width: 92vw; max-height: 84vh; margin: 0 auto; display: block; }
-.lightbox figcaption { color: #ccc; margin-top: 8px; font-size: 90%; }
-.lightbox button { position: absolute; z-index: 1; background: transparent; border: 0; color: #fff; font-size: 42px; line-height: 1; padding: 10px 16px; cursor: pointer; opacity: .7; }
-.lightbox button:hover, .lightbox button:focus-visible { opacity: 1; color: #2bbc8a; outline: 0; }
-/* close: a framed square, clear of the navbar's menu icon and the phone's notch */
-.lightbox .lb-close { top: calc(14px + env(safe-area-inset-top, 0px)); right: calc(14px + env(safe-area-inset-right, 0px));
-  width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center;
-  font-size: 30px; opacity: 1; color: #fff; background: #000; border: 1px solid #555; }
-.lightbox .lb-close:hover, .lightbox .lb-close:focus-visible { color: #000; background: #2bbc8a; border-color: #2bbc8a; }
-.lb-prev { left: 10px; top: 50%; transform: translateY(-50%); }
-.lb-next { right: 10px; top: 50%; transform: translateY(-50%); }
-.lightbox.single .lb-prev, .lightbox.single .lb-next { display: none; }
+/* image viewer (PhotoSwipe, photoswipe.css) in the theme's look: solid black, framed square buttons with pixel icons,
+   pixel-font counter and caption; clear of the phone's notch and home bar */
+.pswp { --pswp-bg: #000; --pswp-placeholder-bg: #111; --pswp-icon-color: #fff; --pswp-icon-color-secondary: #000;
+  --pswp-icon-stroke-color: transparent; --pswp-icon-stroke-width: 0; --pswp-preloader-color: #2bbc8a;
+  --pswp-root-z-index: 2000; font-family: var(--px-font, "DOS"), monospace; }
+.pswp__top-bar { height: auto; padding: calc(10px + env(safe-area-inset-top, 0px)) calc(10px + env(safe-area-inset-right, 0px)) 0 calc(10px + env(safe-area-inset-left, 0px)); gap: 8px; align-items: center; }
+.pswp__button { opacity: 1; }
+.pswp__top-bar .pswp__button, .pswp__button--arrow { width: 44px; height: 44px; margin: 0; display: flex; align-items: center; justify-content: center;
+  background: #000; border: 1px solid #555; }
+.pswp__button .pswp__icn, .pswp__button--arrow .pswp__icn { position: static; width: 16px; height: 16px; margin: 0; image-rendering: pixelated; }
+.pswp__button--arrow--next .pswp__icn { right: auto; }
+.pswp__button:hover, .pswp__button:focus-visible { background: #2bbc8a; border-color: #2bbc8a; outline: 0; }
+.pswp__button:hover .pswp__icn, .pswp__button:focus-visible .pswp__icn { fill: #000; }
+.pswp__button--arrow { margin-top: -22px; }
+.pswp__button--arrow--prev { left: calc(10px + env(safe-area-inset-left, 0px)); }
+.pswp__button--arrow--next { right: calc(10px + env(safe-area-inset-right, 0px)); }
+.pswp__counter { height: 44px; margin: 0 auto 0 0; line-height: 44px; font-size: 16px; color: #ccc; text-shadow: none; opacity: 1; }
+.pswp__caption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 10; margin: 0; text-align: center; color: #ccc; background: #000;
+  font-size: 16px; line-height: 1.5; border-top: 1px dashed #333;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  opacity: 0; transition: opacity var(--pswp-transition-duration); pointer-events: none; }
+.pswp--ui-visible .pswp__caption { opacity: 1; }
+.pswp__caption[hidden] { display: none; }
+.pswp__error-msg { font-size: 24px; color: #555; }
 body.lb-open { overflow: hidden; }
 
 /* Tables in posts: a header that reads as a header (tinted, bold, accent rule), quiet grey grid,

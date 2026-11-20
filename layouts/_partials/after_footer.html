@@ -1,4 +1,4 @@
-<a id="gotop" href="#" aria-label="Back to top"><span><i class="fa fa-arrow-up" aria-hidden="true"></i> TOP</span></a>
+<a id="gotop" href="#" aria-label="Back to top"><span><svg class="px-icon" data-pixels="16" width="16" height="16" viewBox="0 0 16 16" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="7" y="1" width="2" height="1"/><rect x="6" y="2" width="4" height="1"/><rect x="5" y="3" width="6" height="1"/><rect x="4" y="4" width="8" height="1"/><rect x="3" y="5" width="3" height="1"/><rect x="7" y="5" width="2" height="1"/><rect x="10" y="5" width="3" height="1"/><rect x="2" y="6" width="3" height="1"/><rect x="7" y="6" width="2" height="1"/><rect x="11" y="6" width="3" height="1"/><rect x="2" y="7" width="2" height="1"/><rect x="7" y="7" width="2" height="1"/><rect x="12" y="7" width="2" height="1"/><rect x="7" y="8" width="2" height="6"/></svg> TOP</span></a>
 {{- if partial "func/is-article.html" . }}
 <button type="button" id="reader-toggle" title="{{ T "reader_mode" }} (R)" aria-pressed="false"><i class="fa fa-book"></i> <span>{{ T "reader_mode" }}</span></button>
 {{- end }}
@@ -24,6 +24,8 @@
 {{- if ne site.Params.qrCode false }}{{ $cfg = merge $cfg (dict "qrLib" (site.Params.qrCDN | default "https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js")) }}{{ end }}
 {{- /* Offer the visitor's browser language when this page is in another one (params.langPrompt = false to turn off). */}}
 {{- if and hugo.IsMultilingual (ne site.Params.langPrompt false) }}{{ $cfg = merge $cfg (dict "langPrompt" (hugo.Data.langprompt | default dict)) }}{{ end }}
+{{- /* image viewer (PhotoSwipe, MIT): loaded on the first tap on an image */}}
+{{- with resources.Get "js/vendor/photoswipe.esm.min.js" }}{{ $p := . }}{{ if hugo.IsProduction }}{{ $p = . | fingerprint }}{{ end }}{{ $cfg = merge $cfg (dict "pswp" $p.RelPermalink "i18n" (merge $cfg.i18n (dict "close" (T "close") "zoom" (T "zoom") "prev" (T "prev_image") "next" (T "next_image")))) }}{{ end }}
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
 {{- with site.Params.searchEffects }}{{ $cfg = merge $cfg (dict "searchFx" .) }}{{ end }}
 <script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>

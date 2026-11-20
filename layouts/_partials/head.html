@@ -103,7 +103,7 @@
   <meta name="theme-color" content="#000000">
 
   {{- /* Styles */}}
-  {{- $files := slice "bootstrap.min.css" "font-awesome.css" "icomoon.css" "style.css" "responsive.css" "highlight.css" "google-fonts.css" "hugo.css" "features.css" "reader.css" "print.css" }}
+  {{- $files := slice "bootstrap.min.css" "font-awesome.css" "icomoon.css" "style.css" "responsive.css" "highlight.css" "google-fonts.css" "hugo.css" "photoswipe.css" "features.css" "reader.css" "print.css" }}
   {{- $css := slice }}
   {{- range $files }}{{ $css = $css | append (resources.Get (printf "css/%s" .)) }}{{ end }}
   {{- with resources.Get "css/custom.css" }}{{ $css = $css | append . }}{{ end }}

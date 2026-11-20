@@ -164,7 +164,10 @@
   }
   function onScroll() {
     var y = window.pageYOffset || document.documentElement.scrollTop;
-    if (gotop) gotop.classList.toggle("show", y > 200);
+    if (gotop && gotop.classList.contains("show") !== y > 200) {
+      gotop.classList.toggle("show", y > 200);
+      if (y > 200) snapPixels(gotop); // its pixel arrow, now that it has a position
+    }
     if (navbar && !navHover) navbar.classList.toggle("faded", y > 200 && window.innerWidth >= 1200);
     if (progress && article) {
       var r = article.getBoundingClientRect();
@@ -267,96 +270,120 @@
      An image whose cells are N pixels across (data-pixels="N") is resized so each cell covers a whole number of
      *device* pixels: at 150 % display scaling a 32-cell avatar at 96 CSS px would get 4.5 screen pixels per cell
      and uneven rows; it is snapped to the nearest whole multiple instead (5 per cell: 106.7 CSS px). */
-  function snapPixels() {
+  // Pixel icons (svg.px-icon, also data-pixels) are then moved by under one device pixel so they start on the
+  // pixel grid, wherever centring put them.
+  function snapPixels(root) {
     var dpr = window.devicePixelRatio || 1;
-    $$("[data-pixels]").forEach(function (el) {
+    $$("[data-pixels]", root).forEach(function (el) {
       var n = +el.getAttribute("data-pixels"), want = +el.getAttribute("width") || el.offsetWidth;
       if (!n || !want) return;
       var size = Math.max(1, Math.round(want * dpr / n)) * n / dpr + "px";
       el.style.width = size; el.style.height = size;
+      if (!el.classList.contains("px-icon") || !el.getClientRects().length) return;
+      el.style.position = "relative"; el.style.left = el.style.top = "0px";
+      var r = el.getBoundingClientRect();
+      el.style.left = (Math.round(r.left * dpr) - r.left * dpr) / dpr + "px";
+      el.style.top = (Math.round(r.top * dpr) - r.top * dpr) / dpr + "px";
     });
   }
   snapPixels();
-  window.addEventListener("resize", snapPixels); /* browser zoom changes devicePixelRatio and fires resize */
+  window.addEventListener("resize", function () { snapPixels(); }); /* browser zoom changes devicePixelRatio and fires resize */
 
-  /* ------------------------------------------------------------ lightbox
-     (lb* names: theme.js is one scope, and the search dialog has its own open/close.)
-     Close: tap anywhere (image included), the close button, Esc, or the browser's Back (phones).
-     Several images: arrows, ← / →, or swipe. */
+  /* ------------------------------------------------------------ image viewer
+     Every content image opens in the viewer, the page's images as one gallery. Close: the close button, Esc, swipe
+     down, or the browser's Back (phones). Several images: arrows, ← / →, or swipe. */
   var images = $$(".mypage img").filter(function (img) {
     return !img.classList.contains("nofancybox") && !img.closest("a") && !img.closest(".gallery") && !img.closest(".friend-card");
   });
-  if (images.length) {
-    var box, boxImg, boxCap, idx = 0, pushed = false, touchX = null, touchY = null;
-    var build = function () {
-      box = document.createElement("div");
-      box.className = "lightbox";
-      box.setAttribute("role", "dialog");
-      box.setAttribute("aria-modal", "true");
-      box.innerHTML = '<button type="button" class="lb-close" aria-label="' + t("close", "Close") + '"><span aria-hidden="true">&times;</span></button>' +
-        '<button type="button" class="lb-prev" aria-label="Previous">&lsaquo;</button><figure><img alt=""><figcaption></figcaption></figure>' +
-        '<button type="button" class="lb-next" aria-label="Next">&rsaquo;</button>';
-      document.body.appendChild(box);
-      boxImg = $("img", box);
-      boxCap = $("figcaption", box);
-      box.addEventListener("click", function (e) {
-        if (e.target.closest(".lb-prev")) lbShow(idx - 1);
-        else if (e.target.closest(".lb-next")) lbShow(idx + 1);
-        else lbClose();
+  if (images.length) (function () { // own scope: theme.js shares one, and `items` / `open` are taken
+    // PhotoSwipe (MIT, vendored in assets/js/vendor) does the viewing: pinch / double-tap / wheel zoom, drag, swipe
+    // between images, swipe down to close. It is loaded on the first tap. The pixel look is in features.css; the
+    // icons below are drawn on a pixel grid.
+    // 16 × 16 pixel icons: "#" = a filled pixel
+    var px = function (rows) {
+      var rects = "";
+      rows.forEach(function (row, y) {
+        row.replace(/#+/g, function (run, x) { rects += '<rect x="' + x + '" y="' + y + '" width="' + run.length + '" height="1"/>'; });
       });
-      box.addEventListener("touchstart", function (e) {
-        if (e.touches.length !== 1) { touchX = null; return; }
-        touchX = e.touches[0].clientX; touchY = e.touches[0].clientY;
-      }, { passive: true });
-      box.addEventListener("touchend", function (e) {
-        if (touchX === null || images.length < 2) return;
-        var dx = e.changedTouches[0].clientX - touchX, dy = e.changedTouches[0].clientY - touchY;
-        touchX = null;
-        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-          e.preventDefault(); // a swipe, not a tap: don't let it close the box
-          lbShow(idx + (dx < 0 ? 1 : -1));
-        }
+      return '<svg aria-hidden="true" class="pswp__icn px-icon" data-pixels="16" viewBox="0 0 16 16" width="16" height="16" shape-rendering="crispEdges">' +
+        rects + "</svg>";
+    };
+    var arrow = px(["", "", "         ##", "        ##", "       ##", "      ##", "     ##", "    ##", "    ##", "     ##", "      ##",
+      "       ##", "        ##", "         ##"]);
+    var icons = {
+      close: px(["", "", "  ##        ##", "  ###      ###", "   ###    ###", "    ###  ###", "     ######", "      ####", "      ####",
+        "     ######", "    ###  ###", "   ###    ###", "  ###      ###", "  ##        ##"]),
+      zoom: px(["", "    ######", "   ##    ##", "  ##      ##", "  #   ##   #", "  #   ##   #", "  # ###### #", "  # ###### #",
+        "  #   ##   #", "  #   ##   #", "  ##      ##", "   ##    ###", "    ########", "          ###", "           ###", "            ##"]),
+      prev: arrow,
+      next: arrow // PhotoSwipe's CSS mirrors the next arrow
+    };
+    // sizes: from the page's image when it has loaded, else a guess fixed once the file arrives
+    var items = images.map(function (img) {
+      return { src: img.currentSrc || img.src, width: img.naturalWidth || 0, height: img.naturalHeight || 0,
+        alt: img.alt || "", caption: img.title || img.alt || "", pixel: !!img.closest(".pixel, [data-pixels]") };
+    });
+    var pswp = null, pushed = false, swallowPop = false, pswpLoad = null;
+    var sizeItem = function (i) {
+      var it = items[i];
+      if (it.width) return;
+      it.width = window.innerWidth; it.height = window.innerHeight; // placeholder
+      var probe = new Image();
+      probe.onload = function () {
+        it.width = probe.naturalWidth; it.height = probe.naturalHeight;
+        if (pswp) pswp.refreshSlideContent(i);
+      };
+      probe.src = it.src;
+    };
+    var open = function (index) {
+      if (!cfg.pswp) return;
+      pswpLoad = pswpLoad || import(cfg.pswp);
+      pswpLoad.then(function (mod) {
+        items.forEach(function (it, i) {
+          var im = images[i];
+          if (!it.width && im.naturalWidth) { it.width = im.naturalWidth; it.height = im.naturalHeight; it.src = im.currentSrc || im.src; }
+          if (!it.width) sizeItem(i);
+        });
+        pswp = new mod.default({
+          dataSource: items, index: index, bgOpacity: 1, showHideAnimationType: "fade", wheelToZoom: true,
+          padding: { top: 56, bottom: 56, left: 0, right: 0 }, imageClickAction: "zoom", tapAction: "toggle-controls",
+          closeTitle: t("close", "Close"), zoomTitle: t("zoom", "Zoom"), arrowPrevTitle: t("prev", "Previous"), arrowNextTitle: t("next", "Next"),
+          closeSVG: icons.close, zoomSVG: icons.zoom, arrowPrevSVG: icons.prev, arrowNextSVG: icons.next, errorMsg: "404"
+        });
+        pswp.on("uiRegister", function () {
+          pswp.ui.registerElement({ name: "caption", order: 9, isButton: false, appendTo: "root", html: "",
+            onInit: function (el) {
+              var set = function () { var c = pswp.currSlide && pswp.currSlide.data.caption; el.textContent = c || ""; el.hidden = !c; };
+              pswp.on("change", set); set();
+            } });
+        });
+        pswp.on("contentAppend", function (e) {
+          if (e.content.element && e.content.data.pixel) e.content.element.style.imageRendering = "pixelated";
+        });
+        pswp.on("destroy", function () {
+          pswp = null;
+          document.body.classList.remove("lb-open");
+          if (pushed) { pushed = false; swallowPop = true; history.back(); }
+        });
+        pswp.init();
+        // each icon pixel on a whole number of screen pixels, the icon itself on the pixel grid
+        var el = pswp.element;
+        snapPixels(el);
+        pswp.on("resize", function () { snapPixels(el); });
+        document.body.classList.add("lb-open");
+        // a history entry, so a phone's Back closes the viewer instead of leaving the page
+        if (!pushed) { try { history.pushState({ lightbox: true }, ""); pushed = true; } catch (err) { pushed = false; } }
       });
-    };
-    var lbShow = function (i) {
-      idx = (i + images.length) % images.length;
-      var img = images[idx];
-      boxImg.src = img.currentSrc || img.src;
-      boxCap.textContent = img.title || img.alt || "";
-      box.classList.toggle("single", images.length < 2);
-    };
-    var lbIsOpen = function () { return box && box.classList.contains("open"); };
-    var lbHide = function () { box.classList.remove("open"); document.body.classList.remove("lb-open"); };
-    // Opening adds a history entry so a phone's Back closes the box instead of leaving the page.
-    // Closing hides at once, then drops that entry; the popstate it causes is swallowed.
-    var swallowPop = false;
-    var lbClose = function () {
-      if (!lbIsOpen()) return;
-      lbHide();
-      if (pushed) { pushed = false; swallowPop = true; history.back(); }
     };
     window.addEventListener("popstate", function () {
-      if (lbIsOpen()) { pushed = false; swallowPop = false; lbHide(); }
-      else if (swallowPop) swallowPop = false;
+      if (swallowPop) { swallowPop = false; return; }
+      if (pswp) { pushed = false; pswp.close(); }
     });
     images.forEach(function (img, i) {
       img.classList.add("zoomable");
-      img.addEventListener("click", function () {
-        if (!box) build();
-        lbShow(i);
-        box.classList.add("open");
-        document.body.classList.add("lb-open");
-        if (!pushed) { try { history.pushState({ lightbox: true }, ""); pushed = true; } catch (err) { pushed = false; } }
-        $(".lb-close", box).focus({ preventScroll: true });
-      });
+      img.addEventListener("click", function () { open(i); });
     });
-    document.addEventListener("keydown", function (e) {
-      if (!lbIsOpen()) return;
-      if (e.key === "Escape") { e.preventDefault(); e.stopImmediatePropagation(); lbClose(); }
-      else if (e.key === "ArrowLeft") lbShow(idx - 1);
-      else if (e.key === "ArrowRight") lbShow(idx + 1);
-    });
-  }
+  })();
 
   /* ------------------------------------------------------------ {{< gallery >}} slideshow */
   $$(".gallery").forEach(function (g) {
