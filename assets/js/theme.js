@@ -43,6 +43,18 @@
 
   /* ------------------------------------------------------------ collapse / dropdown / tabs */
   document.addEventListener("click", function (e) {
+    var acc = e.target.closest(".acc-toggle");
+    if (acc) { // a top-level group in the "more" menu: accordion, one open at a time
+      e.preventDefault();
+      var group = acc.parentNode, show = !group.classList.contains("acc-open");
+      $$(":scope > li.acc-open", group.parentNode).forEach(function (g) {
+        g.classList.toggle("acc-open", false);
+        $(".acc-toggle", g).setAttribute("aria-expanded", "false");
+      });
+      group.classList.toggle("acc-open", show);
+      acc.setAttribute("aria-expanded", show);
+      return;
+    }
     var sub = e.target.closest(".sub-toggle");
     if (sub) { // foldable group inside a dropdown menu
       e.preventDefault();
@@ -120,6 +132,13 @@
         .sort(function (a, b) { return a.getAttribute("data-index") - b.getAttribute("data-index"); })
         .forEach(function (li) { moreList.appendChild(li); });
     };
+    // in the more menu, the group holding the current page starts open
+    $$(":scope > li.dropdown.active", navUl).slice(0, 1).forEach(function (li) {
+      var b = $(".acc-toggle", li);
+      if (!b) return;
+      li.classList.add("acc-open");
+      b.setAttribute("aria-expanded", "true");
+    });
     var navTimer;
     fitNav();
     // Only a width change can change what fits; phones also fire resize when the address bar slides in and out,

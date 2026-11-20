@@ -3,7 +3,8 @@
   Importance: menu item `params.priority` (lower = kept longer); default is the menu order.
   Dropdown items with children of their own become foldable groups: the second level starts open (unless the item has
   `params.folded = true`), deeper levels folded.
-  The language switch has priority 0 and is the last to go.
+  The language switch has priority 0 and is the last to go. In the more menu the top-level groups (e.g. Columns,
+  Projects) fold like an accordion: one open at a time, the one holding the current page open first.
 */ -}}
 {{- define "_partials/inline/nav-link.html" }}
   {{- $external := strings.HasPrefix .URL "http" }}
@@ -45,6 +46,8 @@
         <a href="{{ partial "func/url.html" $m.URL }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
           {{- with $m.Params.icon }}<i class="{{ . }}"></i>{{ end }}{{ $m.Name }} <b class="caret"></b>
         </a>
+        {{- /* in the "more" menu the group folds like an accordion; hidden in the navbar */}}
+        <button type="button" class="acc-toggle" aria-expanded="false" aria-label="{{ $m.Name }}"><svg aria-hidden="true" width="7" height="10" viewBox="0 0 7 10"><path d="M0 0L7 5 0 10z" fill="currentColor"/></svg></button>
         <ul class="dropdown-menu" role="menu">
           {{- /* The parent's own page, for touch screens where tapping the parent only opens the menu. */}}
           <li class="dropdown-self"><a href="{{ partial "func/url.html" $m.URL }}">{{ $m.Name }}</a></li>

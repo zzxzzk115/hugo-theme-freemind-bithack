@@ -691,3 +691,15 @@ html.px-body:not(.reader) #main-nav .sub-menu > li > a { font-size: 15.2px; }
 .project-page .project-overview dt { color: #2bbc8a; }
 .project-page .project-overview dd { margin: 0 0 8px; }
 .project-page .project-overview dd p { margin: 0; }
+
+/* the more menu (phones, narrow windows): top-level groups fold like an accordion */
+#main-nav .acc-toggle { display: none; }
+#main-nav .nav-more > .dropdown-menu { min-width: min(270px, calc(100vw - 24px)); } /* same width folded or open */
+#main-nav .nav-more .dropdown { display: flex; flex-wrap: wrap; }
+#main-nav .nav-more .dropdown > a { flex: 1 1 auto; min-width: 0; }
+#main-nav .nav-more .dropdown > .acc-toggle { display: block; flex: 0 0 44px; padding: 0; border: 0; border-left: 1px solid #1c1c1c; background: transparent; color: #888; cursor: pointer; }
+#main-nav .nav-more .dropdown > .acc-toggle svg { display: inline-block; vertical-align: middle; transition: transform .15s; }
+#main-nav .nav-more .dropdown > .acc-toggle:hover, #main-nav .nav-more .dropdown > .acc-toggle:focus-visible { color: #2bbc8a; background: #141414; outline: 0; }
+#main-nav .nav-more .dropdown > .acc-toggle[aria-expanded="true"] svg { transform: rotate(90deg); }
+#main-nav .nav-more .dropdown > .dropdown-menu { flex: 0 0 100%; }
+#main-nav .nav-more .dropdown:not(.acc-open) > .dropdown-menu { display: none !important; }
