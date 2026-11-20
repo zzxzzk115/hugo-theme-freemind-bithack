@@ -343,6 +343,10 @@
         });
         pswp = new mod.default({
           dataSource: items, index: index, bgOpacity: 1, showHideAnimationType: "fade", wheelToZoom: true,
+          // the zoom button and double-tap go to at least twice the fitted size, even for images already shown at full
+          // size (PhotoSwipe stops at 1:1 by default, so small screenshots could not be zoomed at all); up to 4 ×
+          secondaryZoomLevel: function (z) { return Math.max(z.initial * 2, 1); },
+          maxZoomLevel: function (z) { return Math.max(z.initial * 4, 2); },
           padding: { top: 56, bottom: 56, left: 0, right: 0 }, imageClickAction: "zoom", tapAction: "toggle-controls",
           closeTitle: t("close", "Close"), zoomTitle: t("zoom", "Zoom"), arrowPrevTitle: t("prev", "Previous"), arrowNextTitle: t("next", "Next"),
           closeSVG: icons.close, zoomSVG: icons.zoom, arrowPrevSVG: icons.prev, arrowNextSVG: icons.next, errorMsg: "404"
