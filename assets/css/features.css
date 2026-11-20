@@ -101,6 +101,7 @@ img.zoomable { cursor: zoom-in; }
 .pswp__button:hover, .pswp__button:focus-visible { background: #2bbc8a; border-color: #2bbc8a; outline: 0; }
 .pswp__button:hover .pswp__icn, .pswp__button:focus-visible .pswp__icn { fill: #000; }
 .pswp__button--arrow { margin-top: -22px; }
+.pswp--zoomed-in .px-plus-bar { display: none; } /* zoomed in: the magnifier shows − */
 .pswp__button--arrow--prev { left: calc(10px + env(safe-area-inset-left, 0px)); }
 .pswp__button--arrow--next { right: calc(10px + env(safe-area-inset-right, 0px)); }
 .pswp__counter { height: 44px; margin: 0 auto 0 0; line-height: 44px; font-size: 16px; color: #ccc; text-shadow: none; opacity: 1; }

@@ -300,18 +300,22 @@
     // between images, swipe down to close. It is loaded on the first tap. The pixel look is in features.css; the
     // icons below are drawn on a pixel grid.
     // 8 × 8 pixel icons ("#" = a filled pixel), each icon pixel a whole number of screen pixels (about 24 px)
-    var px = function (rows) {
+    var rectsOf = function (rows) {
       var rects = "";
       rows.forEach(function (row, y) {
         row.replace(/#+/g, function (run, x) { rects += '<rect x="' + x + '" y="' + y + '" width="' + run.length + '" height="1"/>'; });
       });
+      return rects;
+    };
+    // `plusBar`: pixels hidden while zoomed in (the zoom icon's + becomes −)
+    var px = function (rows, plusBar) {
       return '<svg aria-hidden="true" class="pswp__icn px-icon" data-pixels="8" viewBox="0 0 8 8" width="24" height="24" shape-rendering="crispEdges">' +
-        rects + "</svg>";
+        rectsOf(rows) + (plusBar ? '<g class="px-plus-bar">' + rectsOf(plusBar) + "</g>" : "") + "</svg>";
     };
     var arrow = px(["    ##", "   ##", "  ##", " ##", " ##", "  ##", "   ##", "    ##"]);
     var icons = {
       close: px(["##    ##", " ##  ##", "  ####", "   ##", "   ##", "  ####", " ##  ##", "##    ##"]),
-      zoom: px([" ###", "#   #", "#   #", "#   #", " ####", "    ##", "     ##", "      ##"]),
+      zoom: px(["  ###", " #   #", "#     #", "# ### #", "#     #", " #   #", "  ### #", "       #"], ["", "", "   #", "", "   #"]),
       prev: arrow,
       next: arrow // PhotoSwipe's CSS mirrors the next arrow
     };
