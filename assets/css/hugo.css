@@ -94,7 +94,7 @@ img { max-width: 100%; }
 .md-alert.alert-info .md-alert-title    { color: #39f; }
 .md-alert.alert-warning .md-alert-title { color: #fc3; }
 .md-alert.alert-danger .md-alert-title  { color: #f33; }
-.md-alert a { color: inherit; text-decoration: underline; }
+.md-alert a { color: #2bbc8a; text-decoration: none; } /* like other links: an underline runs through a pixel font's spaces and descenders */
 
 /* timeline widget */
 .timeline { margin: 0; padding-left: 4px; border-left: 1px dashed #333; }
