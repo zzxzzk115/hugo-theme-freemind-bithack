@@ -718,6 +718,52 @@
     requestAnimationFrame(function () { box.classList.add("in"); });
   })();
 
+  /* ------------------------------------------------------------ pixel snap (site-wide pixel font) */
+  // A bitmap font is sharp only when its glyphs start on whole device pixels. A centred layout puts the content at
+  // (viewport - width) / 2, which at 125 % / 150 % zoom or with an odd window width often falls between pixels.
+  // Shift each layout block by less than one device pixel (left, never visible) so the edge where its text starts
+  // lands on the pixel grid; children follow their block. Re-run on resize, zoom, font loading and reader mode.
+  (function () {
+    var html = document.documentElement;
+    if (!html.classList.contains("px-body")) return;
+    var SEL = "#main-nav > .container, body > .container, body > .container-narrow, " +
+      ".container > .row > [class*='col-'], #side_meta, .md-content, #sidebar";
+    var targets = function () { return $$(SEL).filter(function (e) { return getComputedStyle(e).position !== "fixed"; }); };
+    var snap = function () {
+      var d = window.devicePixelRatio || 1, els = targets();
+      els.forEach(function (e) { e.style.left = ""; });
+      els.forEach(function (e) { // document order: outer blocks first, so inner ones measure after their parent moved
+        var cs = getComputedStyle(e);
+        var x = (e.getBoundingClientRect().left + parseFloat(cs.borderLeftWidth) + parseFloat(cs.paddingLeft)) * d;
+        var f = x - Math.round(x);
+        if (Math.abs(f) < 0.02) return;
+        if (cs.position === "static") e.style.position = "relative";
+        e.style.left = (-f / d) + "px";
+      });
+    };
+    var queued = false;
+    var later = function () {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(function () { queued = false; snap(); });
+    };
+    snap();
+    window.addEventListener("resize", later);
+    window.addEventListener("load", later);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+    if (window.ResizeObserver) new ResizeObserver(later).observe(document.body);
+    // zoom changes the device pixel ratio, not always the layout size
+    var watchDpr = function () {
+      if (!window.matchMedia) return;
+      var mq = window.matchMedia("(resolution: " + (window.devicePixelRatio || 1) + "dppx)");
+      var onChange = function () { later(); watchDpr(); };
+      if (mq.addEventListener) mq.addEventListener("change", onChange, { once: true });
+      else if (mq.addListener) mq.addListener(onChange);
+    };
+    watchDpr();
+    new MutationObserver(later).observe(html, { attributes: true, attributeFilter: ["class"] }); // reader mode
+  })();
+
   /* ------------------------------------------------------------ external hook */
   document.dispatchEvent(new CustomEvent("theme:ready"));
 })();
