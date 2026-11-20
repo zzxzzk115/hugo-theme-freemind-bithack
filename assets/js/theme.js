@@ -299,22 +299,29 @@
     // PhotoSwipe (MIT, vendored in assets/js/vendor) does the viewing: pinch / double-tap / wheel zoom, drag, swipe
     // between images, swipe down to close. It is loaded on the first tap. The pixel look is in features.css; the
     // icons below are drawn on a pixel grid.
-    // 16 × 16 pixel icons: "#" = a filled pixel
+    // 32 × 32 pixel icons ("#" = a filled pixel), shown at whole screen pixels per icon pixel (about 20 px)
     var px = function (rows) {
       var rects = "";
       rows.forEach(function (row, y) {
         row.replace(/#+/g, function (run, x) { rects += '<rect x="' + x + '" y="' + y + '" width="' + run.length + '" height="1"/>'; });
       });
-      return '<svg aria-hidden="true" class="pswp__icn px-icon" data-pixels="16" viewBox="0 0 16 16" width="16" height="16" shape-rendering="crispEdges">' +
+      return '<svg aria-hidden="true" class="pswp__icn px-icon" data-pixels="32" viewBox="0 0 32 32" width="20" height="20" shape-rendering="crispEdges">' +
         rects + "</svg>";
     };
-    var arrow = px(["", "", "         ##", "        ##", "       ##", "      ##", "     ##", "    ##", "    ##", "     ##", "      ##",
-      "       ##", "        ##", "         ##"]);
+    var arrow = px(["", "", "", "", "", "", "", "                  ###", "                 ###", "                ###", "               ###",
+      "              ###", "             ###", "            ###", "           ###", "          ###", "          ###", "           ###", "            ###",
+      "             ###", "              ###", "               ###", "                ###", "                 ###", "                  ###"]);
     var icons = {
-      close: px(["", "", "  ##        ##", "  ###      ###", "   ###    ###", "    ###  ###", "     ######", "      ####", "      ####",
-        "     ######", "    ###  ###", "   ###    ###", "  ###      ###", "  ##        ##"]),
-      zoom: px(["", "    ######", "   ##    ##", "  ##      ##", "  #   ##   #", "  #   ##   #", "  # ###### #", "  # ###### #",
-        "  #   ##   #", "  #   ##   #", "  ##      ##", "   ##    ###", "    ########", "          ###", "           ###", "            ##"]),
+      close: px(["", "", "", "", "", "", "", "", "       ###            ###", "        ###          ###", "         ###        ###",
+        "          ###      ###", "           ###    ###", "            ###  ###", "             ######", "              ####", "              ####",
+        "             ######", "            ###  ###", "           ###    ###", "          ###      ###", "         ###        ###",
+        "        ###          ###", "       ###            ###"]),
+      zoom: px(["", "", "", "         ########", "       ############", "      ##############", "     ####        ####",
+        "    ####          ####", "    ###            ###", "   ###      ##      ###", "   ###      ##      ###", "   ###      ##      ###",
+        "   ###   ########   ###", "   ###   ########   ###", "   ###      ##      ###", "   ###      ##      ###", "   ###      ##      ###",
+        "    ###            ###", "    ####          ####", "     ####        ####", "      ##############", "       ###############",
+        "         ########  ####", "                    ####", "                     ####", "                      ####", "                       ####",
+        "                        ####"]),
       prev: arrow,
       next: arrow // PhotoSwipe's CSS mirrors the next arrow
     };

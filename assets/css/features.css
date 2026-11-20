@@ -96,7 +96,7 @@ img.zoomable { cursor: zoom-in; }
 .pswp__button { opacity: 1; }
 .pswp__top-bar .pswp__button, .pswp__button--arrow { width: 44px; height: 44px; margin: 0; display: flex; align-items: center; justify-content: center;
   background: #000; border: 1px solid #555; }
-.pswp__button .pswp__icn, .pswp__button--arrow .pswp__icn { position: static; width: 16px; height: 16px; margin: 0; image-rendering: pixelated; }
+.pswp__button .pswp__icn, .pswp__button--arrow .pswp__icn { position: static; width: 20px; height: 20px; margin: 0; image-rendering: pixelated; }
 .pswp__button--arrow--next .pswp__icn { right: auto; }
 .pswp__button:hover, .pswp__button:focus-visible { background: #2bbc8a; border-color: #2bbc8a; outline: 0; }
 .pswp__button:hover .pswp__icn, .pswp__button:focus-visible .pswp__icn { fill: #000; }
