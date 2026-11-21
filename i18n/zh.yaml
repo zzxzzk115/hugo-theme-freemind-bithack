@@ -56,6 +56,17 @@ close: 关闭
 zoom: 缩放
 prev_image: 上一张
 next_image: 下一张
+pdf_page: 页码
+pdf_zoom_in: 放大
+pdf_zoom_out: 缩小
+pdf_fit: 适合宽度
+pdf_full: 全屏
+pdf_copy_link: 复制本页链接
+pdf_download: 下载 PDF
+pdf_loading: "正在加载 PDF…"
+pdf_loaded: "已下载 {a} / {b}"
+pdf_error: 无法在页面内显示这个 PDF。
+pdf_link_copied: 已复制本页链接
 qr_button: "手机阅读"
 qr_title: "用手机继续读"
 qr_hint: "手机扫码打开本页，并跳到你正在读的小节。"

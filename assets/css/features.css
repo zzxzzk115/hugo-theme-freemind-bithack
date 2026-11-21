@@ -78,7 +78,41 @@ html.reader .md-content h4::before, html.reader .md-content h5::before, html.rea
 .md-details-body > :last-child { margin-bottom: 0; }
 /* Size to the video's own aspect ratio (portrait clips don't become a huge letterboxed box). */
 .md-video video { display: block; width: auto; max-width: 100%; max-height: 70vh; margin: 0 auto; background: #000; }
-.md-pdf object { border: 1px solid #333; background: #fff; }
+/* in-page PDF reader (pdf-reader.html, js/pdf-reader.js) */
+.pdf-reader { position: relative; margin: 1em 0; border: 1px solid #333; background: #000; }
+.pdf-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 6px; border-bottom: 1px solid #333; background: #000; }
+.pdf-bar button, .pdf-bar .pdf-download { display: inline-flex; align-items: center; justify-content: center; height: 30px; min-width: 30px; padding: 0 7px;
+  box-sizing: border-box; border: 1px solid #555; background: #000; color: #ccc !important; font: inherit; line-height: 1; cursor: pointer; text-decoration: none; }
+.pdf-bar button:hover, .pdf-bar button:focus-visible, .pdf-bar .pdf-download:hover, .pdf-bar .pdf-download:focus-visible {
+  background: #2bbc8a !important; border-color: #2bbc8a; color: #000 !important; outline: 0; }
+.pdf-pagebox { display: inline-flex; align-items: center; gap: 4px; margin: 0; color: #888; font-weight: normal; }
+.pdf-pagebox input { width: 3.2em; height: 30px; box-sizing: border-box; border: 1px solid #555; background: #000; color: #fff; font: inherit; text-align: center; }
+.pdf-pagebox input:focus { border-color: #2bbc8a; outline: 0; }
+.pdf-sep { width: 1px; height: 20px; margin: 0 4px; background: #333; }
+.pdf-grow { flex: 1 1 auto; }
+.pdf-zoom { min-width: 54px !important; }
+.pdf-pages { position: relative; height: var(--pdf-height, 80vh); overflow: auto; padding: 8px; background: #1a1a1a; overscroll-behavior: contain; }
+.pdf-pages:focus { outline: 0; }
+.pdf-page { position: relative; margin: 0 auto 8px; background: #fff; box-shadow: 0 0 0 1px #000; }
+.pdf-page canvas { display: block; }
+.pdf-pagenum { position: absolute; top: 50%; left: 0; right: 0; text-align: center; color: #999; }
+.pdf-page canvas ~ .pdf-pagenum { display: none; }
+.pdf-status, .pdf-info { margin: 12px 0; color: #888; text-align: center; font-size: 14px; }
+.pdf-reader[data-flash]::after { content: attr(data-flash); position: absolute; top: 48px; right: 8px; z-index: 3; padding: 2px 8px; background: #2bbc8a; color: #000; font-size: 14px; }
+.pdf-reader.pdf-full { position: fixed; inset: 0; z-index: 2000; margin: 0; border: 0; display: flex; flex-direction: column;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+.pdf-reader.pdf-full .pdf-pages { flex: 1 1 auto; height: auto; }
+/* PDF.js text layer (selectable text over the page image), from pdfjs-dist web/pdf_viewer.css (Apache-2.0), flattened */
+.pdf-page .textLayer { position: absolute; inset: 0; overflow: hidden; line-height: 1; text-align: initial; opacity: 1; z-index: 0; transform-origin: 0 0;
+  -webkit-text-size-adjust: none; text-size-adjust: none; letter-spacing: normal; word-spacing: normal;
+  --min-font-size: 1; --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size)); --min-font-size-inv: calc(1 / var(--min-font-size)); }
+.pdf-page .textLayer span, .pdf-page .textLayer br { position: absolute; color: transparent; white-space: pre; cursor: text; transform-origin: 0% 0%; }
+.pdf-page .textLayer > :not(.markedContent), .pdf-page .textLayer .markedContent span:not(.markedContent) { z-index: 1; --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height)); --scale-x: 1; --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv)); }
+.pdf-page .textLayer .markedContent { display: contents; }
+.pdf-page .textLayer .endOfContent { display: block; position: absolute; inset: 100% 0 0; z-index: 0; cursor: default; user-select: none; }
+.pdf-page .textLayer ::selection { background: rgba(43, 188, 138, .35); color: transparent; }
 .md-pdf-link { display: inline-block; margin-top: 4px; font-size: 85%; }
 .md-chart { position: relative; margin: 1em 0; padding: 10px; background: #111; border: 1px solid #333; }
 /* The DOS palette makes .label-info black (invisible); badges use CGA cyan instead. */
@@ -655,7 +689,7 @@ body:has(#main-nav .dropdown.open) :is(#reader-toggle, #qr-toggle, #gotop) { vis
 html.px-body:not(.reader) { font-size: var(--px-size, 16px); font-synthesis: none; }
 html.px-body:not(.reader) body { font-size: var(--px-size, 16px); }
 html.px-body:not(.reader) body,
-html.px-body:not(.reader) body :not(.fa, [class^="icon-"], [class*=" icon-"], .katex, .katex *, svg, svg *) {
+html.px-body:not(.reader) body :not(.fa, [class^="icon-"], [class*=" icon-"], .katex, .katex *, svg, svg *, .textLayer *) {
   font-family: var(--px-font), monospace !important;
 }
 /* pills (tags, categories) size to their text; the count sits inside, top right */

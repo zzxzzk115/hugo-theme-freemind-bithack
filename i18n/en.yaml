@@ -56,6 +56,17 @@ close: Close
 zoom: Zoom
 prev_image: Previous image
 next_image: Next image
+pdf_page: Page
+pdf_zoom_in: Zoom in
+pdf_zoom_out: Zoom out
+pdf_fit: Fit to width
+pdf_full: Full screen
+pdf_copy_link: Copy a link to this page
+pdf_download: Download PDF
+pdf_loading: "Loading the PDF…"
+pdf_loaded: "Downloaded {a} of {b}"
+pdf_error: This PDF cannot be shown here.
+pdf_link_copied: Link to this page copied
 qr_button: "Phone"
 qr_title: "Read on your phone"
 qr_hint: "Scan to open this page on your phone, at the section you are reading."

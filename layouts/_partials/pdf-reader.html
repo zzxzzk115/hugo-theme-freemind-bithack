@@ -1,0 +1,29 @@
+{{- /*
+  In-page PDF reader (PDF.js, loaded with js/pdf-reader.js only on pages that have one).
+  dict: page (the page), src (PDF URL or site path), title (optional), id (optional; page links are #<id>-p<N>),
+  height (optional CSS height of the reading area, default 80vh).
+  The file is read with range requests: only the pages being looked at are downloaded, so a large PDF opens at once
+  (the server must allow range requests, and CORS when it is on another site).
+*/ -}}
+{{- $src := partial "func/url.html" .src }}
+{{- $id := .id | default (printf "pdf-%s" (substr (md5 $src) 0 6)) }}
+{{- .page.Store.Set "hasPdf" true }}
+<div class="pdf-reader" id="{{ $id }}" data-src="{{ $src }}"{{ with .title }} data-title="{{ . }}"{{ end }} style="--pdf-height: {{ .height | default "80vh" }}">
+  <div class="pdf-bar" role="toolbar" aria-label="PDF">
+    <button type="button" data-act="prev" title="{{ T "prev_page" }}" aria-label="{{ T "prev_page" }}"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+    <label class="pdf-pagebox"><input type="text" inputmode="numeric" value="1" aria-label="{{ T "pdf_page" }}"><span class="pdf-total">/ –</span></label>
+    <button type="button" data-act="next" title="{{ T "next_page" }}" aria-label="{{ T "next_page" }}"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+    <span class="pdf-sep" aria-hidden="true"></span>
+    <button type="button" data-act="out" title="{{ T "pdf_zoom_out" }}" aria-label="{{ T "pdf_zoom_out" }}"><i class="fa fa-minus" aria-hidden="true"></i></button>
+    <button type="button" data-act="fit" class="pdf-zoom" title="{{ T "pdf_fit" }}">100%</button>
+    <button type="button" data-act="in" title="{{ T "pdf_zoom_in" }}" aria-label="{{ T "pdf_zoom_in" }}"><i class="fa fa-plus" aria-hidden="true"></i></button>
+    <span class="pdf-grow" aria-hidden="true"></span>
+    <button type="button" data-act="link" title="{{ T "pdf_copy_link" }}" aria-label="{{ T "pdf_copy_link" }}"><i class="fa fa-link" aria-hidden="true"></i></button>
+    <button type="button" data-act="full" title="{{ T "pdf_full" }}" aria-label="{{ T "pdf_full" }}"><i class="fa fa-expand" aria-hidden="true"></i></button>
+    <a class="pdf-download" href="{{ $src }}" target="_blank" rel="noopener" title="{{ T "pdf_download" }}" aria-label="{{ T "pdf_download" }}"><i class="fa fa-download" aria-hidden="true"></i></a>
+  </div>
+  <div class="pdf-pages" tabindex="0">
+    <p class="pdf-status">{{ T "pdf_loading" }}</p>
+  </div>
+  <noscript><p><a href="{{ $src }}">{{ .title | default $src }}</a></p></noscript>
+</div>

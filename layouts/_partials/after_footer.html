@@ -26,6 +26,8 @@
 {{- if and hugo.IsMultilingual (ne site.Params.langPrompt false) }}{{ $cfg = merge $cfg (dict "langPrompt" (hugo.Data.langprompt | default dict)) }}{{ end }}
 {{- /* image viewer (PhotoSwipe, MIT): loaded on the first tap on an image */}}
 {{- with resources.Get "js/vendor/photoswipe.esm.min.js" }}{{ $p := . }}{{ if hugo.IsProduction }}{{ $p = . | fingerprint }}{{ end }}{{ $cfg = merge $cfg (dict "pswp" $p.RelPermalink "i18n" (merge $cfg.i18n (dict "close" (T "close") "zoom" (T "zoom") "prev" (T "prev_image") "next" (T "next_image")))) }}{{ end }}
+{{- /* in-page PDF reader (PDF.js from a CDN; params.pdfjsCDN to change it) */}}
+{{- if .Store.Get "hasPdf" }}{{ $cfg = merge $cfg (dict "pdfjs" (site.Params.pdfjsCDN | default "https://cdn.jsdelivr.net/npm/pdfjs-dist@6.4.299/") "i18n" (merge $cfg.i18n (dict "pdfLoading" (T "pdf_loading") "pdfLoaded" (T "pdf_loaded") "pdfError" (T "pdf_error") "pdfDownload" (T "pdf_download") "pdfLinkCopied" (T "pdf_link_copied")))) }}{{ end }}
 {{- with site.Home.OutputFormats.Get "searchindex" }}{{ $cfg = merge $cfg (dict "searchIndex" .RelPermalink) }}{{ end }}
 {{- with site.Params.searchEffects }}{{ $cfg = merge $cfg (dict "searchFx" .) }}{{ end }}
 <script>window.__theme = {{ $cfg | jsonify | safeJS }};</script>
@@ -34,6 +36,12 @@
 {{- $js := resources.Get "js/theme.js" }}
 {{- if hugo.IsProduction }}{{ $js = $js | minify | fingerprint }}{{ end }}
 <script src="{{ $js.RelPermalink }}"{{ with $js.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+
+{{- if .Store.Get "hasPdf" }}
+{{- with resources.Get "js/pdf-reader.js" }}{{ $p := . }}{{ if hugo.IsProduction }}{{ $p = . | minify | fingerprint }}{{ end }}
+<script src="{{ $p.RelPermalink }}"{{ with $p.Data.Integrity }} integrity="{{ . }}"{{ end }} defer></script>
+{{- end }}
+{{- end }}
 
 {{- if .Store.Get "hasMermaid" }}
 <script type="module">
