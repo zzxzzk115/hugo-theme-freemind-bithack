@@ -1,6 +1,6 @@
 # freemind.bithack for Hugo
 
-A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack), recreating the author's own modified version of it (red accents, a Chinese pixel font, icon font). No Node and no jQuery: just the Hugo binary (≥ 0.156, standard edition is enough) and one small script.
+A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithack](https://github.com/Ares-X/hexo-theme-freemind.bithack), recreating the author's own modified version of it (red accents, a Chinese pixel font, icon font). No Node and no jQuery: just the Hugo binary (≥ 0.158, standard edition is enough) and one small script.
 
 **Demo:** https://zzxzzk115.github.io/hugo-theme-freemind-bithack/ (built from [exampleSite](exampleSite) by GitHub Actions)
 

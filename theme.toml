@@ -5,7 +5,7 @@ description = "Dark, terminal-style blog theme. Hugo port of hexo-theme-freemind
 homepage = "https://github.com/zzxzzk115/hugo-theme-freemind-bithack"
 tags = ["blog", "dark", "bootstrap", "multilingual", "search", "katex", "mermaid"]
 features = ["multilingual", "search", "math", "mermaid", "tabs", "shortcodes", "rss", "atom"]
-min_version = "0.156.0"
+min_version = "0.158.0"
 
 [author]
   name = "Lazy_V"
