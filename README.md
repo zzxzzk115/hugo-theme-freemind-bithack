@@ -54,7 +54,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | | 手机阅读：右下角按钮弹出本页二维码（宽屏显示），扫码后跳到正在读的小节 | `qrCode = false` 关闭；`qrCDN` |
 | | 字数、阅读时间、更新日期、原创标记、阅读进度条 | `lastmod`、`original: true` |
 | | 摘要说明：`description` 用于 meta 标签和链接提示，默认不在正文显示（文章开头通常就是同一句话） | 单篇 `showDescription: true` 在正文顶部显示为提示框 |
-| | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false` |
+| | 系列导航（同一子目录下的文章） | `seriesNav`；单篇 `series: false`；目录 `_index.md` 里 `series: false` 表示只是归类、不算系列 |
 | | 上一篇 / 下一篇（显示标题，全站按时间） | |
 | | 相关文章（各语言结果一致：按标签/分类的统一键计分） | `relatedPosts`；跨语言的标签对应写在站点 `data/terms.toml` |
 | | 图片注释（单独成段的图片用 title / alt 作 figcaption）、图片查看器（[PhotoSwipe](https://photoswipe.com) 5，MIT，随主题附带在 `assets/js/vendor/`，点图时才加载；像素风按钮与图标，双指 / 双击放大、左右滑切换、下滑或返回键关闭） | `imageCaptions`；单张不要注释：图片下一行写 `{.no-caption}` |

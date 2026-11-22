@@ -1,10 +1,11 @@
 {{- /*
   Series navigation: articles that share the current page's sub-section
-  (e.g. game-dev/retro/gameboy/gbdk/*), oldest first. Top-level sections are not a series.
+  (e.g. game-dev/retro/gameboy/gbdk/*), oldest first. Top-level sections are not a series, nor is a
+  section whose _index.md sets `series: false` (a folder that only groups posts by topic).
   Turn off per page with `series: false`, or site-wide with params.seriesNav = false.
 */ -}}
 {{- $sec := .CurrentSection }}
-{{- if and (ne .Params.series false) (ne site.Params.seriesNav false) $sec (not $sec.IsHome) (ne $sec.Parent.Kind "home") }}
+{{- if and (ne .Params.series false) (ne site.Params.seriesNav false) $sec (ne $sec.Params.series false) (not $sec.IsHome) (ne $sec.Parent.Kind "home") }}
   {{- $pages := where (where $sec.RegularPages "Params.article" "!=" false) "Draft" false }}
   {{- if gt (len $pages) 1 }}
   <div class="meta-widget series">
