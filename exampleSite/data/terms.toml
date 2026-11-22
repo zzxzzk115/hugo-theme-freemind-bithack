@@ -1,0 +1,22 @@
+# Tags / categories across languages: the key is the name English posts use, `zh` the name
+# Chinese posts use. Related posts and the language switch on tag pages follow these pairs.
+#
+# A name that can't go in a URL (C++, C#, A & B) is written as a URL-safe key in front matter
+# and shown by its `title`:
+#   [tags."CPP"]
+#   title = "C++"
+#   [tags."AsyncIO"]
+#   zh = "异步IO"
+#   title = { en = "Async I/O", zh = "异步 I/O" }
+
+[tags."Shortcodes"]
+zh = "短代码"
+[tags."Pixel Art"]
+zh = "像素画"
+[tags."Tutorial"]
+zh = "教程"
+
+[categories."Docs"]
+zh = "文档"
+[categories."Art"]
+zh = "美术"
