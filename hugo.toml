@@ -65,13 +65,14 @@
   autoExcerpt = true
   # Table of contents unless a post sets `toc: false`.
   tocDefault = true
-  headingAnchors = true
+  headingAnchors = true      # false: no # links next to headings
   # Code highlighting: Prism.js + official plugins, loaded from this base URL only on pages with code.
   prismCDN = "https://cdn.jsdelivr.net/npm/prismjs@1.30.0/"
   # Standalone images get a <figure> caption from their title or alt text.
   imageCaptions = true
   # "Series" box for posts in a sub-section (e.g. posts/tutorial/*). Per post: series: false
   seriesNav = true
+  # 0 turns related posts off
   relatedPosts = 5
   breadcrumbs = true
   externalLinksNewTab = true
@@ -92,6 +93,15 @@
     # Full post content in RSS / Atom / JSON Feed (false = summaries only).
     fullText = true
 
+  # Posts that also appear on other platforms: list the platforms here, and a post names the ones
+  # it is on in front matter (`csdn: 78572087`: an id filled into url, or a full URL). The post then
+  # opens with "Originally published on CSDN (date)." (i18n: crosspost_on / crosspost_after).
+  # [params.crosspost.csdn]
+  #   name = "CSDN"
+  #   url = "https://blog.csdn.net/<user>/article/details/{id}"
+  # [params.crosspost.zhihu]
+  #   name = { en = "Zhihu", zh = "知乎" }
+  #   url = "https://zhuanlan.zhihu.com/p/{id}"
   [params.copyright]
     enable = true
     license = "CC BY-NC-SA 4.0"

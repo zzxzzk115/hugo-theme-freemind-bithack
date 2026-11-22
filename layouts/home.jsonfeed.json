@@ -3,7 +3,7 @@
 {{- $full := ne site.Params.feed.fullText false }}
 {{- $items := slice }}
 {{- range $posts }}
-  {{- $tags := slice }}{{ range .GetTerms "tags" }}{{ $tags = $tags | append .LinkTitle }}{{ end }}
+  {{- $tags := slice }}{{ range .GetTerms "tags" }}{{ $tags = $tags | append (partialCached "func/term-title.html" . .RelPermalink) }}{{ end }}
   {{- $item := dict "id" .Permalink "url" .Permalink "title" .Title "date_published" (.Date.Format "2006-01-02T15:04:05Z07:00") "date_modified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "summary" (.Summary | plainify | htmlUnescape | strings.TrimSpace) "tags" $tags }}
   {{- if $full }}{{ $item = merge $item (dict "content_html" (.Content | absURL)) }}{{ end }}
   {{- $items = $items | append $item }}

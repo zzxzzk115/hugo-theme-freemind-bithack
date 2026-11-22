@@ -18,7 +18,7 @@
       <guid>{{ .Permalink }}</guid>
       <pubDate>{{ .Date.Format "Mon, 02 Jan 2006 15:04:05 -0700" | safeHTML }}</pubDate>
       {{- range .GetTerms "categories" }}
-      <category>{{ .LinkTitle }}</category>{{ end }}
+      <category>{{ partialCached "func/term-title.html" . .RelPermalink }}</category>{{ end }}
       {{- if ne site.Params.feed.fullText false }}
       <description>{{ .Content | absURL | transform.XMLEscape | safeHTML }}</description>
       {{- else }}

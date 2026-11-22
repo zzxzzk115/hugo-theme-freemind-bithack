@@ -3,7 +3,7 @@
   language-independent keys (data/terms.toml links e.g. 算法 <-> Algorithms).
   Score = 100 x shared tags + 60 x shared categories; ties go to the post closest in date, then by path.
 */ -}}
-{{- $n := site.Params.relatedPosts | default 5 }}
+{{- $n := cond (isset site.Params "relatedposts") site.Params.relatedPosts 5 }}
 {{- if gt $n 0 }}
   {{- $me := partialCached "func/term-keys.html" . .RelPermalink }}
   {{- if or $me.tags $me.categories }}

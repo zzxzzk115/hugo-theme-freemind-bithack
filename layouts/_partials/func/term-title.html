@@ -1,0 +1,32 @@
+{{- /*
+  Display name of a tag / category (its term page), from the site's data/terms.toml:
+
+    [tags."CPP"]                     # the name used in front matter (URL-safe)
+    title = "C++"                    # shown in every language
+
+    [tags."AsyncIO"]
+    zh = "异步IO"                    # the name Chinese posts use
+    title = { en = "Async I/O", zh = "异步 I/O" }
+
+  Terms without a title (or without one for this language) show their own name. Input: the term page.
+  Call with partialCached "func/term-title.html" $term $term.RelPermalink
+*/ -}}
+{{- $p := . }}
+{{- $tax := $p.Data.Plural }}
+{{- $lang := $p.Language.Lang }}
+{{- $name := lower $p.LinkTitle }}
+{{- $rev := partialCached "func/term-reverse.html" $lang $lang }}
+{{- $canon := index (index $rev $tax | default dict) $name | default $name }}
+{{- $out := $p.LinkTitle }}
+{{- range $key, $e := index (hugo.Data.terms | default dict) $tax | default dict }}
+  {{- if eq (lower $key) $canon }}
+    {{- with $e.title }}
+      {{- if reflect.IsMap . }}
+        {{- with index . $lang }}{{ $out = . }}{{ end }}
+      {{- else }}
+        {{- $out = . }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- return $out }}

@@ -1,0 +1,31 @@
+{{- /*
+  "Originally published on CSDN / Zhihu / ..." for posts that also live on other platforms.
+  The site lists the platforms in params.crosspost; a post names the ones it is on in front matter
+  with the platform's key, as an id (filled into the platform's url) or a full URL:
+
+    [params.crosspost.csdn]                  # front matter:  csdn: 78572087
+    name = "CSDN"
+    url = "https://blog.csdn.net/<user>/article/details/{id}"
+    [params.crosspost.zhihu]                 # front matter:  zhihu: 630199985
+    name = { en = "Zhihu", zh = "知乎" }
+    url = "https://zhuanlan.zhihu.com/p/{id}"
+
+  The sentence comes from i18n (crosspost_on, crosspost_after); a site can override it.
+*/ -}}
+{{- $p := . }}
+{{- $lang := site.Language.Lang }}
+{{- $links := slice }}
+{{- range $key, $c := site.Params.crosspost }}
+  {{- with index $p.Params $key }}
+    {{- $v := string . }}
+    {{- $href := cond (hasPrefix $v "http") $v (replace ($c.url | default "") "{id}" $v) }}
+    {{- $name := $c.name | default $key }}
+    {{- if reflect.IsMap $name }}{{ $name = index $name $lang | default (index $name "en") | default $key }}{{ end }}
+    {{- if $href }}
+      {{- $links = $links | append (printf `<a href="%s" target="_blank" rel="noopener">%s</a>` $href $name) }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- with $links }}
+<p class="translation-note crosspost-note"><i class="fa fa-share-square-o"></i> {{ T "crosspost_on" }}{{ delimit . (T "list_sep") | safeHTML }}{{ T "crosspost_after" (dict "Date" ($p.Date.Format (site.Params.dateFormat | default "2006-01-02"))) }}</p>
+{{- end -}}

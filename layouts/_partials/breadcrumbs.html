@@ -6,7 +6,7 @@
   {{- range $i, $p := $crumbs }}
   <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
     {{- if eq $p.RelPermalink $.RelPermalink }}
-    <span itemprop="name">{{ $p.LinkTitle }}</span>
+    <span itemprop="name">{{ if eq $p.Kind "term" }}{{ partialCached "func/term-title.html" $p $p.RelPermalink }}{{ else }}{{ $p.LinkTitle }}{{ end }}</span>
     {{- else }}
     <a itemprop="item" href="{{ $p.RelPermalink }}"><span itemprop="name">{{ if $p.IsHome }}<i class="fa fa-home"></i> {{ T "home" }}{{ else }}{{ $p.LinkTitle }}{{ end }}</span></a>
     {{- end }}

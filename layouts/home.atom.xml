@@ -23,9 +23,9 @@
     <content type="html">{{ .Content | absURL }}</content>
     {{- end }}
     {{- range .GetTerms "categories" }}
-    <category term="{{ .LinkTitle }}" scheme="{{ .Permalink }}"/>{{ end }}
+    <category term="{{ partialCached "func/term-title.html" . .RelPermalink }}" scheme="{{ .Permalink }}"/>{{ end }}
     {{- range .GetTerms "tags" }}
-    <category term="{{ .LinkTitle }}" scheme="{{ .Permalink }}"/>{{ end }}
+    <category term="{{ partialCached "func/term-title.html" . .RelPermalink }}" scheme="{{ .Permalink }}"/>{{ end }}
   </entry>
   {{- end }}
 </feed>

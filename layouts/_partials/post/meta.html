@@ -16,7 +16,7 @@
   <div class="meta-widget">
     <a data-toggle="collapse" data-target="#categorys" title="{{ T "categories" }}"><i class="fa fa-folder"></i></a>
     <ul id="categorys" class="tag_box list-unstyled collapse in">
-      <li>{{ range . }}<a href="{{ .RelPermalink }}">{{ .LinkTitle }}<span>{{ len .Pages }}</span></a> {{ end }}</li>
+      <li>{{ range . }}<a href="{{ .RelPermalink }}">{{ partialCached "func/term-title.html" . .RelPermalink }}<span>{{ len .Pages }}</span></a> {{ end }}</li>
     </ul>
   </div>
   {{- end }}
@@ -25,14 +25,14 @@
   <div class="meta-widget">
     <a data-toggle="collapse" data-target="#tags" title="{{ T "tags" }}"><i class="fa fa-tags"></i></a>
     <ul id="tags" class="tag_box list-unstyled collapse in">
-      {{ range . }}<li><a href="{{ .RelPermalink }}">{{ .LinkTitle }}<span>{{ len .Pages }}</span></a></li> {{ end }}
+      {{ range . }}<li><a href="{{ .RelPermalink }}">{{ partialCached "func/term-title.html" . .RelPermalink }}<span>{{ len .Pages }}</span></a></li> {{ end }}
     </ul>
   </div>
   {{- end }}
 
   {{ partial "post/series.html" . }}
 
-  {{- $tocOn := .Params.toc | default (site.Params.tocDefault | default true) }}
+  {{- $tocOn := cond (isset .Params "toc") .Params.toc (ne site.Params.tocDefault false) }}
   {{- if and $tocOn (ge (len .Fragments.Headings) 1) (ne .TableOfContents "") }}
   <div class="meta-widget toc-widget">
     <a data-toggle="collapse" data-target="#toc" title="{{ T "toc" }}"><i class="fa fa-bars"></i></a>

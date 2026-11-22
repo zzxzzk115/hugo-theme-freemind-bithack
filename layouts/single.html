@@ -16,6 +16,7 @@
       {{- $orig := "" }}{{ range .Translations }}{{ if not .Params.aiTranslated }}{{ $orig = . }}{{ end }}{{ end }}
       <p class="translation-note"><i class="fa fa-language"></i> {{ T "ai_translated" }}{{ with $orig }} <a href="{{ .RelPermalink }}" hreflang="{{ .Language.Lang }}">{{ T "read_original" }}</a>{{ end }}</p>
       {{- end }}
+      {{- partial "post/crosspost.html" . }}
       {{- /* `description` is page metadata (meta tags, link titles). Show it as a box only when asked:
              posts usually open with the same sentence, which then appears twice. */}}
       {{- if and .Description .Params.showDescription }}

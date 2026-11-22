@@ -12,7 +12,7 @@
   {{- end }}
   {{- $title := slice }}
   {{- if .IsHome }}{{ with .Paginate (partial "func/home-pages.html" .) }}{{ if gt .PageNumber 1 }}{{ $title = $title | append (T "page" .PageNumber) }}{{ end }}{{ end }}{{ end }}
-  {{- $pageTitle := .Title }}{{ if eq .Kind "taxonomy" }}{{ $pageTitle = T .Data.Plural | default .Title }}{{ end }}
+  {{- $pageTitle := .Title }}{{ if eq .Kind "taxonomy" }}{{ $pageTitle = T .Data.Plural | default .Title }}{{ else if eq .Kind "term" }}{{ $pageTitle = partialCached "func/term-title.html" . .RelPermalink }}{{ end }}
   {{- if not .IsHome }}{{ with $pageTitle }}{{ $title = $title | append . }}{{ end }}{{ end }}
   {{- $title = $title | append site.Title }}
   <title>{{ delimit $title " | " }}</title>
@@ -26,7 +26,7 @@
   {{- with $desc }}
   <meta name="description" content="{{ . }}">{{ end }}
   {{- $kw := slice }}{{ range .Keywords }}{{ $kw = $kw | append . }}{{ end }}
-  {{- if not $kw }}{{ range .GetTerms "tags" }}{{ $kw = $kw | append .LinkTitle }}{{ end }}{{ end }}
+  {{- if not $kw }}{{ range .GetTerms "tags" }}{{ $kw = $kw | append (partialCached "func/term-title.html" . .RelPermalink) }}{{ end }}{{ end }}
   {{- with $kw }}
   <meta name="keywords" content="{{ delimit . ", " }}">{{ end }}
   {{- if or .Params.noindex (eq .Kind "404") }}
@@ -62,7 +62,7 @@
   <meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
   <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}">
   {{- range .GetTerms "tags" }}
-  <meta property="article:tag" content="{{ .LinkTitle }}">{{ end }}
+  <meta property="article:tag" content="{{ partialCached "func/term-title.html" . .RelPermalink }}">{{ end }}
   {{- else }}
   <meta property="og:type" content="website">
   {{- end }}
@@ -81,7 +81,7 @@
   {{- with $author }}{{ $ld = merge $ld (dict "author" (dict "@type" "Person" "name" .)) }}{{ end }}
   {{- with $desc }}{{ $ld = merge $ld (dict "description" .) }}{{ end }}
   {{- with $image }}{{ $ld = merge $ld (dict "image" .) }}{{ end }}
-  {{- with .GetTerms "tags" }}{{ $kw := slice }}{{ range . }}{{ $kw = $kw | append .LinkTitle }}{{ end }}{{ $ld = merge $ld (dict "keywords" $kw) }}{{ end }}
+  {{- with .GetTerms "tags" }}{{ $kw := slice }}{{ range . }}{{ $kw = $kw | append (partialCached "func/term-title.html" . .RelPermalink) }}{{ end }}{{ $ld = merge $ld (dict "keywords" $kw) }}{{ end }}
   <script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>
   {{- else if .IsHome }}
   <script type="application/ld+json">{{ dict "@context" "https://schema.org" "@type" "WebSite" "name" site.Title "url" .Permalink "inLanguage" (site.Language.Locale | default site.Language.Lang) | jsonify | safeJS }}</script>

@@ -4,7 +4,7 @@
   <h4>{{ T "tagcloud" }}</h4>
   <ul class="tag_box inline list-unstyled">
     {{- range first $limit .ByCount }}
-    <li><a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a></li>
+    <li><a href="{{ .Page.RelPermalink }}">{{ (partialCached "func/term-title.html" .Page .Page.RelPermalink) }}<span>{{ .Count }}</span></a></li>
     {{- end }}
     {{- if gt (len .) $limit }}
     <li><a href="{{ with site.GetPage "/tags" }}{{ .RelPermalink }}{{ end }}">...<span>{{ len . }}</span></a></li>

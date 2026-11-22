@@ -16,7 +16,7 @@
 {{- if not $u.IsAbs }}{{ $src = partial "func/url.html" $src }}{{ end -}}
 {{- $img := printf `<img src="%s" alt="%s"%s loading="lazy" decoding="async"%s%s%s>` $src (.PlainText | htmlEscape) (cond (ne .Title "") (printf ` title="%s"` (.Title | htmlEscape)) "") (cond (ne (string $w) "") (printf ` width="%v"` $w) "") (cond (ne (string $h) "") (printf ` height="%v"` $h) "") (cond (ne (string .Attributes.class) "") (printf ` class="%s"` .Attributes.class) "") -}}
 {{- $caption := .Title | default .PlainText -}}
-{{- if and .IsBlock (site.Params.imageCaptions | default true) $caption (not (in (string .Attributes.class) "no-caption")) -}}
+{{- if and .IsBlock (ne site.Params.imageCaptions false) $caption (not (in (string .Attributes.class) "no-caption")) -}}
 <figure class="md-figure">{{ $img | safeHTML }}<figcaption>{{ $caption }}</figcaption></figure>
 {{- else -}}
 {{ $img | safeHTML }}

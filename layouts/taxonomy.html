@@ -9,7 +9,7 @@
     <div class="widget">
       <ul class="tag_box inline list-unstyled">
         {{- range .Data.Terms.Alphabetical }}
-        <li><a href="#{{ .Page.LinkTitle | anchorize }}">{{ .Page.LinkTitle }}<span>{{ .Count }}</span></a></li>
+        <li><a href="#{{ .Page.LinkTitle | anchorize }}">{{ (partialCached "func/term-title.html" .Page .Page.RelPermalink) }}<span>{{ .Count }}</span></a></li>
         {{- end }}
       </ul>
     </div>
@@ -17,7 +17,7 @@
       {{- range .Data.Terms.Alphabetical }}
       {{- $id := .Page.LinkTitle | anchorize }}
       <h4 class="archive-ul show" data-toggle="collapse" id="{{ $id }}" data-target="#modal-{{ $id }}">
-        <a href="{{ .Page.RelPermalink }}">{{ .Page.LinkTitle }}</a> <b class="caret"></b>
+        <a href="{{ .Page.RelPermalink }}">{{ (partialCached "func/term-title.html" .Page .Page.RelPermalink) }}</a> <b class="caret"></b>
       </h4>
       <ul id="modal-{{ $id }}" class="collapse in">
         {{- range .Pages.ByDate.Reverse }}

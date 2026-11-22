@@ -6,7 +6,7 @@ A dark, terminal-style blog theme — a Hugo port of [hexo-theme-freemind.bithac
 
 ![screenshot](images/screenshot.png)
 
-**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · pixel-font code (inline and blocks) · pixel task-list checkboxes · reader mode (R) · CJK pixel font · optional site-wide pixel font (params.bodyFont) · read on your phone (QR code of the page, at the section you are reading) · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and a pixel-style image viewer (PhotoSwipe: pinch / double-tap zoom, swipe, Back to close) · in-page PDF reader (PDF.js: loads only the pages being read, page links, full screen, selectable text) · GitHub-style alerts · tabs / alert / badge / icon / video / pdf / bilibili / music (APlayer, spinning record cover) / netease / itch (itch.io game card, drawn locally) / linkcard / details / gallery / friend / embed shortcodes · giscus comments with a matching pixel theme · page views · share buttons (device share menu on phones, QQ Zone, and WeChat via QR code) · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus with foldable nested groups · 404 page that finds the same page in the other language · print styles · web manifest.
+**Features**: multilingual with language switcher and a browser-language prompt · instant search in a navbar dialog (`/` or Ctrl+K; digital-rain backdrop and typed prompt) · RSS, Atom and JSON Feed with full text · build-time KaTeX math (MathML) · Mermaid · Chart.js charts · code blocks via Prism.js (line numbers, language label, copy) · pixel-font code (inline and blocks) · pixel task-list checkboxes · reader mode (R) · CJK pixel font · optional site-wide pixel font (params.bodyFont) · read on your phone (QR code of the page, at the section you are reading) · heading anchors · sticky TOC with scroll spy · reading time, word count, reading progress · series navigation · related posts · prev/next with titles · breadcrumbs · image captions and a pixel-style image viewer (PhotoSwipe: pinch / double-tap zoom, swipe, Back to close) · in-page PDF reader (PDF.js: loads only the pages being read, page links, full screen, selectable text) · GitHub-style alerts · "originally published on CSDN / Zhihu / …" notes for cross-posted articles (`params.crosspost`) · display names for URL-safe tag keys (`C++`, `C#`, `A & B`) in `data/terms.toml` · tabs / alert / badge / icon / video / pdf / bilibili / music (APlayer, spinning record cover) / netease / itch (itch.io game card, drawn locally) / linkcard / details / gallery / friend / embed shortcodes · giscus comments with a matching pixel theme · page views · share buttons (device share menu on phones, QQ Zone, and WeChat via QR code) · analytics (GA, Umami, Plausible, GoatCounter, Cloudflare, Baidu) · Open Graph, Twitter cards, JSON-LD, hreflang · author card · year timeline · pinned posts · dropdown menus with foldable nested groups · 404 page that finds the same page in the other language · print styles · web manifest.
 
 Dark only, on purpose — it is the theme's identity.
 
@@ -73,6 +73,7 @@ Sites served from a subdirectory (e.g. `baseURL = "https://you.github.io/blog/"`
 | SEO / 订阅 | canonical、hreflang、Open Graph、Twitter Card、JSON-LD、sitemap、robots | 自动 |
 | | RSS、Atom、JSON Feed（默认全文） | `[feed] fullText`、`limit` |
 | | AI 翻译提示（链接到原文） | `aiTranslated: true` |
+| | 同步发布提示：「本文最初发表于 CSDN、知乎（日期）」，链接到各平台原文 | `[params.crosspost.<平台>]` 配 `name`、`url`（`{id}` 占位）；文章里写 `<平台>: <编号或网址>` |
 | 其他 | 404 页：同路径在另一种语言存在时自动跳过去（适合只写了一种语言的文章）。打印样式、web manifest、移动端适配、长链接自动换行；子目录部署时 `/img/a.png` 这类根路径自动补上 baseURL 路径 | 自动 |
 | 字体 | Fixedsys（拉丁）+ [Fusion Pixel 12px](https://github.com/TakWolf/fusion-pixel-font)（中日韩，OFL；按字频拆成三片 woff2，按 unicode-range 只下载页面用到的分片，常用字约 100 KB，见 `tools/split_fusion_pixel.py`） | |
 | | 站点像素字体（可选）：设置后全站文字（正文、标题、导航、侧栏、代码块）都换成指定的像素字体；字号保持主题原有比例，整体按正文字号等比缩放（默认正文 16px，主题原本是 18px）。版面各块会微移不到一个设备像素，让文字起点落在整像素上（居中布局、奇数窗口宽度、125%/150% 缩放时都更清晰）。字体文件放在站点自己的 `static/` 里，主题不附带。纯享阅读模式不受影响 | `[params.bodyFont] family = "…" src = "fonts/x.woff2" sizes = { text = 16 }` |
@@ -89,6 +90,18 @@ zh = "编程语言"
 ```
 
 相关文章会把它们视为同一个标签，标签/分类页的语言切换也会跳到对应的页面。
+
+名字里有 URL 放不下的字符（`C++`、`C#`、`TCP/IP`、`A & B`）时，front matter 里写一个 URL 安全的键，显示名写在同一张表里（不用为每个标签建 `_index.md`）：
+
+```toml
+[tags."CPP"]
+title = "C++"                                   # 各语言都这样显示
+[tags."AsyncIO"]
+zh = "异步IO"                                    # 中文文章用的键
+title = { en = "Async I/O", zh = "异步 I/O" }   # 按语言显示
+```
+
+文章、标签页、标签云、分类、面包屑、页面标题、订阅源和搜索都用这个显示名；URL 仍由键决定。
 
 ### 归档分时期
 
